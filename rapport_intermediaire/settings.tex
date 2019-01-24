@@ -1,0 +1,97 @@
+%!TEX root = ./PARL.tex
+
+%=======================================================================================================
+%=============================================== Informations ==========================================
+%=======================================================================================================
+
+% Cover infos
+\title{Rapport intermédiaire: problème de couverture d'ensemble}
+\author{Benoît Cortier \& Maxime Pinard}
+\date{\today{}}
+
+% Fancy style options
+\lhead{\small Benoît Cortier \& Maxime Pinard}
+\rhead{\small Couverture d'ensemble}
+\chead{}
+\lfoot{}
+\rfoot{}
+\cfoot{\thepage}
+\pagestyle{fancy}
+
+%% Redefine the fancy plain page style
+%\fancypagestyle{plain}{
+%	\fancyhf{}
+%	\lhead{\small Benoît Cortier \& Maxime Pinard}
+%	\rhead{\small PARL}
+%	\chead{}
+%	\lfoot{}
+%	\rfoot{}
+%	\cfoot{\thepage}
+%}
+
+%=======================================================================================================
+%================================================== Configs ============================================
+%=======================================================================================================
+
+% Figures folder
+\graphicspath{{../figures/}}
+
+% Prevent page breaks in paragraphs
+\predisplaypenalty=1000
+\postdisplaypenalty=1000
+\clubpenalty=1000
+
+% Minimal space required in the bottom margin not to move the title on the next page
+\renewcommand{\bottomtitlespace}{.1\textheight}
+
+% Links config, especialy for the table of contents
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    linktoc=all
+}
+
+% French language config
+\frenchbsetup{StandardLayout=true,ReduceListSpacing=false,CompactItemize=false}
+
+% Environments
+\theoremstyle{definition}
+\newtheorem{thm}{Théorème}
+\newtheorem{defn}{Définition}
+\newtheorem{prop}{Proposition}
+
+%=======================================================================================================
+%================================================= Functions ===========================================
+%=======================================================================================================
+
+% Clear to the next left page
+\newcommand*{\cleartoleftpage}{
+  \clearpage \ifodd\value{page}\hbox{}\newpage\fi
+}
+
+% Paragraph with line break
+\newcommand{\p}[1]{\paragraph{#1\\}}
+
+% Function to print a warning sign
+\newcommand{\dangersign}[1][2.5ex]
+	{\renewcommand{\stacktype}{L}
+		{\scaleto{\stackon[1pt]{\color{red}$\triangle$}{\fontsize{4pt}{4pt}\selectfont !}}{#1}}}
+
+% Definition of some dt/dx/dy shortcuts for integrals
+\newcommand{\dt}
+{\;\mathrm{d}\,t}
+
+\newcommand{\dx}
+{\;\mathrm{d}\,x}
+
+\newcommand{\dy}
+{\;\mathrm{d}\,y}
+
+% Definition of \Witem for 'itemize' environment with a warning sign
+\newcommand{\Witem}
+{\item[\dangersign{}]}
+
+% Definition of a Max function shortcut
+\newcommand{\Max}[2][ ]
+{\underset{#1}{\text{Max}}\,#2}
