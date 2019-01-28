@@ -8,14 +8,21 @@
 
 \begin{document}
 	\maketitle{}
-	\section{Présentation du problème}
+	\section{Qu'est-ce que le problème de couverture d'ensemble ?}
 		\paragraph*{}
-			TODO
+			Le problème de couverture d'ensemble, ou \emph{Set Covering Problem},
+			fait parti des 21 problèmes NP-complets de \citeauthor{Karp1972}~\cite{Karp1972}.
+			Il est NP-complet au sens \emph{fort} \cite{garey2002computers, caprara2000algorithms}.
+			Étant donné un ensemble univers \(U = {u_1, u_2, u_3, \dots, u_n}\) et une famille \(S\) de sous-ensembles de \(U\),
+			le problème consiste à trouver une sous-famille de \(S\) la plus petite possible permettant de couvrir chaque élément de \(U\)
+			au moins une fois. Un élément \(e\) de \(U\) est couvert par un sous-ensemble \(A\) si \(e \in A\). En associant un coût positif \(c_i\)
+			à chaque élément de l'ensemble, on obtient le problème de couverture d'ensemble pondéré (Weighted Set Covering Problem) et
+			l'objectif est alors de déterminer une couverture de coût minimum.~\cite{Vazirani2003}
 	\section{Résolution}
 		\subsection{NP-complétude}
 			\paragraph*{}
-				Le Set Covering Problem a été démontré NP-complet par \citeauthor{Karp1972} en \citeyear{Karp1972} dans son article \citetitle{Karp1972}\cite{Karp1972}. Dans cet article, il montre que le Set Covering Problem peut être réduit au Vertex Cover Problem, qui peut être réduit au Clique Problem, qui peut être réduit au Boolean Satisfiability Problem.
+				Le Set Covering Problem a été démontré NP-complet par \citeauthor{Karp1972} en \citeyear{Karp1972} dans son article \citetitle{Karp1972}\cite{Karp1972}. Dans cet article, il montre que le Set Covering Problem peut être réduit au Vertex Cover Problem, qui peut être réduit au Clique Problem, qui peut lui-même être réduit au Boolean Satisfiability Problem.
 			\paragraph*{}
 				Le théorème de Cook–Levin et sa démonstration publié en \citeyear{Cook1971} par \citeauthor{Cook1971} dans l'article \citetitle{Cook1971}\cite{Cook1971} prouve le Boolean Satisfiability Problem comme étant un problème NP-complet. Par réduction, le Set Covering Problem est donc aussi NP-complet.
 	\newpage\printbibliography[heading=bibintoc]{}
-\end{document}
+\end{document} 
