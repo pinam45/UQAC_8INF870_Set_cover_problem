@@ -12,7 +12,7 @@
 		\paragraph*{}
 			Le problème de couverture d'ensemble, ou \emph{Set Covering Problem},
 			fait parti des 21 problèmes NP-complets de \citeauthor{Karp1972}~\cite{Karp1972}.
-			Il est NP-complet au sens \emph{fort} \cite{garey2002computers, caprara2000algorithms}.
+			Il est NP-complet au sens \emph{fort} \cite{garey2002computers}.
 			Étant donné un ensemble univers \(U = \{u_1, u_2, u_3, \dots, u_n\}\) et une famille \(S\) de sous-ensembles de \(U\),
 			le problème consiste à trouver une sous-famille de \(S\) la plus petite possible permettant de couvrir chaque élément de \(U\)
 			au moins une fois. Un élément \(e\) de \(U\) est couvert par un sous-ensemble \(A\) si \(e \in A\). En associant un coût positif \(c_i\)
@@ -20,9 +20,9 @@
 			l'objectif est alors de déterminer une couverture de coût minimum.~\cite{Vazirani2003}
 	\section{Utilité}
 		\paragraph*{}
-			Une grande variété de problèmes de positionnement, de distribution, de planification et autres peuvent être formulés comme variantes du problème de couverture d'ensemble. Parmi les problèmes réel auxquels cette approche a été appliquée avec succès:\cite{Balas1982}
+			Une grande variété de problèmes de positionnement, de distribution, de planification et autres peuvent être formulés comme variantes du problème de couverture d'ensemble. Parmi les problèmes réels auxquels cette approche a été appliquée avec succès:\cite{Balas1982}
 			\begin{itemize}
-				\item problèmes de sélection de site et d’allocation d’emplacement
+				\item problèmes de sélection de sites et d'allocation d'emplacement
 				\item emplacement des installations des services d'urgence (casernes de pompiers, hôpitaux, etc.)
 				\item choix de la taille et de l'emplacement des plates-formes de forage dans les champs pétrolifères en mer
 				\item horaire des équipages pour les compagnies aériennes, les compagnies de bus, les chemins de fer
@@ -32,7 +32,7 @@
 			\end{itemize}
 	\section{Exemple minimal}
 		\paragraph*{}
-			Soit un ensemble univers \(U = \{u_1, u_2, \dots, u_{12}\}\) (représenté par des points sur le figure \ref{fig:example}) et une famille \(S = \{s_1, s_2, \dots, s_6\}\) de sous-ensembles de \(U\) (représenté par des rectangles sur la figure \ref{fig:example}) avec:
+			Soit un ensemble univers \(U = \{u_1, u_2, \dots, u_{12}\}\) (représenté par des points sur le figure \ref{fig:example}) et une famille \(S = \{s_1, s_2, \dots, s_6\}\) de sous-ensembles de \(U\) (représentés par des rectangles sur la figure \ref{fig:example}) avec:
 			\begin{itemize}
 				\item \(s_1 = \{u_1, u_2, u_3, u_4, u_5, u_6\}\)
 				\item \(s_2 = \{u_5, u_6, u_8, u_9\}\)
@@ -42,7 +42,7 @@
 				\item \(s_6 = \{u_{10}, u_{11}, u_{12}\}\)
 			\end{itemize}
 		\paragraph*{}
-			La solution optimale a cette instance est la sous famille \(S'=\{s_3, s_4, s_5\}\) (colorée en gris sur la figure \ref{fig:example}).
+			La solution optimale à cette instance est la sous famille \(S'=\{s_3, s_4, s_5\}\) (colorée en gris sur la figure \ref{fig:example}).
 		\begin{figure}[H]
 			\centering%
 			\includegraphics[width=0.65\linewidth]{example}%
