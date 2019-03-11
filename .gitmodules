@@ -1,3 +1,6 @@
 [submodule "solver/cmake/CMutils"]
 	path = solver/cmake/CMutils
 	url = https://github.com/pinam45/CMutils
+[submodule "solver/extlibs/dynamic_bitset"]
+	path = solver/extlibs/dynamic_bitset
+	url = https://github.com/pinam45/dynamic_bitset
