@@ -21,20 +21,29 @@ cmutils_disable_in_sources_build()
 cmutils_enable_ide_folders()
 cmutils_set_classic_output_folders()
 
+# Libraries
+include(cmake/dynamic_bitset.cmake)
+
 # Declare SCPSolver
 add_executable(SCPSolver)
 
 # Add sources
 cmutils_target_sources_folders(
   SCPSolver PRIVATE
-  "${CMAKE_SOURCE_DIR}/src"
-  "${CMAKE_SOURCE_DIR}/include"
+  "${CMAKE_CURRENT_SOURCE_DIR}/src"
+  "${CMAKE_CURRENT_SOURCE_DIR}/include"
 )
 
 # Add includes
 target_include_directories(
   SCPSolver PRIVATE
-  "${CMAKE_SOURCE_DIR}/include"
+  "${CMAKE_CURRENT_SOURCE_DIR}/include"
+)
+
+# Link dependencies
+target_link_libraries(
+  SCPSolver PRIVATE
+  dynamic_bitset
 )
 
 # Link threads library
@@ -71,7 +80,7 @@ cmutils_target_enable_sanitizers(
 cmutils_target_set_ide_folder(SCPSolver "SCPSolver")
 
 # Group sources for IDEs
-cmutils_target_source_group(SCPSolver "${CMAKE_SOURCE_DIR}")
+cmutils_target_source_group(SCPSolver "${CMAKE_CURRENT_SOURCE_DIR}")
 
 # Visual studio config
 get_target_property(scpsolver_binary_folder SCPSolver RUNTIME_OUTPUT_DIRECTORY)
@@ -87,7 +96,7 @@ set_property(
 
 # Resources
 cmutils_configure_folder(
-  "${CMAKE_SOURCE_DIR}/resources"
+  "${CMAKE_CURRENT_SOURCE_DIR}/resources"
   "${scpsolver_binary_folder}/resources"
   COPYONLY
 )
