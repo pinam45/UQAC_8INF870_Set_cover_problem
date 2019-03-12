@@ -11,6 +11,7 @@
 
 #include <fstream>
 #include <iomanip>
+#include <chrono>
 
 std::ostream& scp::operator<<(std::ostream& os, const scp::Problem& problem)
 {
@@ -31,6 +32,8 @@ std::ostream& scp::operator<<(std::ostream& os, const scp::Problem& problem)
 
 bool scp::read_problem(const std::filesystem::path& path, scp::Problem& problem_out)
 {
+	const auto start = std::chrono::system_clock::now();
+
 	std::error_code error;
 	if(!std::filesystem::exists(path, error))
 	{
@@ -136,7 +139,13 @@ bool scp::read_problem(const std::filesystem::path& path, scp::Problem& problem_
 
 	// Success
 	problem_out = std::move(problem);
-	LOGGER->info(
-	  "successfully red problem with {} point and {} subsets", points_number, subsets_number);
+
+	const auto end = std::chrono::system_clock::now();
+	std::chrono::duration<double> elapsed_seconds = end - start;
+	LOGGER->info("successfully red problem with {} point and {} subsets in {}s",
+	             points_number,
+	             subsets_number,
+	             elapsed_seconds.count());
+
 	return true;
 }
