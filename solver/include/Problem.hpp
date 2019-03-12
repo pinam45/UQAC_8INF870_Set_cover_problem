@@ -28,6 +28,8 @@ namespace scp
 		Problem& operator=(Problem&&) noexcept = default;
 	};
 	std::ostream& operator<<(std::ostream& os, const Problem& problem);
+
+	bool read_problem(const std::filesystem::path& path, Problem& problem);
 } // namespace scp
 
 #endif //SCPSOLVER_PROBLEM_HPP
