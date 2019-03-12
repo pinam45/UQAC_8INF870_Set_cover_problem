@@ -9,7 +9,7 @@
 #define SCPSOLVER_LOGGER_HPP
 
 #include <spdlog/spdlog.h>
-#include <spdlog/fmt/ostr.h>
+#include <spdlog/fmt/ostr.h> // for operator<<
 
 #include <filesystem>
 

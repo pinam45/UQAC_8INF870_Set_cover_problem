@@ -9,6 +9,7 @@
 #define SCPSOLVER_PROBLEM_HPP
 
 #include <dynamic_bitset.hpp>
+#include <spdlog/fmt/ostr.h> // for operator<<
 
 #include <filesystem>
 #include <ostream>
