@@ -36,12 +36,18 @@ int main()
 		}
 		LOGGER->info("Problem: {}", problem);
 
+		// check whether the problem can be solved (aka: all elements can be covered using the provided subsets).
 		dynamic_bitset<> cover_check(problem.full_set.size());
 		for(const auto& subset_points: problem.subsets_points)
 		{
 			cover_check |= subset_points;
 		}
-		assert(cover_check == problem.full_set);
+
+		if(cover_check.all())
+		{
+			LOGGER->error("Unsolvable problem (some elements cannot be covered using provided subsets).");
+			return EXIT_FAILURE;
+		}
 
 		scp::Solution solution = scp::greedy::solve(problem);
 		LOGGER->info("Greedy solution: {}", solution);

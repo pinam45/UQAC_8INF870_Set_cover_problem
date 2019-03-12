@@ -142,7 +142,7 @@ bool scp::read_problem(const std::filesystem::path& path, scp::Problem& problem_
 
 	const auto end = std::chrono::system_clock::now();
 	std::chrono::duration<double> elapsed_seconds = end - start;
-	LOGGER->info("successfully red problem with {} point and {} subsets in {}s",
+	LOGGER->info("successfully read problem with {} point and {} subsets in {}s",
 	             points_number,
 	             subsets_number,
 	             elapsed_seconds.count());
