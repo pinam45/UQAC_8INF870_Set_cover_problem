@@ -109,5 +109,33 @@ cmutils_target_use_ccache(SCPSolver)
 # Generate format target
 cmutils_target_generate_clang_format(SCPSolver)
 
+# special optimisation flags
+cmutils_define_compiler_variables()
+if(COMPILER_GCC OR COMPILER_CLANG)
+	set(flags
+	  # https://gcc.gnu.org/onlinedocs/gcc-4.5.3/gcc/i386-and-x86_002d64-Options.html
+	  "-march=native"
+	  "-mtune=native"
+	  # https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html#Optimize-Options
+	  "-fmodulo-sched"
+	  "-fmodulo-sched-allow-regmoves"
+	  "-fgcse-sm"
+	  "-fgcse-las"
+	  "-fgcse-after-reload"
+	  "-fdevirtualize-speculatively"
+	  "-fdevirtualize-at-ltrans"
+	  "-floop-nest-optimize"
+	  "-floop-parallelize-all"
+	  "-fsplit-loops"
+	  "-funswitch-loops"
+	  "-floop-unroll-and-jam"
+	)
+
+	foreach(flag ${flags})
+		cmutils_target_add_cxx_compiler_flag(SCPSolver ${flag} RELEASE RELWITHDEBINFO)
+		cmutils_target_add_cxx_linker_flag(SCPSolver ${flag} RELEASE RELWITHDEBINFO)
+	endforeach()
+endif()
+
 # Verbose makefile
 #set(CMAKE_VERBOSE_MAKEFILE ON)
