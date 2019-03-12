@@ -7,11 +7,13 @@
 //
 #include "logger.hpp"
 #include "Problem.hpp"
+#include "greedy.hpp"
 
 #include <iostream>
 #include <dynamic_bitset.hpp>
 #include <vector>
 #include <list>
+#include <Solution.hpp>
 
 namespace
 {
@@ -39,6 +41,9 @@ int main()
 		cover_check |= subset_points;
 	}
 	assert(cover_check == problem.full_set);
+
+	scp::Solution solution = scp::greedy::solve(problem);
+	std::cout << solution;
 
 	return EXIT_SUCCESS;
 }
