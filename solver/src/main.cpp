@@ -26,24 +26,26 @@ int main()
 	{
 		return EXIT_FAILURE;
 	}
-
-	scp::Problem problem;
-	if(!scp::read_problem(PROBLEM_FILE_PATH, problem))
+	LOGGER->info("SCPSolver start");
 	{
-		LOGGER->error("Failed to read problem");
-		return EXIT_FAILURE;
+		scp::Problem problem;
+		if(!scp::read_problem(PROBLEM_FILE_PATH, problem))
+		{
+			LOGGER->error("Failed to read problem");
+			return EXIT_FAILURE;
+		}
+		LOGGER->info("Problem: {}", problem);
+
+		dynamic_bitset<> cover_check(problem.full_set.size());
+		for(const auto& subset_points: problem.subsets_points)
+		{
+			cover_check |= subset_points;
+		}
+		assert(cover_check == problem.full_set);
+
+		scp::Solution solution = scp::greedy::solve(problem);
+		LOGGER->info("Greedy solution: {}", solution);
 	}
-	std::cout << problem;
-
-	dynamic_bitset<> cover_check(problem.full_set.size());
-	for(const auto& subset_points: problem.subsets_points)
-	{
-		cover_check |= subset_points;
-	}
-	assert(cover_check == problem.full_set);
-
-	scp::Solution solution = scp::greedy::solve(problem);
-	std::cout << solution;
-
+	LOGGER->info("SCPSolver end");
 	return EXIT_SUCCESS;
 }

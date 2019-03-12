@@ -53,8 +53,6 @@ bool init_logger()
 		LOGGER->set_level(spdlog::level::trace);
 		LOGGER->flush_on(spdlog::level::err);
 		spdlog::register_logger(LOGGER);
-
-		LOGGER->info("Logger initialised");
 	}
 	catch(const spdlog::spdlog_ex& ex)
 	{
