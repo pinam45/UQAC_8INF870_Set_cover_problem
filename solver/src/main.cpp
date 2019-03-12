@@ -43,7 +43,7 @@ int main()
 			cover_check |= subset_points;
 		}
 
-		if(cover_check.all())
+		if(!cover_check.all())
 		{
 			LOGGER->error("Unsolvable problem (some elements cannot be covered using provided subsets).");
 			return EXIT_FAILURE;
