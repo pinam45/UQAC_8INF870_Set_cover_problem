@@ -27,6 +27,7 @@ namespace scp
 		Problem& operator=(const Problem&) = default;
 		Problem& operator=(Problem&&) noexcept = default;
 	};
+	std::ostream& operator<<(std::ostream& os, const Problem& problem);
 } // namespace scp
 
 #endif //SCPSOLVER_PROBLEM_HPP
