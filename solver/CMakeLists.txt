@@ -23,6 +23,7 @@ cmutils_set_classic_output_folders()
 
 # Libraries
 include(cmake/dynamic_bitset.cmake)
+include(cmake/spdlog.cmake)
 
 # Declare SCPSolver
 add_executable(SCPSolver)
@@ -44,6 +45,7 @@ target_include_directories(
 target_link_libraries(
   SCPSolver PRIVATE
   dynamic_bitset
+  spdlog
 )
 
 # Link threads library
