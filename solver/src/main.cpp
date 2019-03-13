@@ -45,7 +45,8 @@ int main()
 
 		if(!cover_check.all())
 		{
-			LOGGER->error("Unsolvable problem (some elements cannot be covered using provided subsets).");
+			LOGGER->error(
+			  "Unsolvable problem (some elements cannot be covered using provided subsets).");
 			return EXIT_FAILURE;
 		}
 
