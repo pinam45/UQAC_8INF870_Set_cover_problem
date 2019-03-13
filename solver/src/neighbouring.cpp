@@ -45,15 +45,7 @@ size_t scp::neighbouring::flip_bit_safe(Solution& solution,
                                         std::default_random_engine& generator)
 {
 	assert(solution.cover_all_points);
-	std::uniform_int_distribution<size_t> dist(0, 1);
-	if(dist(generator) == 0)
-	{
-		return helper_call_until_valid(solution, problem, generator, flip_a_one_to_zero_unsafe);
-	}
-	else
-	{
-		return helper_call_until_valid(solution, problem, generator, flip_a_zero_to_one_unsafe);
-	}
+	return helper_call_until_valid(solution, problem, generator, flip_bit_unsafe);
 }
 
 size_t scp::neighbouring::flip_a_one_to_zero_safe(Solution& solution,

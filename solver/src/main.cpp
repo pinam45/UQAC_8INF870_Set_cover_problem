@@ -8,12 +8,14 @@
 #include "logger.hpp"
 #include "Problem.hpp"
 #include "greedy.hpp"
+#include "descent.hpp"
 
 #include <iostream>
 #include <dynamic_bitset.hpp>
 #include <vector>
 #include <list>
 #include <Solution.hpp>
+#include <random>
 
 namespace
 {
@@ -52,6 +54,11 @@ int main()
 
 		scp::Solution solution = scp::greedy::solve(problem);
 		LOGGER->info("Greedy solution: {}", solution);
+
+		long seed = std::chrono::system_clock::now().time_since_epoch().count();
+		std::default_random_engine g(seed);
+		scp::Solution improved_solution = scp::descent::improve_by_annealing(solution, problem, g, 2000, 30.0, 1);
+		LOGGER->info("Annealed solution: {}", improved_solution);
 	}
 	LOGGER->info("SCPSolver end");
 	return EXIT_SUCCESS;
