@@ -10,6 +10,7 @@
 #include "greedy.hpp"
 #include "descent.hpp"
 #include "exhaustive.hpp"
+#include "crossover.hpp"
 
 #include <iostream>
 #include <dynamic_bitset.hpp>
@@ -56,14 +57,17 @@ int main()
 		scp::Solution unweighted_greedy_solution = scp::greedy::unweighted_solve(problem);
 		LOGGER->info("Unweighted greedy solution: {}", unweighted_greedy_solution);
 
-		scp::Solution weighted_greedy_solution = scp::greedy::weighted_solve(problem);
-		LOGGER->info("Weighted greedy solution: {}", weighted_greedy_solution);
-
 		long seed = std::chrono::system_clock::now().time_since_epoch().count();
 		std::default_random_engine g(seed);
-		scp::Solution improved_solution =
-		  scp::descent::improve_by_annealing(weighted_greedy_solution, g, 200000, 50.0, 1);
-		LOGGER->info("Annealed solution: {}", improved_solution);
+		scp::Solution annealed_solution =
+				scp::descent::improve_by_annealing(unweighted_greedy_solution, g, 200000, 50.0, 1);
+		LOGGER->info("Annealed solution: {}", annealed_solution);
+
+		scp::Solution offspring = scp::crossover::solve_subproblem_from(unweighted_greedy_solution, annealed_solution);
+		LOGGER->info("Offspring from unweighted greedy and annealed solution: {}", offspring);
+
+		scp::Solution weighted_greedy_solution = scp::greedy::weighted_solve(problem);
+		LOGGER->info("Weighted greedy solution: {}", weighted_greedy_solution);
 
 		//		scp::Solution optimal_solution = scp::exhaustive::solve(problem);
 		//		LOGGER->info("Optimal solution: {}", optimal_solution);
