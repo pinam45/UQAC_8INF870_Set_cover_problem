@@ -13,7 +13,8 @@
 
 namespace scp::greedy
 {
-	Solution solve(const Problem& problem);
-}
+	Solution unweighted_solve(const Problem& problem);
+	Solution weighted_solve(const Problem& problem);
+} // namespace scp::greedy
 
 #endif //SCPSOLVER_GREEDY_HPP
