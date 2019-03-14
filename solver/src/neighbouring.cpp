@@ -4,23 +4,26 @@
 
 #include "neighbouring.hpp"
 
-template<typename Func>
-size_t helper_call_until_valid(scp::Solution& solution,
-                               const scp::Problem& problem,
-                               std::default_random_engine& generator,
-                               Func functor)
+namespace
 {
-	size_t flipped_bit = functor(solution, problem, generator);
-	solution.compute_cover();
-	while(!solution.cover_all_points)
+	template<typename Func>
+	size_t helper_call_until_valid(scp::Solution& solution,
+	                               const scp::Problem& problem,
+	                               std::default_random_engine& generator,
+	                               Func functor)
 	{
-		solution.selected_subsets.flip(flipped_bit);
-		flipped_bit = functor(solution, problem, generator);
+		size_t flipped_bit = functor(solution, problem, generator);
 		solution.compute_cover();
-	}
+		while(!solution.cover_all_points)
+		{
+			solution.selected_subsets.flip(flipped_bit);
+			flipped_bit = functor(solution, problem, generator);
+			solution.compute_cover();
+		}
 
-	return flipped_bit;
-}
+		return flipped_bit;
+	}
+} // namespace
 
 size_t scp::neighbouring::uniform_flip_bit_safe(Solution& solution,
                                                 const Problem& problem,
