@@ -15,15 +15,19 @@ scp::Solution scp::descent::improve_by_annealing(const Solution& initial_solutio
                                                  double initial_temperature,
                                                  double final_temperature)
 {
-	double initial_to_final_range = final_temperature - initial_temperature;
+	assert(initial_temperature > final_temperature);
+	assert(initial_solution.cover_all_points);
+
+	const double initial_to_final_range = final_temperature - initial_temperature;
 	std::uniform_real_distribution<double> dist(0.0, 1.0);
-	std::unique_ptr<Solution> best = std::make_unique<Solution>(initial_solution);
-	Solution solution{initial_solution};
+	Solution best = initial_solution;
+	best.compute_cost();
+	Solution solution = initial_solution;
 
 	for(size_t iter = 0; iter < iterations_number; ++iter)
 	{
 		solution.compute_cost();
-		size_t previous_cost = solution.cost;
+		const size_t previous_cost = solution.cost;
 
 		size_t flipped_bit = neighbouring::flip_bit_safe(solution, problem, generator);
 		solution.compute_cost();
@@ -47,11 +51,11 @@ scp::Solution scp::descent::improve_by_annealing(const Solution& initial_solutio
 				solution.selected_subsets.flip(flipped_bit);
 			}
 		}
-		else if(solution.cost < best->cost)
+		else if(solution.cost < best.cost)
 		{
-			best = std::make_unique<Solution>(solution);
+			best = solution;
 		}
 	}
 
-	return std::move(Solution{*best});
+	return best;
 }

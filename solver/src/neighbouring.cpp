@@ -38,7 +38,7 @@ size_t scp::neighbouring::uniform_flip_bit_unsafe(Solution& solution,
                                                   std::default_random_engine& generator)
 {
 	std::uniform_int_distribution<size_t> dist(0, problem.subsets_points.size() - 1);
-	size_t pos = dist(generator);
+	const size_t pos = dist(generator);
 	solution.selected_subsets.flip(pos);
 	return pos;
 }
@@ -73,8 +73,8 @@ size_t scp::neighbouring::flip_bit_unsafe(Solution& solution,
                                           const Problem& problem,
                                           std::default_random_engine& generator)
 {
-	std::uniform_int_distribution<size_t> dist(0, 1);
-	if(dist(generator) == 0)
+	std::bernoulli_distribution dist;
+	if(dist(generator))
 	{
 		return flip_a_one_to_zero_unsafe(solution, problem, generator);
 	}
@@ -85,11 +85,11 @@ size_t scp::neighbouring::flip_bit_unsafe(Solution& solution,
 }
 
 size_t scp::neighbouring::flip_a_one_to_zero_unsafe(Solution& solution,
-                                                    const Problem& problem,
+                                                    [[maybe_unused]] const Problem& problem,
                                                     std::default_random_engine& generator)
 {
 	assert(!solution.selected_subsets.none());
-	size_t count = solution.selected_subsets.count();
+	const size_t count = solution.selected_subsets.count();
 	std::uniform_int_distribution<size_t> dist(0, count - 1);
 	size_t next_bit = solution.selected_subsets.find_first();
 	for(size_t i = dist(generator); i > 0; --i)
@@ -106,7 +106,7 @@ size_t scp::neighbouring::flip_a_zero_to_one_unsafe(Solution& solution,
 {
 	assert(!solution.selected_subsets.all());
 	solution.selected_subsets.flip();
-	size_t flipped_bit = flip_a_one_to_zero_unsafe(solution, problem, generator);
+	const size_t flipped_bit = flip_a_one_to_zero_unsafe(solution, problem, generator);
 	solution.selected_subsets.flip();
 	// FIXME: might be optimized without the two flips
 	return flipped_bit;
