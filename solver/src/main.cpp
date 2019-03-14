@@ -54,7 +54,7 @@ int main()
 		}
 
 		scp::Solution unweighted_greedy_solution = scp::greedy::unweighted_solve(problem);
-		LOGGER->info("Weighted greedy solution: {}", unweighted_greedy_solution);
+		LOGGER->info("Unweighted greedy solution: {}", unweighted_greedy_solution);
 
 		scp::Solution weighted_greedy_solution = scp::greedy::weighted_solve(problem);
 		LOGGER->info("Weighted greedy solution: {}", weighted_greedy_solution);

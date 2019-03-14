@@ -43,7 +43,7 @@ scp::Solution scp::greedy::unweighted_solve(const scp::Problem& problem)
 		// all subset already included or no subset add covered points
 		if(max_subset_number == solution.selected_subsets.size())
 		{
-			LOGGER->error("The problem have no solution");
+			LOGGER->error("The problem has no solution");
 			return solution;
 		}
 
@@ -60,7 +60,7 @@ scp::Solution scp::greedy::unweighted_solve(const scp::Problem& problem)
 
 	const auto end = std::chrono::system_clock::now();
 	std::chrono::duration<double> elapsed_seconds = end - start;
-	LOGGER->info("found unweighted greedy solution with {} subsets {} cost in {}s",
+	LOGGER->info("found unweighted greedy solution with {} subsets cost of {} in {}s",
 	             solution.selected_subsets.count(),
 	             solution.cost,
 	             elapsed_seconds.count());
@@ -70,7 +70,6 @@ scp::Solution scp::greedy::unweighted_solve(const scp::Problem& problem)
 
 scp::Solution scp::greedy::weighted_solve(const scp::Problem& problem)
 {
-	LOGGER->debug("Start weighted greedy solve");
 	const auto start = std::chrono::system_clock::now();
 
 	Solution solution(problem);
@@ -92,7 +91,7 @@ scp::Solution scp::greedy::weighted_solve(const scp::Problem& problem)
 			  solution.covered_points | problem.subsets_points[i];
 			// compute points that the new subset would add (not already covered).
 			const dynamic_bitset<> new_covered_points_by_subset =
-			  new_all_covered_points & problem.subsets_points[i];
+			  ~solution.covered_points & problem.subsets_points[i];
 			const size_t new_covered_points_number = new_covered_points_by_subset.count();
 			const double ratio = static_cast<double>(new_covered_points_number)
 			                     / static_cast<double>(problem.subsets_costs[i]);
@@ -108,7 +107,7 @@ scp::Solution scp::greedy::weighted_solve(const scp::Problem& problem)
 		// all subset already included or no subset add covered points
 		if(best_subset_number == solution.selected_subsets.size())
 		{
-			LOGGER->error("The problem have no solution");
+			LOGGER->error("The problem has no solution");
 			return solution;
 		}
 
@@ -125,7 +124,7 @@ scp::Solution scp::greedy::weighted_solve(const scp::Problem& problem)
 
 	const auto end = std::chrono::system_clock::now();
 	std::chrono::duration<double> elapsed_seconds = end - start;
-	LOGGER->info("found weighted greedy solution with {} subsets and {} cost in {}s",
+	LOGGER->info("found weighted greedy solution with {} subsets and cost of {} in {}s",
 	             solution.selected_subsets.count(),
 	             solution.cost,
 	             elapsed_seconds.count());
