@@ -13,6 +13,7 @@
 
 #include <filesystem>
 #include <ostream>
+#include <random>
 
 namespace scp
 {
@@ -35,6 +36,14 @@ namespace scp
 	bool write_problem(const Problem& problem,
 	                   const std::filesystem::path& path,
 	                   bool override_file = false);
+
+	Problem generate_problem(size_t points_number,
+	                         size_t subsets_number,
+	                         std::default_random_engine& generator,
+	                         size_t min_covering_subsets,
+	                         size_t max_covering_subset,
+	                         size_t min_subsets_cost,
+	                         size_t max_subsets_cost);
 } // namespace scp
 
 #endif //SCPSOLVER_PROBLEM_HPP

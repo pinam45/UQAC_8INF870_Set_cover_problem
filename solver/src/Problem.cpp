@@ -244,3 +244,65 @@ bool scp::write_problem(const Problem& problem,
 
 	return true;
 }
+
+scp::Problem scp::generate_problem(size_t points_number,
+                                   size_t subsets_number,
+                                   std::default_random_engine& generator,
+                                   size_t min_covering_subsets,
+                                   size_t max_covering_subsets,
+                                   size_t min_subsets_cost,
+                                   size_t max_subsets_cost)
+{
+	assert(points_number > 0);
+	assert(subsets_number > 0);
+	assert(min_covering_subsets > 0);
+	assert(max_covering_subsets > 0);
+	assert(max_covering_subsets <= subsets_number);
+	assert(min_subsets_cost > 0);
+	assert(max_subsets_cost > 0);
+
+	const auto start = std::chrono::system_clock::now();
+
+	Problem problem;
+	problem.full_set.resize(points_number, true);
+
+	std::uniform_int_distribution subsets_costs_dist(min_subsets_cost, max_subsets_cost);
+	problem.subsets_costs.reserve(subsets_number);
+	for(size_t i = 0; i < subsets_number; ++i)
+	{
+		problem.subsets_costs.push_back(subsets_costs_dist(generator));
+	}
+
+	problem.subsets_points.resize(subsets_number);
+	for(dynamic_bitset<>& subset: problem.subsets_points)
+	{
+		subset.resize(points_number);
+	}
+
+	std::uniform_int_distribution covering_subsets_number_dist(min_covering_subsets,
+	                                                           max_covering_subsets);
+	std::uniform_int_distribution covering_subset_dist(size_t(0), subsets_number - 1);
+	for(size_t i_point = 0; i_point < points_number; ++i_point)
+	{
+		const size_t covering_subsets_number = covering_subsets_number_dist(generator);
+		for(size_t i_subset_covering = 0; i_subset_covering < covering_subsets_number;
+		    ++i_subset_covering)
+		{
+			size_t covering_subset = covering_subset_dist(generator);
+			while(problem.subsets_points[covering_subset][i_point])
+			{
+				covering_subset = covering_subset_dist(generator);
+			}
+			problem.subsets_points[covering_subset][i_point].set();
+		}
+	}
+
+	const auto end = std::chrono::system_clock::now();
+	std::chrono::duration<double> elapsed_seconds = end - start;
+	LOGGER->info("successfully generated problem with {} points and {} subsets in {}s",
+	             points_number,
+	             subsets_number,
+	             elapsed_seconds.count());
+
+	return problem;
+}
