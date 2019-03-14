@@ -32,12 +32,21 @@ int main()
 	}
 	LOGGER->info("SCPSolver start");
 	{
-		scp::Problem problem;
-		if(!scp::read_problem(PROBLEM_FILE_PATH, problem))
+		// generate problem
+		std::default_random_engine g(std::random_device{}());
+		scp::Problem problem = scp::generate_problem(50, 25, g, 1, 10, 1, 50);
+		/*if(!scp::read_problem(PROBLEM_FILE_PATH, problem))
 		{
 			LOGGER->error("Failed to read problem");
 			return EXIT_FAILURE;
+		}*/
+
+		if(!scp::write_problem(problem, "last_problem.txt", true))
+		{
+			LOGGER->error("Failed to write problem");
+			return EXIT_FAILURE;
 		}
+
 		LOGGER->info("Problem: {}", problem);
 
 		// check whether the problem can be solved (aka: all elements can be covered using the provided subsets).
@@ -54,23 +63,23 @@ int main()
 			return EXIT_FAILURE;
 		}
 
+		// solve
 		scp::Solution unweighted_greedy_solution = scp::greedy::unweighted_solve(problem);
 		LOGGER->info("Unweighted greedy solution: {}", unweighted_greedy_solution);
 
-		long seed = std::chrono::system_clock::now().time_since_epoch().count();
-		std::default_random_engine g(seed);
 		scp::Solution annealed_solution =
-				scp::descent::improve_by_annealing(unweighted_greedy_solution, g, 200000, 50.0, 1);
+		  scp::descent::improve_by_annealing(unweighted_greedy_solution, g, 200000, 50.0, 1);
 		LOGGER->info("Annealed solution: {}", annealed_solution);
 
-		scp::Solution offspring = scp::crossover::solve_subproblem_from(unweighted_greedy_solution, annealed_solution);
+		scp::Solution offspring =
+		  scp::crossover::solve_subproblem_from(unweighted_greedy_solution, annealed_solution);
 		LOGGER->info("Offspring from unweighted greedy and annealed solution: {}", offspring);
 
 		scp::Solution weighted_greedy_solution = scp::greedy::weighted_solve(problem);
 		LOGGER->info("Weighted greedy solution: {}", weighted_greedy_solution);
 
-		//		scp::Solution optimal_solution = scp::exhaustive::solve(problem);
-		//		LOGGER->info("Optimal solution: {}", optimal_solution);
+		scp::Solution optimal_solution = scp::exhaustive::solve(problem);
+		LOGGER->info("Optimal solution: {}", optimal_solution);
 	}
 	LOGGER->info("SCPSolver end");
 	return EXIT_SUCCESS;
