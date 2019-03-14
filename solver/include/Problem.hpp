@@ -31,6 +31,10 @@ namespace scp
 	std::ostream& operator<<(std::ostream& os, const Problem& problem);
 
 	bool read_problem(const std::filesystem::path& path, Problem& problem);
+
+	bool write_problem(const Problem& problem,
+	                   const std::filesystem::path& path,
+	                   bool override_file = false);
 } // namespace scp
 
 #endif //SCPSOLVER_PROBLEM_HPP

@@ -149,3 +149,98 @@ bool scp::read_problem(const std::filesystem::path& path, scp::Problem& problem_
 
 	return true;
 }
+
+bool scp::write_problem(const Problem& problem,
+                        const std::filesystem::path& path,
+                        bool override_file)
+{
+	const auto start = std::chrono::system_clock::now();
+
+	std::error_code error;
+	if(std::filesystem::exists(path, error))
+	{
+		if(error)
+		{
+			SPDLOG_DEBUG(LOGGER, "std::filesystem::exists failed: {}", error.message());
+			LOGGER->warn("Check if file/folder exist failed for {}", path);
+		}
+		else if(!override_file)
+		{
+			LOGGER->warn("Tried to write problem to already-existing file/folder {}", path);
+			return false;
+		}
+	}
+
+	std::ofstream problem_stream(path, std::ios::out | std::ios::trunc);
+	if(!problem_stream)
+	{
+		SPDLOG_DEBUG(LOGGER, "std::ofstream constructor failed");
+		LOGGER->warn("Failed to write file {}", path);
+		return false;
+	}
+
+	LOGGER->info("Started to write problem to file {}", path);
+
+	// Write points number
+	problem_stream << " " << problem.full_set.size();
+
+	// Write subsets number
+	problem_stream << " " << problem.subsets_costs.size() << " \n ";
+
+	// Write subsets costs
+	const size_t return_at = 12;
+	size_t out_counter = 0;
+	for(size_t subset_cost: problem.subsets_costs)
+	{
+		problem_stream << subset_cost << " ";
+		if(++out_counter == return_at)
+		{
+			problem_stream << "\n ";
+			out_counter = 0;
+		}
+	}
+	problem_stream << "\n ";
+	out_counter = 0;
+
+	// Write subsets covering points
+	for(size_t i_point = 0; i_point < problem.full_set.size(); ++i_point)
+	{
+		std::vector<size_t> subsets_covering_point;
+		for(size_t i_subset = 0; i_subset < problem.subsets_costs.size(); ++i_subset)
+		{
+			if(problem.subsets_points[i_subset][i_point])
+			{
+				subsets_covering_point.push_back(i_subset + 1); // numbered from 1 in the file
+			}
+		}
+
+		problem_stream << subsets_covering_point.size() << " \n ";
+		for(size_t subset_number: subsets_covering_point)
+		{
+			problem_stream << subset_number << " ";
+			if(++out_counter == return_at)
+			{
+				problem_stream << "\n ";
+				out_counter = 0;
+			}
+		}
+		if(out_counter != 0)
+		{
+			problem_stream << "\n ";
+			out_counter = 0;
+		}
+	}
+
+	if(!problem_stream.good())
+	{
+		LOGGER->warn("Error writing to file");
+		return false;
+	}
+
+	// Success
+	const auto end = std::chrono::system_clock::now();
+	std::chrono::duration<double> elapsed_seconds = end - start;
+	LOGGER->info("successfully written problem in {}s", elapsed_seconds.count());
+
+	return true;
+}
