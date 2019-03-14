@@ -15,6 +15,7 @@ namespace scp::greedy
 {
 	Solution unweighted_solve(const Problem& problem);
 	Solution weighted_solve(const Problem& problem);
+	Solution weighted_solve(const Problem& problem, const dynamic_bitset<>& allowed_subsets);
 } // namespace scp::greedy
 
 #endif //SCPSOLVER_GREEDY_HPP
