@@ -43,7 +43,13 @@ size_t scp::neighbouring::uniform_flip_bit_unsafe(Solution& solution,
 size_t scp::neighbouring::flip_bit_safe(Solution& solution, std::default_random_engine& generator)
 {
 	assert(solution.cover_all_points);
-	return helper_call_until_valid(solution, generator, flip_bit_unsafe);
+	if (solution.selected_subsets.all()) {
+		return helper_call_until_valid(solution, generator, flip_a_one_to_zero_unsafe);
+	} else if (solution.selected_subsets.none()) {
+		return helper_call_until_valid(solution, generator, flip_a_zero_to_one_unsafe);
+	} else {
+		return helper_call_until_valid(solution, generator, flip_bit_unsafe);
+	}
 }
 
 size_t scp::neighbouring::flip_a_one_to_zero_safe(Solution& solution,
