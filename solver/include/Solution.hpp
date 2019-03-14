@@ -29,10 +29,10 @@ namespace scp
 		size_t cost;
 
 		explicit Solution(const Problem& problem) noexcept;
-		Solution(const Solution&) = default;
-		Solution(Solution&&) noexcept = default;
-		Solution& operator=(const Solution&) = delete;
-		Solution& operator=(Solution&&) noexcept = delete;
+		Solution(const Solution& other) = default;
+		Solution(Solution&& other) noexcept = default;
+		Solution& operator=(const Solution& other);
+		Solution& operator=(Solution&& other) noexcept;
 
 		void compute_cover() noexcept;
 		void compute_cost() noexcept;

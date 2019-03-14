@@ -9,6 +9,7 @@
 #include "Problem.hpp"
 #include "greedy.hpp"
 #include "descent.hpp"
+#include "exhaustive.hpp"
 
 #include <iostream>
 #include <dynamic_bitset.hpp>
@@ -52,13 +53,17 @@ int main()
 			return EXIT_FAILURE;
 		}
 
-		scp::Solution solution = scp::greedy::solve(problem);
-		LOGGER->info("Greedy solution: {}", solution);
+		scp::Solution greedy_solution = scp::greedy::solve(problem);
+		LOGGER->info("Greedy solution: {}", greedy_solution);
 
 		long seed = std::chrono::system_clock::now().time_since_epoch().count();
 		std::default_random_engine g(seed);
-		scp::Solution improved_solution = scp::descent::improve_by_annealing(solution, problem, g, 2000, 30.0, 1);
+		scp::Solution improved_solution =
+		  scp::descent::improve_by_annealing(greedy_solution, problem, g, 2000, 30.0, 1);
 		LOGGER->info("Annealed solution: {}", improved_solution);
+
+		scp::Solution optimal_solution = scp::exhaustive::solve(problem);
+		LOGGER->info("Optimal solution: {}", optimal_solution);
 	}
 	LOGGER->info("SCPSolver end");
 	return EXIT_SUCCESS;

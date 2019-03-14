@@ -18,6 +18,26 @@ scp::Solution::Solution(const scp::Problem& problem_) noexcept
 {
 }
 
+scp::Solution& scp::Solution::operator=(const scp::Solution& other)
+{
+	assert(&problem == &other.problem);
+	selected_subsets = other.selected_subsets;
+	covered_points = other.covered_points;
+	cover_all_points = other.cover_all_points;
+	cost = other.cost;
+	return *this;
+}
+
+scp::Solution& scp::Solution::operator=(scp::Solution&& other) noexcept
+{
+	assert(&problem == &other.problem);
+	selected_subsets = std::move(other.selected_subsets);
+	covered_points = std::move(other.covered_points);
+	cover_all_points = other.cover_all_points;
+	cost = other.cost;
+	return *this;
+}
+
 void scp::Solution::compute_cover() noexcept
 {
 	assert(selected_subsets.size() == problem.subsets_points.size());
