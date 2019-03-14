@@ -13,7 +13,6 @@
 namespace scp::descent
 {
 	Solution improve_by_annealing(const Solution& initial_solution,
-	                              const Problem& problem,
 	                              std::default_random_engine& generator,
 	                              size_t iterations_number,
 	                              double initial_temperature,

@@ -9,7 +9,6 @@
 #include "neighbouring.hpp"
 
 scp::Solution scp::descent::improve_by_annealing(const Solution& initial_solution,
-                                                 const Problem& problem,
                                                  std::default_random_engine& generator,
                                                  size_t iterations_number,
                                                  double initial_temperature,
@@ -29,7 +28,7 @@ scp::Solution scp::descent::improve_by_annealing(const Solution& initial_solutio
 		solution.compute_cost();
 		const size_t previous_cost = solution.cost;
 
-		size_t flipped_bit = neighbouring::flip_bit_safe(solution, problem, generator);
+		size_t flipped_bit = neighbouring::flip_bit_safe(solution, generator);
 		solution.compute_cost();
 
 		if(previous_cost < solution.cost)
