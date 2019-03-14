@@ -20,10 +20,16 @@ std::ostream& scp::operator<<(std::ostream& os, const scp::Problem& problem)
 	os << "\tsubsets number = " << problem.subsets_points.size() << ",\n";
 	os << "\tsubsets points = {\n";
 	ostream_config_guard guard(os, std::setfill(' '));
-	const int width = static_cast<int>(std::to_string(problem.subsets_points.size() - 1).size());
+	const int counter_width =
+	  static_cast<int>(std::to_string(problem.subsets_points.size() - 1).size());
+	const int cost_width =
+	  static_cast<int>(std::to_string(*std::max_element(std::cbegin(problem.subsets_costs),
+	                                                    std::cend(problem.subsets_costs)))
+	                     .size());
 	for(size_t i = 0; i < problem.subsets_points.size(); ++i)
 	{
-		os << "\t\t (" << std::setw(width) << i << ") " << problem.subsets_points[i] << "\n";
+		os << "\t\t (" << std::setw(counter_width) << i << ") [" << std::setw(cost_width)
+		   << problem.subsets_costs[i] << "] " << problem.subsets_points[i] << "\n";
 	}
 	os << "\t},\n";
 	os << "}\n";
