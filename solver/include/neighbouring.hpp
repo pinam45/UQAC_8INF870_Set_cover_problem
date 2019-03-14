@@ -7,7 +7,6 @@
 
 #include <random>
 
-#include "Problem.hpp"
 #include "Solution.hpp"
 
 namespace scp::neighbouring
