@@ -14,6 +14,6 @@
 namespace scp::exhaustive
 {
 	Solution solve(const Problem& problem);
-};
+}
 
 #endif //SCPSOLVER_EXHAUSTIVE_HPP

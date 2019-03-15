@@ -77,7 +77,6 @@ scp::Solution scp::greedy::weighted_solve(const scp::Problem& problem)
 	{
 		size_t best_subset_number = solution.selected_subsets.size(); //invalid initial value
 		dynamic_bitset<> covered_points_with_best_subset(problem.full_set.size());
-		size_t new_covered_points_number_with_best_subset = 0;
 		double best_ratio = 0;
 		for(size_t i = 0; i < solution.selected_subsets.size(); ++i)
 		{
@@ -99,7 +98,6 @@ scp::Solution scp::greedy::weighted_solve(const scp::Problem& problem)
 			{
 				best_subset_number = i;
 				covered_points_with_best_subset = new_all_covered_points;
-				new_covered_points_number_with_best_subset = new_covered_points_number;
 				best_ratio = ratio;
 			}
 		}
@@ -143,7 +141,6 @@ scp::Solution scp::greedy::weighted_solve(const scp::Problem& problem,
 	{
 		size_t best_subset_number = solution.selected_subsets.size(); //invalid initial value
 		dynamic_bitset<> covered_points_with_best_subset(problem.full_set.size());
-		size_t new_covered_points_number_with_best_subset = 0;
 		double best_ratio = 0;
 		for(size_t i = 0; i < solution.selected_subsets.size(); ++i)
 		{
@@ -171,7 +168,6 @@ scp::Solution scp::greedy::weighted_solve(const scp::Problem& problem,
 			{
 				best_subset_number = i;
 				covered_points_with_best_subset = new_all_covered_points;
-				new_covered_points_number_with_best_subset = new_covered_points_number;
 				best_ratio = ratio;
 			}
 		}
