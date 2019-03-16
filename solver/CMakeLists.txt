@@ -78,6 +78,9 @@ cmutils_target_enable_sanitizers(
   DEBUG
 )
 
+# Enable debug logs
+cmutils_target_add_compile_definition(SCPSolver "SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_DEBUG" RELWITHDEBINFO DEBUG)
+
 # Set target IDE folder
 cmutils_target_set_ide_folder(SCPSolver "SCPSolver")
 

@@ -73,9 +73,9 @@ scp::Solution scp::genetic::solve(const scp::Problem& problem, const Config& con
 	const auto replacements_per_iteration =
 	  static_cast<size_t>(static_cast<double>(conf.population_size) * conf.replacement_ratio);
 
-	const auto start = std::chrono::system_clock::now();
+	const auto genetic_start = std::chrono::system_clock::now();
 
-	LOGGER->info("Populate...");
+	LOGGER->info("Populate start: generation of random solutions and greedy improvement");
 	Solution best = greedy::weighted_solve(
 	  problem, generate_random_solution(problem, generator).selected_subsets);
 	population.push_back(best);
@@ -89,7 +89,9 @@ scp::Solution scp::genetic::solve(const scp::Problem& problem, const Config& con
 		}
 		population.push_back(std::move(s));
 	}
-	LOGGER->info("Populate OK!");
+	const auto populate_end = std::chrono::system_clock::now();
+	const std::chrono::duration<double> populate_elapsed_seconds = populate_end - genetic_start;
+	LOGGER->info("Populate end: generated {} solutions in {}s", conf.population_size, populate_elapsed_seconds.count());
 
 	// initialize offsprings vector
 	std::vector<Solution> offsprings;
@@ -97,8 +99,7 @@ scp::Solution scp::genetic::solve(const scp::Problem& problem, const Config& con
 
 	for(size_t gen = 0; gen < conf.iteration_number; ++gen)
 	{
-		LOGGER->info("|\tGeneration {}\t|", gen);
-
+		const auto generation_start = std::chrono::system_clock::now();
 		// sort by descending cost to perform rank based selection
 		std::sort(population.begin(), population.end(), [](const Solution& a, const Solution& b) {
 			return b.cost < a.cost;
@@ -124,17 +125,21 @@ scp::Solution scp::genetic::solve(const scp::Problem& problem, const Config& con
 		{
 			population[i] = std::move(offsprings[i]);
 		}
+
+		const auto generation_end = std::chrono::system_clock::now();
+		const std::chrono::duration<double> generation_elapsed_seconds = generation_end - generation_start;
+		LOGGER->info("generation {}: best cost = {} elapsed time = {}s", gen, best.cost, generation_elapsed_seconds.count());
 	}
 
 	// get rid of useless subsets using weighted greedy
 	best = greedy::weighted_solve(problem, best.selected_subsets);
 
-	const auto end = std::chrono::system_clock::now();
-	std::chrono::duration<double> elapsed_seconds = end - start;
+	const auto genetic_end = std::chrono::system_clock::now();
+	const std::chrono::duration<double> genetic_elapsed_seconds = genetic_end - genetic_start;
 	LOGGER->info("found solution by genetic optimization with {} subsets and cost of {} in {}s",
 	             best.selected_subsets.count(),
 	             best.cost,
-	             elapsed_seconds.count());
+	             genetic_elapsed_seconds.count());
 
 	return best;
 }

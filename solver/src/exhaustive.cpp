@@ -36,8 +36,8 @@ scp::Solution scp::exhaustive::solve(const scp::Problem& problem)
 	}
 
 	const auto end = std::chrono::system_clock::now();
-	std::chrono::duration<double> elapsed_seconds = end - start;
-	LOGGER->info("found optimal solution by exhaustive search with {} subsets in {}s",
+	const std::chrono::duration<double> elapsed_seconds = end - start;
+	SPDLOG_LOGGER_DEBUG(LOGGER, "found optimal solution by exhaustive search with {} subsets in {}s",
 	             best_solution.selected_subsets.count(),
 	             elapsed_seconds.count());
 	return best_solution;

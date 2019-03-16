@@ -3,6 +3,7 @@
 //
 #include "descent.hpp"
 #include "neighbouring.hpp"
+#include "logger.hpp"
 
 #include <cmath>
 #include <memory>
@@ -23,6 +24,8 @@ scp::Solution scp::descent::improve_by_annealing(const Solution& initial_solutio
 {
 	assert(conf.initial_temperature > conf.final_temperature);
 	assert(initial_solution.cover_all_points);
+
+	const auto start = std::chrono::system_clock::now();
 
 	const double initial_to_final_range = conf.final_temperature - conf.initial_temperature;
 	std::uniform_real_distribution<double> dist(0.0, 1.0);
@@ -62,6 +65,13 @@ scp::Solution scp::descent::improve_by_annealing(const Solution& initial_solutio
 			best = solution;
 		}
 	}
+
+	const auto end = std::chrono::system_clock::now();
+	const std::chrono::duration<double> elapsed_seconds = end - start;
+	SPDLOG_LOGGER_DEBUG(LOGGER, "improved by annealing from cost of {} to cost of {} in {}s",
+	             initial_solution.cost,
+	             best.cost,
+	             elapsed_seconds.count());
 
 	return best;
 }

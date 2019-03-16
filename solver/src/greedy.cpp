@@ -59,7 +59,7 @@ scp::Solution scp::greedy::unweighted_solve(const scp::Problem& problem)
 	}
 
 	const auto end = std::chrono::system_clock::now();
-	std::chrono::duration<double> elapsed_seconds = end - start;
+	const std::chrono::duration<double> elapsed_seconds = end - start;
 	LOGGER->info("found unweighted greedy solution with {} subsets cost of {} in {}s",
 	             solution.selected_subsets.count(),
 	             solution.cost,
@@ -121,8 +121,8 @@ scp::Solution scp::greedy::weighted_solve(const scp::Problem& problem)
 	}
 
 	const auto end = std::chrono::system_clock::now();
-	std::chrono::duration<double> elapsed_seconds = end - start;
-	LOGGER->info("found weighted greedy solution with {} subsets and cost of {} in {}s",
+	const std::chrono::duration<double> elapsed_seconds = end - start;
+	SPDLOG_LOGGER_DEBUG(LOGGER,"found weighted greedy solution with {} subsets and cost of {} in {}s",
 	             solution.selected_subsets.count(),
 	             solution.cost,
 	             elapsed_seconds.count());
@@ -191,8 +191,8 @@ scp::Solution scp::greedy::weighted_solve(const scp::Problem& problem,
 	}
 
 	const auto end = std::chrono::system_clock::now();
-	std::chrono::duration<double> elapsed_seconds = end - start;
-	LOGGER->info(
+	const std::chrono::duration<double> elapsed_seconds = end - start;
+	SPDLOG_LOGGER_DEBUG(LOGGER,
 	  "found weighted greedy solution with {} subsets of {} allowed subsets and a cost of {} in {}s",
 	  solution.selected_subsets.count(),
 	  allowed_subsets.count(),

@@ -45,7 +45,7 @@ bool scp::read_problem(const std::filesystem::path& path, scp::Problem& problem_
 	{
 		if(error)
 		{
-			SPDLOG_DEBUG(LOGGER, "std::filesystem::exists failed: {}", error.message());
+			SPDLOG_LOGGER_DEBUG(LOGGER, "std::filesystem::exists failed: {}", error.message());
 			LOGGER->warn("Check if file/folder exist failed for {}", path);
 		}
 		else
@@ -59,7 +59,7 @@ bool scp::read_problem(const std::filesystem::path& path, scp::Problem& problem_
 	{
 		if(error)
 		{
-			SPDLOG_DEBUG(LOGGER, "std::filesystem::is_regular_file failed: {}", error.message());
+			SPDLOG_LOGGER_DEBUG(LOGGER, "std::filesystem::is_regular_file failed: {}", error.message());
 			LOGGER->warn("Check if path is a regular file failed for: {}", path);
 		}
 		else
@@ -72,7 +72,7 @@ bool scp::read_problem(const std::filesystem::path& path, scp::Problem& problem_
 	std::ifstream problem_stream(path);
 	if(!problem_stream)
 	{
-		SPDLOG_DEBUG(LOGGER, "std::ifstream constructor failed");
+		SPDLOG_LOGGER_DEBUG(LOGGER, "std::ifstream constructor failed");
 		LOGGER->warn("Failed to read file {}", path);
 		return false;
 	}
@@ -147,7 +147,7 @@ bool scp::read_problem(const std::filesystem::path& path, scp::Problem& problem_
 	problem_out = std::move(problem);
 
 	const auto end = std::chrono::system_clock::now();
-	std::chrono::duration<double> elapsed_seconds = end - start;
+	const std::chrono::duration<double> elapsed_seconds = end - start;
 	LOGGER->info("successfully read problem with {} points and {} subsets in {}s",
 	             points_number,
 	             subsets_number,
@@ -167,7 +167,7 @@ bool scp::write_problem(const Problem& problem,
 	{
 		if(error)
 		{
-			SPDLOG_DEBUG(LOGGER, "std::filesystem::exists failed: {}", error.message());
+			SPDLOG_LOGGER_DEBUG(LOGGER, "std::filesystem::exists failed: {}", error.message());
 			LOGGER->warn("Check if file/folder exist failed for {}", path);
 		}
 		else if(!override_file)
@@ -180,7 +180,7 @@ bool scp::write_problem(const Problem& problem,
 	std::ofstream problem_stream(path, std::ios::out | std::ios::trunc);
 	if(!problem_stream)
 	{
-		SPDLOG_DEBUG(LOGGER, "std::ofstream constructor failed");
+		SPDLOG_LOGGER_DEBUG(LOGGER, "std::ofstream constructor failed");
 		LOGGER->warn("Failed to write file {}", path);
 		return false;
 	}
@@ -245,7 +245,7 @@ bool scp::write_problem(const Problem& problem,
 
 	// Success
 	const auto end = std::chrono::system_clock::now();
-	std::chrono::duration<double> elapsed_seconds = end - start;
+	const std::chrono::duration<double> elapsed_seconds = end - start;
 	LOGGER->info("successfully written problem in {}s", elapsed_seconds.count());
 
 	return true;
@@ -304,7 +304,7 @@ scp::Problem scp::generate_problem(size_t points_number,
 	}
 
 	const auto end = std::chrono::system_clock::now();
-	std::chrono::duration<double> elapsed_seconds = end - start;
+	const std::chrono::duration<double> elapsed_seconds = end - start;
 	LOGGER->info("successfully generated problem with {} points and {} subsets in {}s",
 	             points_number,
 	             subsets_number,
