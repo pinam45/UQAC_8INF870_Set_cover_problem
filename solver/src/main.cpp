@@ -85,8 +85,7 @@ int main()
 			LOGGER->info("Optimal solution: {}", optimal_solution);
 		}
 
-		scp::genetic::GeneticConfig conf;
-		LOGGER->info("Optimized solution: {}", scp::genetic::solve(problem, conf));
+		LOGGER->info("Optimized solution: {}", scp::genetic::solve(problem));
 	}
 	LOGGER->info("SCPSolver end");
 	return EXIT_SUCCESS;

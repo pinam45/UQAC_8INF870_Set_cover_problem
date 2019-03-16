@@ -47,16 +47,16 @@ namespace
 	}
 } // namespace
 
-std::ostream& scp::genetic::operator<<(std::ostream& os, const scp::genetic::GeneticConfig& conf)
+std::ostream& scp::genetic::operator<<(std::ostream& os, const scp::genetic::Config& conf)
 {
-	os << "GeneticConfig{\n";
+	os << "scp::genetic::Config{\n";
 	os << "\tpopulation size = " << conf.population_size << ",\n";
 	os << "\tnumber of iterations = " << conf.iteration_number << ",\n";
 	os << "}\n";
 	return os;
 }
 
-scp::Solution scp::genetic::solve(const scp::Problem& problem, const GeneticConfig& conf)
+scp::Solution scp::genetic::solve(const scp::Problem& problem, const Config& conf)
 {
 	assert(conf.population_size > 1);
 	assert(conf.iteration_number > 0);

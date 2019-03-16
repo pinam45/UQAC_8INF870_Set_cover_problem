@@ -15,7 +15,7 @@
 
 std::ostream& scp::operator<<(std::ostream& os, const scp::Problem& problem)
 {
-	os << "problem{\n";
+	os << "scp::Problem{\n";
 	os << "\tpoints number = " << problem.full_set.size() << ",\n";
 	os << "\tsubsets number = " << problem.subsets_points.size() << ",\n";
 	os << "\tsubsets points = {\n";

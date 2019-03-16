@@ -71,7 +71,7 @@ std::ostream& scp::operator<<(std::ostream& os, const scp::Solution& solution)
 	assert(solution.selected_subsets.size() == solution.problem.subsets_points.size());
 	assert(solution.covered_points.size() == solution.problem.full_set.size());
 
-	os << "Solution{\n";
+	os << "scp::Solution{\n";
 	os << "\tselected subsets number = " << solution.selected_subsets.count() << ",\n";
 	os << "\tselected subsets = ";
 	size_t selected_subset = solution.selected_subsets.find_first();
@@ -81,7 +81,10 @@ std::ostream& scp::operator<<(std::ostream& os, const scp::Solution& solution)
 		selected_subset = solution.selected_subsets.find_next(selected_subset);
 	}
 	os << "\n";
-	os << "\tcovered points = " << solution.covered_points << ",\n";
+	if(!solution.cover_all_points)
+	{
+		os << "\tcovered points = " << solution.covered_points << ",\n";
+	}
 	ostream_config_guard guard(os, std::boolalpha);
 	os << "\tcover all points = " << solution.cover_all_points << ",\n";
 	os << "\tcost = " << solution.cost << ",\n";
