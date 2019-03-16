@@ -1,18 +1,17 @@
 //
 // Created by Benoit Cortier on 3/14/19.
 //
-
-#include <vector>
-#include <limits>
-#include <random>
-#include <algorithm>
-
 #include "genetic.hpp"
 #include "greedy.hpp"
 #include "descent.hpp"
 #include "neighbouring.hpp"
 #include "crossover.hpp"
 #include "logger.hpp"
+
+#include <vector>
+#include <limits>
+#include <random>
+#include <algorithm>
 
 namespace
 {
@@ -112,8 +111,8 @@ scp::Solution scp::genetic::solve(const scp::Problem& problem, const Config& con
 			Solution& parent2 = population[select_by_rank(population.size(), generator)];
 
 			Solution offspring = crossover::solve_subproblem_from(parent1, parent2); // crossover
-			offsprings[i] =
-			  descent::improve_by_annealing(offspring, generator, 2000, 30.0, 1.0); // local search
+			offsprings[i] = descent::improve_by_annealing(
+			  offspring, generator, {2000, 30.0, 1.0}); // local search
 			if(offsprings[i].cost < best.cost)
 			{
 				best = offsprings[i];

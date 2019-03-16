@@ -76,7 +76,7 @@ int main()
 		LOGGER->info("Weighted greedy solution: {}", weighted_greedy_solution);
 
 		scp::Solution annealed_solution =
-		  scp::descent::improve_by_annealing(weighted_greedy_solution, g, 200000, 50.0, 1);
+		  scp::descent::improve_by_annealing(weighted_greedy_solution, g, {200000, 50.0, 1});
 		LOGGER->info("Annealed solution: {}", annealed_solution);
 
 		if(problem.subsets_points.size() < 23)
