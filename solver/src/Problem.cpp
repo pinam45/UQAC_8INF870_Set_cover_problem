@@ -59,7 +59,8 @@ bool scp::read_problem(const std::filesystem::path& path, scp::Problem& problem_
 	{
 		if(error)
 		{
-			SPDLOG_LOGGER_DEBUG(LOGGER, "std::filesystem::is_regular_file failed: {}", error.message());
+			SPDLOG_LOGGER_DEBUG(
+			  LOGGER, "std::filesystem::is_regular_file failed: {}", error.message());
 			LOGGER->warn("Check if path is a regular file failed for: {}", path);
 		}
 		else

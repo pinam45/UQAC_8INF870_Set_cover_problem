@@ -27,7 +27,8 @@ namespace
 		return solution;
 	}
 
-	scp::Solution& select_by_rank(std::vector<scp::Solution>& population, std::default_random_engine& generator)
+	scp::Solution& select_by_rank(std::vector<scp::Solution>& population,
+	                              std::default_random_engine& generator)
 	{
 		assert(!population.empty());
 		const size_t rank_sum = (population.size() * (population.size() + 1)) / 2;
@@ -39,7 +40,8 @@ namespace
 		for(size_t i = 0; i < population.size(); ++i)
 		{
 			accumulated_rank += (i + 1);
-			if(accumulated_rank >= rnd){
+			if(accumulated_rank >= rnd)
+			{
 				return population[i];
 			}
 		}
@@ -95,7 +97,9 @@ scp::Solution scp::genetic::solve(const scp::Problem& problem, const Config& con
 	}
 	const auto populate_end = std::chrono::system_clock::now();
 	const std::chrono::duration<double> populate_elapsed_seconds = populate_end - genetic_start;
-	LOGGER->info("Populate end: generated {} solutions in {}s", conf.population_size, populate_elapsed_seconds.count());
+	LOGGER->info("Populate end: generated {} solutions in {}s",
+	             conf.population_size,
+	             populate_elapsed_seconds.count());
 
 	// initialize offsprings vector
 	std::vector<Solution> offsprings;
@@ -131,8 +135,12 @@ scp::Solution scp::genetic::solve(const scp::Problem& problem, const Config& con
 		}
 
 		const auto generation_end = std::chrono::system_clock::now();
-		const std::chrono::duration<double> generation_elapsed_seconds = generation_end - generation_start;
-		LOGGER->info("generation {}: best cost = {} elapsed time = {}s", gen, best.cost, generation_elapsed_seconds.count());
+		const std::chrono::duration<double> generation_elapsed_seconds =
+		  generation_end - generation_start;
+		LOGGER->info("generation {}: best cost = {} elapsed time = {}s",
+		             gen,
+		             best.cost,
+		             generation_elapsed_seconds.count());
 	}
 
 	// get rid of useless subsets using weighted greedy

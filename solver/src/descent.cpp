@@ -68,10 +68,11 @@ scp::Solution scp::descent::improve_by_annealing(const Solution& initial_solutio
 
 	const auto end = std::chrono::system_clock::now();
 	const std::chrono::duration<double> elapsed_seconds = end - start;
-	SPDLOG_LOGGER_DEBUG(LOGGER, "improved by annealing from cost of {} to cost of {} in {}s",
-	             initial_solution.cost,
-	             best.cost,
-	             elapsed_seconds.count());
+	SPDLOG_LOGGER_DEBUG(LOGGER,
+	                    "improved by annealing from cost of {} to cost of {} in {}s",
+	                    initial_solution.cost,
+	                    best.cost,
+	                    elapsed_seconds.count());
 
 	return best;
 }

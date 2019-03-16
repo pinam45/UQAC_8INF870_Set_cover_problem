@@ -122,10 +122,11 @@ scp::Solution scp::greedy::weighted_solve(const scp::Problem& problem)
 
 	const auto end = std::chrono::system_clock::now();
 	const std::chrono::duration<double> elapsed_seconds = end - start;
-	SPDLOG_LOGGER_DEBUG(LOGGER,"found weighted greedy solution with {} subsets and cost of {} in {}s",
-	             solution.selected_subsets.count(),
-	             solution.cost,
-	             elapsed_seconds.count());
+	SPDLOG_LOGGER_DEBUG(LOGGER,
+	                    "found weighted greedy solution with {} subsets and cost of {} in {}s",
+	                    solution.selected_subsets.count(),
+	                    solution.cost,
+	                    elapsed_seconds.count());
 
 	return solution;
 }
@@ -192,7 +193,8 @@ scp::Solution scp::greedy::weighted_solve(const scp::Problem& problem,
 
 	const auto end = std::chrono::system_clock::now();
 	const std::chrono::duration<double> elapsed_seconds = end - start;
-	SPDLOG_LOGGER_DEBUG(LOGGER,
+	SPDLOG_LOGGER_DEBUG(
+	  LOGGER,
 	  "found weighted greedy solution with {} subsets of {} allowed subsets and a cost of {} in {}s",
 	  solution.selected_subsets.count(),
 	  allowed_subsets.count(),
