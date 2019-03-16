@@ -110,7 +110,7 @@ scp::Solution scp::genetic::solve(const scp::Problem& problem, const Config& con
 		const auto generation_start = std::chrono::system_clock::now();
 		// sort by decreasing cost to perform rank based selection
 		std::sort(population.begin(), population.end(), [](const Solution& a, const Solution& b) {
-			return b.cost > a.cost;
+			return b.cost < a.cost;
 		});
 
 		// create offsprings by crossover + local search
