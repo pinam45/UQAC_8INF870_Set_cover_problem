@@ -7,17 +7,19 @@
 //
 #include "logger.hpp"
 #include "Problem.hpp"
+#include "Solution.hpp"
 #include "greedy.hpp"
 #include "descent.hpp"
 #include "exhaustive.hpp"
 #include "crossover.hpp"
 #include "genetic.hpp"
+#include "ckeck.hpp"
+
+#include <dynamic_bitset.hpp>
 
 #include <iostream>
-#include <dynamic_bitset.hpp>
 #include <vector>
 #include <list>
-#include <Solution.hpp>
 #include <random>
 
 namespace
@@ -59,7 +61,7 @@ int main()
 			cover_check |= subset_points;
 		}
 
-		if(!cover_check.all())
+		if(!scp::check::has_solution(problem))
 		{
 			LOGGER->error(
 			  "Unsolvable problem (some elements cannot be covered using provided subsets).");
