@@ -3,7 +3,6 @@
 //
 #include "genetic.hpp"
 #include "greedy.hpp"
-#include "descent.hpp"
 #include "neighbouring.hpp"
 #include "crossover.hpp"
 #include "logger.hpp"
@@ -51,6 +50,7 @@ std::ostream& scp::genetic::operator<<(std::ostream& os, const scp::genetic::Con
 	os << "scp::genetic::Config{\n";
 	os << "\tpopulation size = " << conf.population_size << ",\n";
 	os << "\tnumber of iterations = " << conf.iteration_number << ",\n";
+	os << "\tdescent config = " << conf.descent_config << ",\n";
 	os << "}\n";
 	return os;
 }
@@ -112,7 +112,7 @@ scp::Solution scp::genetic::solve(const scp::Problem& problem, const Config& con
 
 			Solution offspring = crossover::solve_subproblem_from(parent1, parent2); // crossover
 			offsprings[i] = descent::improve_by_annealing(
-			  offspring, generator, {2000, 30.0, 1.0}); // local search
+			  offspring, generator, conf.descent_config); // local search
 			if(offsprings[i].cost < best.cost)
 			{
 				best = offsprings[i];

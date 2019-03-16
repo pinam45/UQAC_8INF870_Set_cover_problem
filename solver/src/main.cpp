@@ -85,7 +85,14 @@ int main()
 			LOGGER->info("Optimal solution: {}", optimal_solution);
 		}
 
-		LOGGER->info("Optimized solution: {}", scp::genetic::solve(problem));
+		scp::genetic::Config conf{};
+		conf.population_size = 50;
+		conf.iteration_number = 50;
+		conf.replacement_ratio = 0.75;
+		conf.descent_config.iterations_number = 2000;
+		conf.descent_config.initial_temperature = 30;
+		conf.descent_config.final_temperature = 1;
+		LOGGER->info("Optimized solution: {}", scp::genetic::solve(problem, conf));
 	}
 	LOGGER->info("SCPSolver end");
 	return EXIT_SUCCESS;

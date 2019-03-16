@@ -7,6 +7,7 @@
 
 #include "Problem.hpp"
 #include "Solution.hpp"
+#include "descent.hpp"
 
 namespace scp::genetic
 {
@@ -15,6 +16,7 @@ namespace scp::genetic
 		size_t population_size = 100;
 		size_t iteration_number = 50;
 		double replacement_ratio = 0.8;
+		scp::descent::Config descent_config{};
 	};
 	std::ostream& operator<<(std::ostream& os, const Config& conf);
 
