@@ -27,21 +27,25 @@ namespace
 		return solution;
 	}
 
-	size_t select_by_rank(size_t population_size, std::default_random_engine& generator)
+	scp::Solution& select_by_rank(std::vector<scp::Solution>& population, std::default_random_engine& generator)
 	{
-		const size_t rank_sum = (population_size * (population_size + 1)) / 2;
+		assert(!population.empty());
+		const size_t rank_sum = (population.size() * (population.size() + 1)) / 2;
 
 		std::uniform_int_distribution<size_t> dist(0, rank_sum);
 		const size_t rnd = dist(generator);
 
-		size_t accumulated_rank = 1;
-		size_t current_rank = 1;
-		while(accumulated_rank <= rnd)
+		size_t accumulated_rank = 0;
+		for(size_t i = 0; i < population.size(); ++i)
 		{
-			accumulated_rank += ++current_rank;
+			accumulated_rank += (i + 1);
+			if(accumulated_rank >= rnd){
+				return population[i];
+			}
 		}
 
-		return current_rank - 1;
+		assert(false); //impossible
+		return population[population.size() - 1];
 	}
 } // namespace
 
@@ -100,16 +104,16 @@ scp::Solution scp::genetic::solve(const scp::Problem& problem, const Config& con
 	for(size_t gen = 0; gen < conf.iteration_number; ++gen)
 	{
 		const auto generation_start = std::chrono::system_clock::now();
-		// sort by descending cost to perform rank based selection
+		// sort by decreasing cost to perform rank based selection
 		std::sort(population.begin(), population.end(), [](const Solution& a, const Solution& b) {
-			return b.cost < a.cost;
+			return b.cost > a.cost;
 		});
 
 		// create offsprings by crossover + local search
 		for(size_t i = 0; i < replacements_per_iteration; ++i)
 		{
-			Solution& parent1 = population[select_by_rank(population.size(), generator)];
-			Solution& parent2 = population[select_by_rank(population.size(), generator)];
+			Solution& parent1 = select_by_rank(population, generator);
+			Solution& parent2 = select_by_rank(population, generator);
 
 			Solution offspring = crossover::solve_subproblem_from(parent1, parent2); // crossover
 			offsprings[i] = descent::improve_by_annealing(
