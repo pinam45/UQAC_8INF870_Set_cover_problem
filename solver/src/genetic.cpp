@@ -56,6 +56,9 @@ std::ostream& scp::genetic::operator<<(std::ostream& os, const scp::genetic::Con
 	os << "scp::genetic::Config{\n";
 	os << "\tpopulation size = " << conf.population_size << ",\n";
 	os << "\tnumber of iterations = " << conf.iteration_number << ",\n";
+	os << "\treplacement ratio = " << conf.replacement_ratio << ",\n";
+	os << "\tmutation probability = " << conf.mutation_probability << ",\n";
+	os << "\tlocal search probability = " << conf.local_search_probability << ",\n";
 	os << "\tdescent config = " << conf.descent_config << ",\n";
 	os << "}\n";
 	return os;
@@ -105,6 +108,7 @@ scp::Solution scp::genetic::solve(const scp::Problem& problem, const Config& con
 	std::vector<Solution> offsprings;
 	offsprings.resize(replacements_per_iteration, best);
 
+	std::uniform_real_distribution<double> probabilities_dist(0.0, 1.0);
 	for(size_t gen = 0; gen < conf.iteration_number; ++gen)
 	{
 		const auto generation_start = std::chrono::system_clock::now();
@@ -119,13 +123,27 @@ scp::Solution scp::genetic::solve(const scp::Problem& problem, const Config& con
 			Solution& parent1 = select_by_rank(population, generator);
 			Solution& parent2 = select_by_rank(population, generator);
 
-			Solution offspring = crossover::solve_subproblem_from(parent1, parent2); // crossover
-			offsprings[i] = descent::improve_by_annealing(
-			  offspring, generator, conf.descent_config); // local search
-			if(offsprings[i].cost < best.cost)
-			{
-				best = offsprings[i];
+			// crossover
+			Solution offspring = crossover::solve_subproblem_from(parent1, parent2);
+
+			// local search
+			if(probabilities_dist(generator) < conf.local_search_probability){
+				offspring = descent::improve_by_annealing(
+				  offspring, generator, conf.descent_config);
 			}
+
+			// mutation
+			if(probabilities_dist(generator) < conf.mutation_probability){
+				scp::neighbouring::flip_bit_safe(offspring, generator);
+			}
+
+			// update best
+			offspring.compute_cost();
+			if(offspring.cost < best.cost)
+			{
+				best = offspring;
+			}
+			offsprings[i] = std::move(offspring);
 		}
 
 		// replace worst individuals by offsprings
