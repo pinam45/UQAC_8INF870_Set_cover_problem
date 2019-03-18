@@ -90,8 +90,8 @@ scp::Solution scp::genetic::solve(const scp::Problem& problem, const Config& con
 	population.push_back(best);
 	while(population.size() < conf.population_size)
 	{
-		Solution s = greedy::weighted_solve(
-		  problem, generate_random_solution(problem, generator).selected_subsets);
+		Solution s = generate_random_solution(problem, generator);
+		s.compute_cost();
 		if(s.cost < best.cost)
 		{
 			best = s;
@@ -124,7 +124,7 @@ scp::Solution scp::genetic::solve(const scp::Problem& problem, const Config& con
 			Solution& parent2 = select_by_rank(population, generator);
 
 			// crossover
-			Solution offspring = crossover::solve_subproblem_from(parent1, parent2);
+			Solution offspring = crossover::random_merge(parent1, parent2, generator);
 
 			// local search
 			if(probabilities_dist(generator) < conf.local_search_probability)
