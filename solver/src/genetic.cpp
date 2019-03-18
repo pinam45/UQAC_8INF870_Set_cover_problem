@@ -127,13 +127,15 @@ scp::Solution scp::genetic::solve(const scp::Problem& problem, const Config& con
 			Solution offspring = crossover::solve_subproblem_from(parent1, parent2);
 
 			// local search
-			if(probabilities_dist(generator) < conf.local_search_probability){
-				offspring = descent::improve_by_annealing(
-				  offspring, generator, conf.descent_config);
+			if(probabilities_dist(generator) < conf.local_search_probability)
+			{
+				offspring =
+				  descent::improve_by_annealing(offspring, generator, conf.descent_config);
 			}
 
 			// mutation
-			if(probabilities_dist(generator) < conf.mutation_probability){
+			if(probabilities_dist(generator) < conf.mutation_probability)
+			{
 				scp::neighbouring::flip_bit_safe(offspring, generator);
 			}
 
