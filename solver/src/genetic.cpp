@@ -117,6 +117,17 @@ scp::Solution scp::genetic::solve(const scp::Problem& problem, const Config& con
 			return b.cost < a.cost;
 		});
 
+		unsigned int nb_identical = 0;
+		for(size_t i = 1; i < population.size(); ++i)
+		{
+			// first test for speed
+			if(population[i - 1].cost == population[i].cost
+			   && population[i - 1].selected_subsets == population[i].selected_subsets)
+			{
+				++nb_identical;
+			}
+		}
+
 		// create offsprings by crossover + local search
 		for(size_t i = 0; i < replacements_per_iteration; ++i)
 		{
@@ -157,9 +168,10 @@ scp::Solution scp::genetic::solve(const scp::Problem& problem, const Config& con
 		const auto generation_end = std::chrono::system_clock::now();
 		const std::chrono::duration<double> generation_elapsed_seconds =
 		  generation_end - generation_start;
-		LOGGER->info("generation {}: best cost = {} elapsed time = {}s",
+		LOGGER->info("generation {}: best cost = {}, nb identical = {}, elapsed time = {}s",
 		             gen,
 		             best.cost,
+		             nb_identical,
 		             generation_elapsed_seconds.count());
 	}
 
