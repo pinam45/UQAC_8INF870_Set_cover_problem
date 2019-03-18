@@ -26,7 +26,7 @@ namespace
 {
 	constexpr const char* PROBLEM_FILE_PATH = "resources/scpa2.txt";
 	//constexpr const char* PROBLEM_FILE_PATH = "last_problem.txt";
-}
+} // namespace
 
 int main()
 {

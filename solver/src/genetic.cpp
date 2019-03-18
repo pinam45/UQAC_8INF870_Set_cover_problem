@@ -118,13 +118,21 @@ scp::Solution scp::genetic::solve(const scp::Problem& problem, const Config& con
 		});
 
 		unsigned int nb_identical = 0;
-		for(size_t i = 1; i < population.size(); ++i)
+		unsigned int nb_identical_best = 0;
+		for(size_t i = 0; i < population.size() - 1; ++i)
 		{
 			// first test for speed
-			if(population[i - 1].cost == population[i].cost
-			   && population[i - 1].selected_subsets == population[i].selected_subsets)
+			if(population[i + 1].cost == population[i].cost
+			   && population[i + 1].selected_subsets == population[i].selected_subsets)
 			{
 				++nb_identical;
+			}
+
+			if(population[i].cost == population[population.size() - 1].cost
+			   && population[i].selected_subsets
+			        == population[population.size() - 1].selected_subsets)
+			{
+				++nb_identical_best;
 			}
 		}
 
@@ -168,11 +176,13 @@ scp::Solution scp::genetic::solve(const scp::Problem& problem, const Config& con
 		const auto generation_end = std::chrono::system_clock::now();
 		const std::chrono::duration<double> generation_elapsed_seconds =
 		  generation_end - generation_start;
-		LOGGER->info("generation {}: best cost = {}, nb identical = {}, elapsed time = {}s",
-		             gen,
-		             best.cost,
-		             nb_identical,
-		             generation_elapsed_seconds.count());
+		LOGGER->info(
+		  "generation {}: best cost = {}, nb identical = {}, nb identical to best = {}, elapsed time = {}s",
+		  gen,
+		  best.cost,
+		  nb_identical,
+		  nb_identical_best,
+		  generation_elapsed_seconds.count());
 	}
 
 	// get rid of useless subsets using weighted greedy
