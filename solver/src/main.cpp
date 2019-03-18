@@ -96,12 +96,12 @@ int main()
 		}
 
 		scp::genetic::Config conf{};
-		conf.population_size = 50;
-		conf.iteration_number = 100;
+		conf.population_size = 75;
+		conf.iteration_number = 5000;
 		conf.replacement_ratio = 0.75;
 		conf.mutation_probability = 0.1;
 		conf.local_search_probability = 0.3;
-		conf.descent_config.iterations_number = 3000;
+		conf.descent_config.iterations_number = 4500;
 		conf.descent_config.initial_temperature = 30;
 		conf.descent_config.final_temperature = 1;
 		LOGGER->info("Optimized solution: {}", scp::genetic::solve(problem, conf));
