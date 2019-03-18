@@ -13,7 +13,9 @@
 
 namespace scp::exhaustive
 {
-	Solution solve(const Problem& problem);
-}
+	Solution solve_ram(const Problem& problem);
+
+	Solution solve_cpu(const Problem& problem);
+} // namespace scp::exhaustive
 
 #endif //SCPSOLVER_EXHAUSTIVE_HPP

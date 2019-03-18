@@ -25,6 +25,7 @@
 namespace
 {
 	constexpr const char* PROBLEM_FILE_PATH = "resources/scpa2.txt";
+	//constexpr const char* PROBLEM_FILE_PATH = "last_problem.txt";
 }
 
 int main()
@@ -46,13 +47,17 @@ int main()
 		}
 
 		// generate problem
-		/*scp::Problem problem = scp::generate_problem(50, 25, g, 1, 10, 1, 50);
+		//scp::Problem problem = scp::generate_problem(50, 25, g, 1, 10, 1, 50);
+
+		// save problem
 		if(!scp::write_problem(problem, "last_problem.txt", true))
 		{
 			LOGGER->error("Failed to write problem");
 			return EXIT_FAILURE;
 		}
-		LOGGER->info("Problem: {}", problem);*/
+
+		// print problem
+		//LOGGER->info("Problem: {}", problem);
 
 		// check whether the problem can be solved (aka: all elements can be covered using the provided subsets).
 		dynamic_bitset<> cover_check(problem.full_set.size());
@@ -81,7 +86,12 @@ int main()
 
 		if(problem.subsets_points.size() < 23)
 		{ // to prevent memory'splosion
-			scp::Solution optimal_solution = scp::exhaustive::solve(problem);
+			scp::Solution optimal_solution = scp::exhaustive::solve_ram(problem);
+			LOGGER->info("Optimal solution: {}", optimal_solution);
+		}
+		else if(problem.subsets_points.size() < 26)
+		{ // to prevent endless wait
+			scp::Solution optimal_solution = scp::exhaustive::solve_cpu(problem);
 			LOGGER->info("Optimal solution: {}", optimal_solution);
 		}
 

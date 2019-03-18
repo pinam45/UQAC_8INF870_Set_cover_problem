@@ -9,7 +9,7 @@
 #include "permutations.hpp"
 #include "logger.hpp"
 
-scp::Solution scp::exhaustive::solve(const scp::Problem& problem)
+scp::Solution scp::exhaustive::solve_ram(const scp::Problem& problem)
 {
 	const auto start = std::chrono::system_clock::now();
 
@@ -37,9 +37,44 @@ scp::Solution scp::exhaustive::solve(const scp::Problem& problem)
 
 	const auto end = std::chrono::system_clock::now();
 	const std::chrono::duration<double> elapsed_seconds = end - start;
-	SPDLOG_LOGGER_DEBUG(LOGGER,
-	                    "found optimal solution by exhaustive search with {} subsets in {}s",
-	                    best_solution.selected_subsets.count(),
-	                    elapsed_seconds.count());
+	SPDLOG_LOGGER_DEBUG(
+	  LOGGER,
+	  "found optimal solution by (ram expensive) exhaustive search with {} subsets in {}s",
+	  best_solution.selected_subsets.count(),
+	  elapsed_seconds.count());
+	return best_solution;
+}
+scp::Solution scp::exhaustive::solve_cpu(const scp::Problem& problem)
+{
+	const auto start = std::chrono::system_clock::now();
+	Solution best_solution(problem);
+	Solution current_solution(problem);
+
+	for(size_t bits_on = 0; bits_on <= problem.subsets_costs.size(); ++bits_on)
+	{
+		PermutationsGenerator generator(problem.subsets_costs.size(), bits_on);
+		while(!generator.finished())
+		{
+			current_solution.selected_subsets = generator.next();
+			current_solution.compute_cover();
+			if(current_solution.cover_all_points)
+			{
+				current_solution.compute_cost();
+				if((!best_solution.cover_all_points)
+				   || (current_solution.cost < best_solution.cost))
+				{
+					best_solution = current_solution;
+				}
+			}
+		}
+	}
+
+	const auto end = std::chrono::system_clock::now();
+	const std::chrono::duration<double> elapsed_seconds = end - start;
+	SPDLOG_LOGGER_DEBUG(
+	  LOGGER,
+	  "found optimal solution by (cpu expensive) exhaustive search with {} subsets in {}s",
+	  best_solution.selected_subsets.count(),
+	  elapsed_seconds.count());
 	return best_solution;
 }
