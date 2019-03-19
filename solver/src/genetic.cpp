@@ -55,7 +55,8 @@ std::ostream& scp::genetic::operator<<(std::ostream& os, const scp::genetic::Con
 {
 	os << "scp::genetic::Config{\n";
 	os << "\tpopulation size = " << conf.population_size << ",\n";
-	os << "\tnumber of iterations = " << conf.iteration_number << ",\n";
+	os << "\texecution duration = " << conf.execution_duration.count() << "s"
+	   << ",\n";
 	os << "\treplacement ratio = " << conf.replacement_ratio << ",\n";
 	os << "\tmutation probability = " << conf.mutation_probability << ",\n";
 	os << "\tlocal search probability = " << conf.local_search_probability << ",\n";
@@ -109,7 +110,8 @@ scp::Solution scp::genetic::solve(const scp::Problem& problem, const Config& con
 	offsprings.resize(replacements_per_iteration, best);
 
 	std::uniform_real_distribution<double> probabilities_dist(0.0, 1.0);
-	for(size_t gen = 0; gen < conf.iteration_number; ++gen)
+	size_t current_generation = 0;
+	do
 	{
 		const auto generation_start = std::chrono::system_clock::now();
 		// sort by decreasing cost to perform rank based selection
@@ -178,12 +180,14 @@ scp::Solution scp::genetic::solve(const scp::Problem& problem, const Config& con
 		  generation_end - generation_start;
 		LOGGER->info(
 		  "generation {}: best cost = {}, nb identical = {}, nb identical to best = {}, elapsed time = {}s",
-		  gen,
+		  current_generation,
 		  best.cost,
 		  nb_identical,
 		  nb_identical_best,
 		  generation_elapsed_seconds.count());
-	}
+
+		++current_generation;
+	} while((std::chrono::system_clock::now() - genetic_start) < conf.execution_duration);
 
 	// get rid of useless subsets using weighted greedy
 	best = greedy::weighted_solve(problem, best.selected_subsets);

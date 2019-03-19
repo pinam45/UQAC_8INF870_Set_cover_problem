@@ -97,7 +97,7 @@ int main()
 
 		scp::genetic::Config conf{};
 		conf.population_size = 75;
-		conf.iteration_number = 5000;
+		conf.execution_duration = std::chrono::seconds(60);
 		conf.replacement_ratio = 0.75;
 		conf.mutation_probability = 0.1;
 		conf.local_search_probability = 0.3;
