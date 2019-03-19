@@ -27,27 +27,26 @@ namespace
 		return solution;
 	}
 
-	scp::Solution& select_by_rank(std::vector<scp::Solution>& population,
-	                              std::default_random_engine& generator)
+	size_t select_by_rank(size_t population_size, std::default_random_engine& generator)
 	{
-		assert(!population.empty());
-		const size_t rank_sum = (population.size() * (population.size() + 1)) / 2;
+		assert(population_size > 0);
+		const size_t rank_sum = (population_size * (population_size + 1)) / 2;
 
 		std::uniform_int_distribution<size_t> dist(0, rank_sum);
 		const size_t rnd = dist(generator);
 
 		size_t accumulated_rank = 0;
-		for(size_t i = 0; i < population.size(); ++i)
+		for(size_t i = 0; i < population_size; ++i)
 		{
 			accumulated_rank += (i + 1);
 			if(accumulated_rank >= rnd)
 			{
-				return population[i];
+				return i;
 			}
 		}
 
 		assert(false); //impossible
-		return population[population.size() - 1];
+		return population_size;
 	}
 } // namespace
 
@@ -68,7 +67,6 @@ std::ostream& scp::genetic::operator<<(std::ostream& os, const scp::genetic::Con
 scp::Solution scp::genetic::solve(const scp::Problem& problem, const Config& conf)
 {
 	assert(conf.population_size > 1);
-	assert(conf.iteration_number > 0);
 	assert(conf.replacement_ratio <= 1);
 
 	LOGGER->info("Start solving by genetic optimization using {}.", conf);
@@ -118,31 +116,23 @@ scp::Solution scp::genetic::solve(const scp::Problem& problem, const Config& con
 		std::sort(population.begin(), population.end(), [](const Solution& a, const Solution& b) {
 			return b.cost < a.cost;
 		});
-
-		unsigned int nb_identical = 0;
-		unsigned int nb_identical_best = 0;
-		for(size_t i = 0; i < population.size() - 1; ++i)
-		{
-			// first test for speed
-			if(population[i + 1].cost == population[i].cost
-			   && population[i + 1].selected_subsets == population[i].selected_subsets)
-			{
-				++nb_identical;
-			}
-
-			if(population[i].cost == population[population.size() - 1].cost
-			   && population[i].selected_subsets
-			        == population[population.size() - 1].selected_subsets)
-			{
-				++nb_identical_best;
-			}
-		}
+		std::vector<std::reference_wrapper<Solution>> population_unique(population.begin(),
+		                                                                population.end());
+		population_unique.erase(std::unique(population_unique.begin(),
+		                                    population_unique.end(),
+		                                    [](const Solution& a, const Solution& b) {
+			                                    return std::tie(b.cost, b.selected_subsets)
+			                                           == std::tie(a.cost, a.selected_subsets);
+		                                    }),
+		                        population_unique.end());
 
 		// create offsprings by crossover + local search
 		for(size_t i = 0; i < replacements_per_iteration; ++i)
 		{
-			Solution& parent1 = select_by_rank(population, generator);
-			Solution& parent2 = select_by_rank(population, generator);
+			Solution& parent1 =
+			  population_unique[select_by_rank(population_unique.size(), generator)];
+			Solution& parent2 =
+			  population_unique[select_by_rank(population_unique.size(), generator)];
 
 			// crossover
 			Solution offspring = crossover::random_merge(parent1, parent2, generator);
@@ -179,11 +169,11 @@ scp::Solution scp::genetic::solve(const scp::Problem& problem, const Config& con
 		const std::chrono::duration<double> generation_elapsed_seconds =
 		  generation_end - generation_start;
 		LOGGER->info(
-		  "generation {}: best cost = {}, nb identical = {}, nb identical to best = {}, elapsed time = {}s",
+		  "generation {}: best cost = {}, unique individuals = {}/{}, elapsed time = {}s",
 		  current_generation,
 		  best.cost,
-		  nb_identical,
-		  nb_identical_best,
+		  population_unique.size(),
+		  population.size(),
 		  generation_elapsed_seconds.count());
 
 		++current_generation;
