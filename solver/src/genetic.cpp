@@ -14,19 +14,6 @@
 
 namespace
 {
-	scp::Solution generate_random_solution(const scp::Problem& problem,
-	                                       std::default_random_engine& generator)
-	{
-		scp::Solution solution(problem);
-		while(!solution.cover_all_points)
-		{
-			scp::neighbouring::flip_a_zero_to_one_unsafe(solution, generator);
-			solution.compute_cover();
-		}
-
-		return solution;
-	}
-
 	size_t select_by_rank(size_t population_size, std::default_random_engine& generator)
 	{
 		assert(population_size > 0);

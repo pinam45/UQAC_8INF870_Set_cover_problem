@@ -6,6 +6,7 @@
 // https://opensource.org/licenses/MIT
 //
 #include "Solution.hpp"
+#include "neighbouring.hpp"
 
 #include <ostream_config_guard.hpp>
 
@@ -90,4 +91,16 @@ std::ostream& scp::operator<<(std::ostream& os, const scp::Solution& solution)
 	os << "\tcost = " << solution.cost << ",\n";
 	os << "}\n";
 	return os;
+}
+
+scp::Solution scp::generate_random_solution(const Problem& problem, std::default_random_engine& generator)
+{
+	scp::Solution solution(problem);
+	while(!solution.cover_all_points)
+	{
+		scp::neighbouring::flip_a_zero_to_one_unsafe(solution, generator);
+		solution.compute_cover();
+	}
+
+	return solution;
 }

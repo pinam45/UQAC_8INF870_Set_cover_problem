@@ -38,6 +38,8 @@ namespace scp
 		void compute_cost() noexcept;
 	};
 	std::ostream& operator<<(std::ostream& os, const Solution& solution);
+
+	Solution generate_random_solution(const Problem& problem, std::default_random_engine& generator);
 } // namespace scp
 
 #endif //SCPSOLVER_SOLUTION_HPP
