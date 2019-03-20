@@ -57,10 +57,128 @@
 			https://en.wikipedia.org/wiki/NP-completeness
 		\paragraph*{}
 			Le théorème de Cook–Levin et sa démonstration publié en \citeyear{Cook1971} par \citeauthor{Cook1971} dans l'article \citetitle{Cook1971}\cite{Cook1971} prouve le Boolean Satisfiability Problem comme étant un problème NP-complet. Par réduction, le Set Covering Problem est donc aussi NP-complet.
+
+	\section{Représentations}
+		\subsection*{Représentation du problème}
+			matrice \(a_{i,j} (n \times m)\)
+		\subsection{Représentation des solutions}
+			bitset
+
+	\section{Instances du problème}
+		\paragraph*{}
+			On utilise les groupes d'instances mis a disposition par \citeauthor{OR-Library} dans son regroupement d'instances OR-Library\cite{OR-Library}. Parmis ces instances, celles de 4 à 6 proviennent l'article \citetitle{Balas1980}\cite{Balas1980} de \citeauthor{Balas1980}, celles de A à D proviennent de l'article \citetitle{Beasley1987}\cite{Beasley1987} de \citeauthor{Beasley1987} et celles de E à H proviennent de l'article \citetitle{Beasley1990}\cite{Beasley1990} de \citeauthor{Beasley1990}.
+		\paragraph*{}
+			Toutes les instances du problème de ces groupes on été générées en utilisant le shémas de \citeauthor{Balas1980}\cite{Balas1980} dans lequel le cout \(c_i\) de chaque colonne \(i\) est pris aléatoirement dans l'intervalle \(\llbracket0,100\rrbracket\), chaque colonne couvre au moins une ligne et chaque ligne est couverte par au moins deux clonnes.
+		\paragraph*{}
+		   Les propriétés de ces groupes d'instances sont décrites dans la table \ref{table:scp_problem_sets}, la densitée étant la proportion de \(1\) dans la matrice \(a_{i,j}\). La table \ref{table:problem_optimal_solutions}, contient les valeure optimales pour les problèmes pour lesquels elle est connue.
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{*{5}{C{65pt}}}
+				\toprule
+				Groupe d'instances & Nombre de lignes (\(m\)) & Nombre de colonnes (\(n\)) & densité (\%) & Nombre d'instances du groupe\\
+				\midrule
+				4 & 200 & 1000 & 2 & 10\\
+				5 & 200 & 2000 & 2 & 10\\
+				6 & 200 & 1000 & 5 & 5\\
+				A & 300 & 3000 & 2 & 5\\
+				B & 300 & 3000 & 5 & 5\\
+				C & 400 & 4000 & 2 & 5\\
+				D & 400 & 4000 & 5 & 5\\
+				E & 500 & 5000 & 10 & 5\\
+				F & 500 & 5000 & 20 & 5\\
+				G & 1000 & 10000 & 2 & 5\\
+				H & 1000 & 10000 & 5 & 5\\
+				\bottomrule
+			\end{tabular}
+			\caption{Groupes d'instances du SCP utilisées\cite{OR-Library,Balas1980,Beasley1987,Beasley1990}}
+			\label{table:scp_problem_sets}
+		\end{table}
+		\begin{table}[H]
+			\centering
+			\begin{minipage}[t]{0.45\linewidth}
+				\centering
+				\begin{tabular}{*{2}{C{65pt}}}
+					\toprule
+					Problem number & Optimal solution value\\
+					\midrule
+					4.1 & 429\\
+					4.2 & 512\\
+					4.3 & 516\\
+					4.4 & 494\\
+					4.5 & 512\\
+					4.6 & 560\\
+					4.7 & 430\\
+					4.8 & 792\\
+					4.9 & 641\\
+					4.10 & 514\\
+					\midrule
+					5.1 & 253\\
+					5.2 & 302\\
+					5.3 & 226\\
+					5.4 & 242\\
+					5.5 & 211\\
+					5.6 & 213\\
+					5.7 & 293\\
+					5.8 & 288\\
+					5.9 & 279\\
+					5.10 & 265\\
+					\bottomrule
+				\end{tabular}
+			\end{minipage}
+			\begin{minipage}[t]{0.45\linewidth}
+				\centering
+				\begin{tabular}{*{2}{C{65pt}}}
+					\toprule
+					Problem number & Optimal solution value\\
+					\midrule
+					A.1 & 253\\
+					A.2 & 252\\
+					A.3 & 232\\
+					A.4 & 234\\
+					A.5 & 236\\
+					\midrule
+					B.1 & 69\\
+					B.2 & 76\\
+					B.3 & 80\\
+					B.4 & 79\\
+					B.5 & 72\\
+					\midrule
+					C.1 & 227\\
+					C.2 & 219\\
+					C.3 & 243\\
+					C.4 & 219\\
+					C.5 & 215\\
+					\midrule
+					D.1 & 60\\
+					D.2 & 66\\
+					D.3 & 72\\
+					D.4 & 62\\
+					D.5 & 61\\
+					\bottomrule
+				\end{tabular}
+			\end{minipage}
+			\caption{Solutions optimales des instances du SCP utilisée\cite{Beasley1990}}
+			\label{table:problem_optimal_solutions}
+		\end{table}
 	\section{Méthode exacte}
 		\paragraph*{}
 			Il existe une méthode exacte plus efficace qui utilise la méthode Branch and Bound ainsi que le Simplexe (pour résoudre une version
 			du problème linéaire relaxée)~\cite{caprara2000algorithms}.
-
 	\newpage\printbibliography[heading=bibintoc]{}
 \end{document}
+
+% Problem set        Files
+% 4                  scp41, ..., scp410
+% 5                  scp51, ..., scp510
+% 6                  scp61, ..., scp65
+% A                  scpa1, ..., scpa5
+% B                  scpb1, ..., scpb5
+% C                  scpc1, ..., scpc5
+% D                  scpd1, ..., scpd5
+% E                  scpe1, ..., scpe5
+
+% Problem set        Files
+% E                  scpnre1, ..., scpnre5
+% F                  scpnrf1, ..., scpnrf5
+% G                  scpnrg1, ..., scpnrg5
+% H                  scpnrh1, ..., scpnrh5
