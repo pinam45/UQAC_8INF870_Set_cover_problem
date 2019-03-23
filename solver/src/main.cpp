@@ -25,7 +25,8 @@
 
 namespace
 {
-	constexpr const char* PROBLEM_FILE_PATH = "resources/scpa2.txt";
+	constexpr bool BENCHMARK = true;
+	constexpr const char* PROBLEM_FILE_PATH = "resources//OR-Library/scpa2.txt";
 	//constexpr const char* PROBLEM_FILE_PATH = "last_problem.txt";
 } // namespace
 
