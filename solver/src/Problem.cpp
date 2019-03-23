@@ -264,6 +264,7 @@ scp::Problem scp::generate_problem(size_t points_number,
 	assert(subsets_number > 0);
 	assert(min_covering_subsets > 0);
 	assert(max_covering_subsets > 0);
+	assert(min_covering_subsets <= max_covering_subsets);
 	assert(max_covering_subsets <= subsets_number);
 	assert(min_subsets_cost > 0);
 	assert(max_subsets_cost > 0);
@@ -312,4 +313,12 @@ scp::Problem scp::generate_problem(size_t points_number,
 	             elapsed_seconds.count());
 
 	return problem;
+}
+
+scp::Problem scp::generate_problem(size_t points_number,
+                                   size_t subsets_number,
+                                   std::default_random_engine& generator)
+{
+	// Balas and Ho parameters
+	return generate_problem(points_number, subsets_number, generator, 2, subsets_number, 1, 100);
 }

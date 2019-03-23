@@ -11,7 +11,7 @@
 
 #include <dynamic_bitset.hpp>
 
-void benchmark_increment()
+void scp::benchmark::benchmark_increment()
 {
 	LOGGER->info("Start increment benchmark");
 	LOGGER->info("(bitset size, time in seconds)");
@@ -31,7 +31,7 @@ void benchmark_increment()
 	LOGGER->info("End increment benchmark");
 }
 
-void benchmark_generate_permutations()
+void scp::benchmark::benchmark_generate_permutations()
 {
 	LOGGER->info("Start generate_permutations benchmark");
 	LOGGER->info("(bitset size, time in seconds)");
@@ -47,7 +47,7 @@ void benchmark_generate_permutations()
 	LOGGER->info("End generate_permutations benchmark");
 }
 
-void benchmark_PermutationsGenerator()
+void scp::benchmark::benchmark_PermutationsGenerator()
 {
 	LOGGER->info("Start increment benchmark");
 	LOGGER->info("(bitset size, time in seconds)");
@@ -68,4 +68,37 @@ void benchmark_PermutationsGenerator()
 		LOGGER->info("({}, {})", bitset_size, elapsed_seconds.count());
 	} while(++bitset_size);
 	LOGGER->info("End increment benchmark");
+}
+
+std::vector<scp::Problem> scp::benchmark::generate_problems(size_t points_number,
+                                                            size_t last_problem_subsets_number,
+                                                            std::default_random_engine& generator)
+{
+	assert(last_problem_subsets_number > 2);
+	std::vector<scp::Problem> problems;
+	problems.reserve(last_problem_subsets_number + 1);
+	for(size_t subsets_number = 2; subsets_number <= last_problem_subsets_number; ++subsets_number)
+	{
+		problems.push_back(generate_problem(points_number, subsets_number, generator));
+	}
+	return problems;
+}
+
+bool scp::benchmark::save_problems(std::vector<Problem> problems,
+                                   std::string_view files_names_prefix,
+                                   std::string_view files_names_suffix,
+                                   bool override_file)
+{
+	std::string file_name_prefix(files_names_prefix);
+	for(const Problem& problem: problems)
+	{
+		std::string file_name(files_names_prefix);
+		file_name += std::to_string(problem.subsets_points.size());
+		file_name += files_names_suffix;
+		if(!write_problem(problem, file_name, override_file))
+		{
+			return false;
+		}
+	}
+	return true;
 }

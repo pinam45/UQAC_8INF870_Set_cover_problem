@@ -44,6 +44,10 @@ namespace scp
 	                         size_t max_covering_subset,
 	                         size_t min_subsets_cost,
 	                         size_t max_subsets_cost);
+
+	Problem generate_problem(size_t points_number,
+	                         size_t subsets_number,
+	                         std::default_random_engine& generator);
 } // namespace scp
 
 #endif //SCPSOLVER_PROBLEM_HPP
