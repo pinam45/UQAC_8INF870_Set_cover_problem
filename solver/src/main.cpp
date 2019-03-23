@@ -14,6 +14,7 @@
 #include "crossover.hpp"
 #include "genetic.hpp"
 #include "ckeck.hpp"
+#include "benchmark.hpp"
 
 #include <dynamic_bitset.hpp>
 
@@ -36,6 +37,10 @@ int main()
 	}
 	LOGGER->info("SCPSolver start");
 	{
+		//benchmark_increment();
+		//benchmark_generate_permutations();
+		//benchmark_PermutationsGenerator();
+
 		std::default_random_engine g(std::random_device{}());
 
 		// read problem
