@@ -137,3 +137,19 @@ bool PermutationsGenerator::finished() noexcept
 {
 	return m_finished;
 }
+
+void increment(dynamic_bitset<>& bitset)
+{
+	for(size_t i = 0; i < bitset.size(); ++i)
+	{
+		if(bitset.test(i))
+		{
+			bitset.reset(i);
+		}
+		else
+		{
+			bitset.set(i);
+			break;
+		}
+	}
+}

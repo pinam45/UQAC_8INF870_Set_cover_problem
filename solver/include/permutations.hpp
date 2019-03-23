@@ -38,4 +38,6 @@ private:
 	std::unique_ptr<PermutationsGenerator> m_lower_permutation;
 };
 
+void increment(dynamic_bitset<>& bitset);
+
 #endif //SCPSOLVER_PERMUTATIONS_HPP
