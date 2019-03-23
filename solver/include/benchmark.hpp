@@ -21,14 +21,17 @@ namespace scp::benchmark
 
 	void benchmark_PermutationsGenerator();
 
-	std::vector<scp::Problem> generate_problems(size_t points_number,
-	                                            size_t last_problem_subsets_number,
-	                                            std::default_random_engine& generator);
+	std::vector<Problem> generate_problems(size_t points_number,
+	                                       size_t last_problem_subsets_number,
+	                                       std::default_random_engine& generator);
 
-	bool save_problems(std::vector<Problem> problems,
+	bool save_problems(const std::vector<Problem>& problems,
 	                   std::string_view files_names_prefix,
 	                   std::string_view files_names_suffix = ".txt",
 	                   bool override_file = false);
+
+	std::vector<Problem> load_problems(std::string_view files_names_prefix,
+	                                   std::string_view files_names_suffix = ".txt");
 } // namespace scp::benchmark
 
 #endif //SCPSOLVER_BENCHMARK_HPP

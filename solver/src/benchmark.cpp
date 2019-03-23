@@ -84,7 +84,7 @@ std::vector<scp::Problem> scp::benchmark::generate_problems(size_t points_number
 	return problems;
 }
 
-bool scp::benchmark::save_problems(std::vector<Problem> problems,
+bool scp::benchmark::save_problems(const std::vector<Problem>& problems,
                                    std::string_view files_names_prefix,
                                    std::string_view files_names_suffix,
                                    bool override_file)
@@ -101,4 +101,29 @@ bool scp::benchmark::save_problems(std::vector<Problem> problems,
 		}
 	}
 	return true;
+}
+
+std::vector<scp::Problem> scp::benchmark::load_problems(std::string_view files_names_prefix,
+                                                        std::string_view files_names_suffix)
+{
+	std::vector<Problem> problems;
+	size_t subsets_number = 2;
+	do
+	{
+		std::string file_name(files_names_prefix);
+		file_name += std::to_string(subsets_number);
+		file_name += files_names_suffix;
+
+		Problem problem;
+		if(!read_problem(file_name, problem))
+		{
+			break;
+		}
+		problems.push_back(problem);
+		assert(problem.subsets_points.size() == subsets_number);
+
+		++subsets_number;
+	} while(true);
+
+	return problems;
 }
