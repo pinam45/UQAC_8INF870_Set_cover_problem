@@ -23,7 +23,7 @@ scp::Solution scp::exhaustive::solve_ram(const scp::Problem& problem)
 		{
 			current_solution.selected_subsets = permutation;
 			current_solution.compute_cover();
-			if(current_solution.cover_all_points)
+			if((!best_solution.cover_all_points) || (current_solution.cost < best_solution.cost))
 			{
 				current_solution.compute_cost();
 				if(current_solution.cost < best_solution.cost)
@@ -56,7 +56,7 @@ scp::Solution scp::exhaustive::solve_cpu(const scp::Problem& problem)
 		{
 			current_solution.selected_subsets = generator.next();
 			current_solution.compute_cover();
-			if(current_solution.cover_all_points)
+			if((!best_solution.cover_all_points) || (current_solution.cost < best_solution.cost))
 			{
 				current_solution.compute_cost();
 				if(current_solution.cost < best_solution.cost)
@@ -90,7 +90,7 @@ scp::Solution scp::exhaustive::solve_counter(const scp::Problem& problem)
 		if(current_solution.cover_all_points)
 		{
 			current_solution.compute_cost();
-			if(current_solution.cost < best_solution.cost)
+			if((!best_solution.cover_all_points) || (current_solution.cost < best_solution.cost))
 			{
 				best_solution = current_solution;
 			}
@@ -100,9 +100,8 @@ scp::Solution scp::exhaustive::solve_counter(const scp::Problem& problem)
 	const auto end = std::chrono::system_clock::now();
 	const std::chrono::duration<double> elapsed_seconds = end - start;
 	SPDLOG_LOGGER_DEBUG(
-	  LOGGER,
-	  "found optimal solution by (counter) exhaustive search with {} subsets in {}s",
-	  best_solution.selected_subsets.count(),
-	  elapsed_seconds.count());
+	  LOGGER,"found optimal solution by (counter) exhaustive search with {} subsets in {}s",
+	             best_solution.selected_subsets.count(),
+	             elapsed_seconds.count());
 	return best_solution;
 }
