@@ -93,7 +93,8 @@ std::ostream& scp::operator<<(std::ostream& os, const scp::Solution& solution)
 	return os;
 }
 
-scp::Solution scp::generate_random_solution(const Problem& problem, std::default_random_engine& generator)
+scp::Solution scp::generate_random_solution(const Problem& problem,
+                                            std::default_random_engine& generator)
 {
 	scp::Solution solution(problem);
 	while(!solution.cover_all_points)

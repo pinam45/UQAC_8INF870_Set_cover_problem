@@ -39,7 +39,8 @@ namespace scp
 	};
 	std::ostream& operator<<(std::ostream& os, const Solution& solution);
 
-	Solution generate_random_solution(const Problem& problem, std::default_random_engine& generator);
+	Solution generate_random_solution(const Problem& problem,
+	                                  std::default_random_engine& generator);
 } // namespace scp
 
 #endif //SCPSOLVER_SOLUTION_HPP
