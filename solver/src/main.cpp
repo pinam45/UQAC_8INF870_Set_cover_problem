@@ -15,6 +15,7 @@
 #include "genetic.hpp"
 #include "ckeck.hpp"
 #include "benchmark.hpp"
+#include "bnb.hpp"
 
 #include <dynamic_bitset.hpp>
 
@@ -25,9 +26,40 @@
 
 namespace
 {
-	constexpr bool BENCHMARK = true;
+	constexpr bool BENCHMARK = false;
+	constexpr const char* BENCHMARK_PROBLEMS_FILES_PREFIX =
+	  "resources/benchmark/benchmarck_problem_";
 	constexpr const char* PROBLEM_FILE_PATH = "resources//OR-Library/scpa2.txt";
 	//constexpr const char* PROBLEM_FILE_PATH = "last_problem.txt";
+
+	bool generate_benchmark_problems()
+	{
+		std::default_random_engine g(std::random_device{}());
+		return scp::benchmark::save_problems(scp::benchmark::generate_problems(200, 100, g),
+		                                     "benchmarck_problem_");
+	}
+
+	void launch_benchmark()
+	{
+		// generate benchmark problems
+		/*if(!::generate_benchmark_problems())
+		{
+			LOGGER->error("generate_benchmark_problems failed");
+		}*/
+
+		// benchmark permutations generators
+		//benchmark_increment();
+		//benchmark_generate_permutations();
+		//benchmark_PermutationsGenerator();
+
+		// load benchmark problems
+		std::vector<scp::Problem> problems =
+		  scp::benchmark::load_problems(BENCHMARK_PROBLEMS_FILES_PREFIX);
+
+		// call benchmarks
+		//scp::benchmark::benchmark_exhaustive_solve_counter(problems);
+		scp::benchmark::benchmark_bnb_solve(problems);
+	}
 } // namespace
 
 int main()
@@ -38,40 +70,36 @@ int main()
 	}
 	LOGGER->info("SCPSolver start");
 	{
-		//benchmark_increment();
-		//benchmark_generate_permutations();
-		//benchmark_PermutationsGenerator();
+		if constexpr(BENCHMARK)
+		{
+			launch_benchmark();
+			return EXIT_SUCCESS;
+		}
 
 		std::default_random_engine g(std::random_device{}());
 
 		// read problem
-		scp::Problem problem;
+		/*scp::Problem problem;
 		if(!scp::read_problem(PROBLEM_FILE_PATH, problem))
 		{
 			LOGGER->error("Failed to read problem");
 			return EXIT_FAILURE;
-		}
+		}*/
 
 		// generate problem
-		//scp::Problem problem = scp::generate_problem(50, 25, g, 1, 10, 1, 50);
+		scp::Problem problem = scp::generate_problem(50, 25, g);
 
 		// save problem
-		if(!scp::write_problem(problem, "last_problem.txt", true))
+		/*if(!scp::write_problem(problem, "last_problem.txt", true))
 		{
 			LOGGER->error("Failed to write problem");
 			return EXIT_FAILURE;
-		}
+		}*/
 
 		// print problem
-		//LOGGER->info("Problem: {}", problem);
+		LOGGER->info("Problem: {}", problem);
 
-		// check whether the problem can be solved (aka: all elements can be covered using the provided subsets).
-		dynamic_bitset<> cover_check(problem.full_set.size());
-		for(const auto& subset_points: problem.subsets_points)
-		{
-			cover_check |= subset_points;
-		}
-
+		// check if the problem have a solution
 		if(!scp::check::has_solution(problem))
 		{
 			LOGGER->error(
@@ -99,6 +127,11 @@ int main()
 		{ // to prevent endless wait
 			scp::Solution optimal_solution = scp::exhaustive::solve_cpu(problem);
 			LOGGER->info("Optimal solution: {}", optimal_solution);
+		}
+		else if(problem.subsets_points.size() < 30)
+		{
+			scp::Solution optimal_solution = scp::bnb::solve(problem);
+			LOGGER->info("Branch and bound solution: {}", optimal_solution);
 		}
 
 		scp::genetic::Config conf{};
