@@ -32,6 +32,12 @@ namespace scp::benchmark
 
 	std::vector<Problem> load_problems(std::string_view files_names_prefix,
 	                                   std::string_view files_names_suffix = ".txt");
+
+	void benchmark_exhaustive_solve_ram(const std::vector<Problem>& problems);
+
+	void benchmark_exhaustive_solve_cpu(const std::vector<Problem>& problems);
+
+	void benchmark_exhaustive_solve_counter(const std::vector<Problem>& problems);
 } // namespace scp::benchmark
 
 #endif //SCPSOLVER_BENCHMARK_HPP

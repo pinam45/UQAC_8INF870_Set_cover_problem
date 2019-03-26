@@ -8,6 +8,8 @@
 #include "benchmark.hpp"
 #include "permutations.hpp"
 #include "logger.hpp"
+#include "Solution.hpp"
+#include "exhaustive.hpp"
 
 #include <dynamic_bitset.hpp>
 
@@ -126,4 +128,54 @@ std::vector<scp::Problem> scp::benchmark::load_problems(std::string_view files_n
 	} while(true);
 
 	return problems;
+}
+
+void scp::benchmark::benchmark_exhaustive_solve_ram(const std::vector<scp::Problem>& problems)
+{
+	LOGGER->info("Start exhaustive solve ram benchmark");
+	LOGGER->info("(subsets number, time in seconds)");
+	for(const Problem& problem: problems)
+	{
+		if(problem.subsets_points.size() > 27)
+		{
+			LOGGER->info("({}, -)", problem.subsets_points.size());
+			continue;
+		}
+		const auto timer_start = std::chrono::system_clock::now();
+		Solution solution = scp::exhaustive::solve_ram(problem);
+		const auto timer_end = std::chrono::system_clock::now();
+		const std::chrono::duration<double> elapsed_seconds = timer_end - timer_start;
+		LOGGER->info("({}, {})", problem.subsets_points.size(), elapsed_seconds.count());
+	}
+	LOGGER->info("End exhaustive solve ram benchmark");
+}
+
+void scp::benchmark::benchmark_exhaustive_solve_cpu(const std::vector<scp::Problem>& problems)
+{
+	LOGGER->info("Start exhaustive solve cpu benchmark");
+	LOGGER->info("(subsets number, time in seconds)");
+	for(const Problem& problem: problems)
+	{
+		const auto timer_start = std::chrono::system_clock::now();
+		Solution solution = scp::exhaustive::solve_cpu(problem);
+		const auto timer_end = std::chrono::system_clock::now();
+		const std::chrono::duration<double> elapsed_seconds = timer_end - timer_start;
+		LOGGER->info("({}, {})", problem.subsets_points.size(), elapsed_seconds.count());
+	}
+	LOGGER->info("End exhaustive solve cpu benchmark");
+}
+
+void scp::benchmark::benchmark_exhaustive_solve_counter(const std::vector<scp::Problem>& problems)
+{
+	LOGGER->info("Start exhaustive solve counter benchmark");
+	LOGGER->info("(subsets number, time in seconds)");
+	for(const Problem& problem: problems)
+	{
+		const auto timer_start = std::chrono::system_clock::now();
+		Solution solution = scp::exhaustive::solve_counter(problem);
+		const auto timer_end = std::chrono::system_clock::now();
+		const std::chrono::duration<double> elapsed_seconds = timer_end - timer_start;
+		LOGGER->info("({}, {})", problem.subsets_points.size(), elapsed_seconds.count());
+	}
+	LOGGER->info("End exhaustive solve counter benchmark");
 }
