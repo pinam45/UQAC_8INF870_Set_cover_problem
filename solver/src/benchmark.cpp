@@ -10,6 +10,7 @@
 #include "logger.hpp"
 #include "Solution.hpp"
 #include "exhaustive.hpp"
+#include "bnb.hpp"
 
 #include <dynamic_bitset.hpp>
 
@@ -178,4 +179,19 @@ void scp::benchmark::benchmark_exhaustive_solve_counter(const std::vector<scp::P
 		LOGGER->info("({}, {})", problem.subsets_points.size(), elapsed_seconds.count());
 	}
 	LOGGER->info("End exhaustive solve counter benchmark");
+}
+
+void scp::benchmark::benchmark_bnb_solve(const std::vector<scp::Problem>& problems)
+{
+	LOGGER->info("Start bnb solve benchmark");
+	LOGGER->info("(subsets number, time in seconds)");
+	for(const Problem& problem: problems)
+	{
+		const auto timer_start = std::chrono::system_clock::now();
+		Solution solution = scp::bnb::solve(problem);
+		const auto timer_end = std::chrono::system_clock::now();
+		const std::chrono::duration<double> elapsed_seconds = timer_end - timer_start;
+		LOGGER->info("{} ({}, {})",solution.cost ,problem.subsets_points.size(), elapsed_seconds.count());
+	}
+	LOGGER->info("End bnb solve benchmark");
 }

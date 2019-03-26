@@ -38,6 +38,8 @@ namespace scp::benchmark
 	void benchmark_exhaustive_solve_cpu(const std::vector<Problem>& problems);
 
 	void benchmark_exhaustive_solve_counter(const std::vector<Problem>& problems);
+
+	void benchmark_bnb_solve(const std::vector<Problem>& problems);
 } // namespace scp::benchmark
 
 #endif //SCPSOLVER_BENCHMARK_HPP
