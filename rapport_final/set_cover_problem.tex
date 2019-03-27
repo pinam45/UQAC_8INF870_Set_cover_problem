@@ -17,7 +17,7 @@
 				fait parti des 21 problèmes NP-complets de \citeauthor{Karp1972}~\cite{Karp1972}
 				et est NP-complet au sens fort \cite{garey2002computers}.
 			\paragraph*{Problème de couverture d'ensemble\\}
-				Étant donné un ensemble univers \(U = \{u_1, u_2, u_3, \dots, u_n\}\) et une famille \(S = \{s_1, s_2, \dots, s_m\}\) de sous-ensembles de \(U\),
+				Étant donné un ensemble univers \(U = \{u_1, u_2, u_3, \dots, u_m\}\) et une famille \(S = \{s_1, s_2, \dots, s_n\}\) de sous-ensembles de \(U\),
 				le problème consiste à trouver une sous-famille de \(S\) la plus petite possible permettant de couvrir chaque élément de \(U\)
 				au moins une fois. Un élément \(e\) de \(U\) est couvert par un sous-ensemble \(A\) si \(e \in A\).
 			\paragraph*{Problème de couverture d'ensemble pondéré\\}
@@ -73,12 +73,39 @@
 			Le théorème de Cook–Levin et sa démonstration publié en \citeyear{Cook1971} par \citeauthor{Cook1971} dans l'article \citetitle{Cook1971}\cite{Cook1971} prouve le Boolean Satisfiability Problem comme étant un problème NP-complet. Par réduction, le Set Covering Problem est donc aussi NP-complet.
 		\paragraph*{}
 			Pour ce qui est du Weighted Set Covering Problem (WSCP), c'est une généralisation du SCP et la réduction de ce dernier est évidente, il suffit de rajouter des poids tous égaux a une instance de SCP pour obtenir une instance de WSCP équivalente, le WSCP est donc lui aussi NP-complet.
-	\section{Représentations}
-		\subsection*{Représentation du problème}
-			matrice \(a_{i,j} (n \times m)\)
-		\subsection{Représentation des solutions}
-			bitset
-
+	\section{Représentation du problème}
+		\subsection{Représentation mathématique}
+			\paragraph*{}
+				On reprend la notation:
+				\begin{itemize}
+					\item \(U = \{u_1, u_2, u_3, \dots, u_m\}\), ensemble univers composé de \(m\) points
+					\item \(S = \{s_1, s_2, \dots, s_n\}\), famille de \(n\) sous-ensembles de \(U\)
+				\end{itemize}
+				et on pose \(M = \{1,\ldots,m\}\) et \(N = \{1,\ldots,n\}\).
+			\paragraph*{Matrice d'incidence\\}
+				On définit la matrice d'incidence \(A = \left(a_{i,j}\right)\) de taille \(m \times n\) avec
+				\[\forall i \in M,\ \forall j \in N,\ a_{i,j} = \left\{
+				    \begin{array}{ll}
+				        1 & \text{si } u_i \in s_j \\
+				        0 & \text{sinon}
+				    \end{array}
+				\right.\]
+				\(a_{i,j} = 1\) signifiant donc que le point \(i\) est couvert par le sous-ensemble \(j\).
+			\paragraph*{Vecteur coût\\}
+				On définit le vecteur coût \(n\)-dimensionnel \(c = \left(c_j\right)\) avec \(\forall j \in N\), \(c_j\) le coût du sous ensemble \(j\).
+			\paragraph*{Solution\\}
+				On définit un vecteur solution comme un vecteur \(n\)-dimensionnel \(x = \left(x_j\right)\) avec
+				\[\forall j \in N,\ x_j = \left\{
+				    \begin{array}{ll}
+				        1 & \text{si } u_i \text{ fait parti de la solution}\\
+				        0 & \text{sinon}
+				    \end{array}
+				\right.\]
+				La solution ayant comme coût \(\sum_{j \in N}{c_i x_i}\) et étant valide si
+				\[\forall i \in M\ ,\sum_{j \in N}{a_{ij}x_i} \ge 1\]
+		\subsection{Représentation dans notre projet}
+			\paragraph*{}
+				TODO: bitset\ldots
 	\section{Instances du problème}
 		\paragraph*{}
 			On utilise les groupes d'instances mis a disposition par \citeauthor{OR-Library} dans son regroupement d'instances OR-Library\cite{OR-Library}. Parmis ces instances, celles de 4 à 6 proviennent l'article \citetitle{Balas1980}\cite{Balas1980} de \citeauthor{Balas1980}, celles de A à D proviennent de l'article \citetitle{Beasley1987}\cite{Beasley1987} de \citeauthor{Beasley1987} et celles de E à H proviennent de l'article \citetitle{Beasley1990}\cite{Beasley1990} de \citeauthor{Beasley1990}.
