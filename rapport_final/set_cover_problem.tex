@@ -56,19 +56,23 @@
 			\end{figure}
 		\subsection{WSCP}
 			TODO
-	\section{NP-complétude}
+	\section{Complexité}
 		\paragraph*{}
-			Le problème de couverture d'ensemble, ou \emph{Set Covering Problem} (SCP),
-			fait parti des 21 problèmes NP-complets de \citeauthor{Karp1972}~\cite{Karp1972}
-			et est NP-complet au sens fort \cite{garey2002computers}.
+			Le SCP est un problème d'optimisation NP-difficile, et NP-complet dans sa forme décisionnelle. IL fait notamment parti des 21 problèmes NP-complets de \citeauthor{Karp1972}~\cite{Karp1972} et est NP-complet au sens fort \cite{garey2002computers}.
 		\paragraph*{}
-			FIXME: NP-difficile car problème d'optimisation et pas de décision. Vérifier NP-complet, class NP, NP-difficile, …
-			Le Set Covering Problem a été démontré NP-complet par \citeauthor{Karp1972} en \citeyear{Karp1972} dans son article \citetitle{Karp1972}\cite{Karp1972}. Dans cet article, il montre que le Set Covering Problem peut être réduit au Vertex Cover Problem, qui peut être réduit au Clique Problem, qui peut lui-même être réduit au Boolean Satisfiability Problem.
-			FIXME: justifier un peu plus. Déjà le Weighted c'est le Unweighted avec les poids à 1. Etc...
-			https://en.wikipedia.org/wiki/NP-completeness
+			La démonstration de la NP-complétude du problème a été réalisée par \citeauthor{Karp1972} en \citeyear{Karp1972} dans son article \citetitle{Karp1972}\cite{Karp1972}. Dans cet article, il réalise des réductions pour 21 problèmes réputés difficiles de combinatoire et de théorie des graphes comme représenté sur la figure \ref{fig:karp_reduction_tree}.
+		\begin{figure}[H]
+			\centering%
+			\includegraphics[width=\linewidth]{karp_reduction_tree}%
+			\caption{Arbre des réductions réalisées par Karp\cite{Karp1972}}%
+			\label{fig:karp_reduction_tree}%
+		\end{figure}
+		\paragraph*{}
+			Concernant notre problème, \citeauthor{Karp1972} montre donc que le Boolean Satisfiability Problem (SATISFIABILITY) peut être réduit au Clique Problem (CLIQUE) qui peut etre réduit au Vertex/Node Cover Problem (NODE COVER) qui peut être réduit au Set Covering Problem (SET COVERING).
 		\paragraph*{}
 			Le théorème de Cook–Levin et sa démonstration publié en \citeyear{Cook1971} par \citeauthor{Cook1971} dans l'article \citetitle{Cook1971}\cite{Cook1971} prouve le Boolean Satisfiability Problem comme étant un problème NP-complet. Par réduction, le Set Covering Problem est donc aussi NP-complet.
-
+		\paragraph*{}
+			Pour ce qui est du Weighted Set Covering Problem (WSCP), c'est une généralisation du SCP et la réduction de ce dernier est évidente, il suffit de rajouter des poids tous égaux a une instance de SCP pour obtenir une instance de WSCP équivalente, le WSCP est donc lui aussi NP-complet.
 	\section{Représentations}
 		\subsection*{Représentation du problème}
 			matrice \(a_{i,j} (n \times m)\)
