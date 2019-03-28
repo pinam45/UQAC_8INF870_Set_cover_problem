@@ -73,6 +73,77 @@
 			Le théorème de Cook–Levin et sa démonstration publié en \citeyear{Cook1971} par \citeauthor{Cook1971} dans l'article \citetitle{Cook1971}\cite{Cook1971} prouve le Boolean Satisfiability Problem comme étant un problème NP-complet. Par réduction, le Set Covering Problem est donc aussi NP-complet.
 		\paragraph*{}
 			Pour ce qui est du Weighted Set Covering Problem (WSCP), c'est une généralisation du SCP et la réduction de ce dernier est évidente, il suffit de rajouter des poids tous égaux a une instance de SCP pour obtenir une instance de WSCP équivalente, le WSCP est donc lui aussi NP-complet.
+	\section{État de l'art}
+		Les algorithmes présentés dans cette section utilisent souvent le modèle de la relaxation lagrangienne.
+		Cette relaxation consiste à supprimer des contraintes difficiles en les intégrant dans la fonction objectif en tant que pénalités.
+		Les coefficients appliqués sont dans ce qu'on appelle le « vecteur multiplicateur de lagrange ».~\cite{fisher1985applications}
+
+		\subsection{Méthodes exactes}
+			La plupart des méthodes exactes les plus efficaces pour résoudre le problème de couverture d'ensemble sont
+			des méthodes branch-and-bound
+			dans lesquelles on calcule les bornes inférieures à l'aide d'une relaxation du problème en programmation
+			linéaire.~\cite{caprara2000algorithms}
+
+			\citeauthor{Beasley1987} a proposé un algorithme qui fonctionne de cette façon.
+			Le nœud racine utilise la solution du programme linéaire relaxé, puis les bornes inférieures
+			sont calculées à l'aide de la relaxation lagrangienne avec la descente de sous-gradient.~\cite{Beasley1987}
+		\subsection{Méthodes approchées}
+			\subsubsection{Méthodes voraces non optimales}\label{sec:soa-greedy}
+				\citeauthor{Johnson:1973:AAC:800125.804034} a présenté dans son papier \citetitle{Johnson:1973:AAC:800125.804034}
+				l'algorithme vorace standard pour le problème de couverture d'ensemble non pondéré.
+				L'algorithme prend simplement le sous-ensemble qui couvre le plus
+				d'éléments à chaque étape jusqu'à obtenir une solution valide. La complexité de l'algorithme est en \(O(mn)\) avec \(m\)
+				le nombre d'éléments et \(n\) le nombre de sous-ensembles.~\cite{Johnson:1973:AAC:800125.804034}
+				Cet algorithme n'est pas très efficace sur un problème de couverture d'ensemble pondéré car il n'en tient pas du
+				tout compte.
+
+				\citeauthor{Cormen:2009:IAT:1614191} ont présenté une version de l'algorithme utilisant une queue à priorité,
+				permettant d'améliorer la vitesse de l'algorithme.~\cite{Cormen:2009:IAT:1614191}
+
+				\citeauthor{Goldschmidt:1993:MGH:177276.177287} ont proposé une solution qui fonctionne en appliquant des
+				combinaisons de plusieurs algorithmes. Des algorithmes approchés et exacts sont utilisés.
+				La méthode exploite le fait qu'il est possible de trouver la solution optimale pour des ensembles de taille 2 au maximum
+				en un temps polynomial. On exécute l'algorithme vorace standard de Johnson jusqu'à obtenir une taille maximale de 2 pour les
+				ensembles, puis trouve la couverture optimale pour le reste, ce qui donne une solution améliorée.~\cite{Goldschmidt:1993:MGH:177276.177287}
+			\subsubsection{Heuristiques}
+				De nombreuses méthodes par heuristique sont basées sur l'observation que pour un vecteur multiplicateur de lagrange quasi-optimal
+				le coût de lagrange donne une information fiable sur l'utilité générale de la sélection d'un sous-ensemble donné.
+				De là, plutôt que d'utiliser les coûts originaux, on utilise les coûts de lagrange pour calculer les scores permettant
+				de classer les différents sous-ensembles à sélectionner pour la solution optimale. Ces scores sont donnés
+				à un algorithme vorace pour obtenir une solution valide.~\cite{caprara2000algorithms}
+
+				\citeauthor{Beasley1990} a proposé un algorithme qui calcule à chaque itération de l'optimisation par sous-gradient une
+				solution valide de la façon suivante : un ensemble \(S\) est initialisé avec les sous-ensembles sélectionnés
+				par la solution de la relaxation lagrangienne. Puis, pour chaque point non couvert par \(S\),
+				le sous ensemble avec le coût original le plus faible est ajouté à \(S\). Pour finir, les différents sous-ensembles
+				de \(S\) sont considérés par ordre de coût original décroissant et on enlève le sous-ensemble \(j\) si \(S \backslash \{j\}\)
+				est toujours une solution valide. À chaque itération on effectue un fixage de coût de lagrange pour réduire la taille
+				du problème.~\cite{Beasley1990}	
+
+				\citeauthor{jacobs1995lsh} ont proposée une approche basée sur le recuit simulé. Une solution initiale \(S\)
+				est générée par un algorithme vorace qui à chaque itération sélectionne aléatoirement un point non couvert
+				et ajoute à la solution le premier sous-ensemble qui couvre ce point. Après cette addition, les colonnes
+				redondantes sont enlevées de la solution, et le processus est continué jusqu'à l'obtention d'une solution valide.
+				Ensuite, on effectue un certain nombre d'itérations de recuit simulé : on choisi un sous-ensemble dans \(S\) aléatoirement
+				et on l'enlève, puis on complète de manière vorace de manière à obtenir une autre solution valide \(S'\). Si \(S'\)
+				est une meilleure solution que \(S\), \(S'\) remplace \(S\), sinon il remplace avec une certaine probabilitié qui
+				décroit exponentiellement au fil des itérations.~\cite{jacobs1995lsh}
+
+				\citeauthor{Brusco1999} ont ensuite proposé une amélioration à cette méthode.
+				Premièrement, au lieu de choisir le sous-ensemble à enlever aléatoirement à chaque itération, on ne le fait plus
+				que toutes les trois itérations. Pendant les deux itérations restantes, on choisi simplement le sous-ensemble qui
+				laisse le moins de point non couvert possible. Deuxièmement, pour chaque sous-ensemble \(j\) de la solution,
+				on utilise une liste de « morphs », qui sont tout simplement les autres sous-ensembles « similaires » à \(j\).
+				Après avoir obtenu la solution partielle et tous les quatre sous-ennsemble ajouté pour la compléter, on itère
+				sur tous les sous-ensembles de la solution partielle courante
+				et on remplace chaque sous ensemble par l'un de ses « morphs » si cela améliore le ratio entre le coût actuel
+				et le nombre de point couverts.~\cite{Brusco1999}
+
+				\citeauthor{Afif1995} ont présenté une solution basée sur l'algorithme du flot de Ford-Fulkerson qui est un algorithme
+				en temps polynomial.
+				Il s'agit d'effectuer une transformation du problème en un graphe de flot à résoudre par une variante de l'algorithme
+				de Ford-Fulkerson. Il est montré que le problème de couverture d'ensemble peut se réduire à un problème de flot minimal
+				en temps polynomial.~\cite{Afif1995}
 	\section{Représentation du problème}
 		\subsection{Représentation mathématique}
 			\paragraph*{}
@@ -137,7 +208,59 @@
 			Il existe une méthode exacte plus efficace qui utilise la méthode Branch and Bound ainsi que le Simplexe (pour résoudre une version
 			du problème linéaire relaxée)~\cite{caprara2000algorithms}.
 	\section{Méthodes approchées}
-		TODO
+		\subsection{Algorithmes voraces}
+			Nous avons commencé par implémenter des algorithmes voraces qui permettent de trouver des solutions approchées très rapidement.
+
+			Le premier algorithme que nous avons implémenté est celui de
+			\citeauthor{Johnson:1973:AAC:800125.804034}~\cite{Johnson:1973:AAC:800125.804034} présenté dans la section~\ref{sec:soa-greedy}
+			où l'on intègre dans la solution les sous-ensembles couvrant le plus de point d'abord.
+			On utilise le nombre de points qu'un sous-ensemble permet de couvrir de façon non redondante comme score.
+
+			Pour le problème \emph{A.1} dont la solution optimale est \(253\), on obtient la solution de coût \(1444\) suivante :
+
+			\begin{lstlisting}[breaklines=true]
+[info] found unweighted greedy solution with 42 subsets cost of 1444 in 0.108285s
+[info] Unweighted greedy solution: scp::Solution{
+	selected subsets number = 42,
+	selected subsets = 7, 32, 112, 132, 134, 136, 188, 191, 244, 245, 248, 274, 299, 392, 399, 428, 548, 816, 819, 922, 925, 960, 1042, 1068, 1096, 1161, 1208, 1271, 1300, 1302, 1412, 1418, 1454, 1505, 1565, 1971, 2056, 2154, 2341, 2462, 2752, 2941, 
+	cover all points = true,
+	cost = 1444,
+}
+			\end{lstlisting}
+
+			Pour un problème de couverture d'ensembles pondéré, cet algorithme est très mauvais.
+			Nous avons donc décidé d'implémenter une version de l'algorithme qui prend en compte le coût des sous ensembles pour
+			sélectionner lequel ajouter.
+			Pour cela, nous utilisons le rapport \(\frac{n}{c}\) avec \(n\) le nombre de points actuellement non couverts que le
+			sous-ensemble nous permettrait de couvrir et \(c\) le coût du sous-ensemble. C'est à dire le rapport de l'utilité sur
+			le coût de la même façon que présenté dans le cours dans le chapitre sur les algorithmes voraces.
+
+			De la même façon que précédememnt, pour le problème \emph{A.1} dont la solution optimale est \(253\), on obtient cette fois
+			une solution de coût \(288\) :
+
+			\begin{lstlisting}[breaklines=true]
+[info] found weighted greedy solution with 89 subsets and cost of 288 in 0.564261s
+[info] Weighted greedy solution: scp::Solution{
+	selected subsets number = 89,
+	selected subsets = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 27, 28, 30, 32, 33, 34, 37, 38, 39, 40, 42, 45, 46, 47, 48, 49, 50, 51, 54, 55, 59, 62, 63, 65, 66, 67, 69, 74, 76, 77, 78, 85, 86, 87, 88, 89, 90, 91, 92, 94, 97, 104, 105, 108, 112, 114, 115, 116, 117, 122, 123, 132, 137, 143, 162, 164, 172, 188, 189, 191, 214, 221, 268, 331, 
+	cover all points = true,
+	cost = 288,
+}
+			\end{lstlisting}
+
+			Utiliser le ratio utilité / coût nous permet donc d'obtenir une solution bien meilleure. On constate que dans le cas du
+			problème de couverture d'ensemble pondéré, la meilleure solution n'est pas toujours celle qui utilise le moins de
+			sous-ensembles. En effet, cette dernière solution utilise \(89\) solutions contre \(42\).
+		\subsection{Méta-heuristiques}
+			\subsubsection{Recuit simulé}
+				TODO
+			\subsubsection{Algorithme génétique}
+				TODO
+	\section{Conclusion}
+		\paragraph*{}
+			En tant que problème NP complet, la méthode exacte avec le branch-and-bound peut être très rapide ou très lent selon la configuration du problème.
+			Pour résoudre des problèmes de taille supérieure, il nous a fallu implémenter des méthodes approchées.
+			TODO
 	\newpage\printbibliography[heading=bibintoc]{}
 \end{document}
 
