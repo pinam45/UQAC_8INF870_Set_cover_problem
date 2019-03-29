@@ -238,7 +238,31 @@
 				\caption{Solutions optimales des instances du SCP utilisée\cite{Beasley1990}}
 				\label{table:orlibrary_scp_problems_optimal_solutions}
 			\end{table}
-	\section{Méthode exacte}
+		\subsection{Instances générées}
+			\paragraph*{}
+				Les instances de OR-Library étant de grande taille, elles ne nous permettent pas de tester nos méthodes exactes, nous avons donc codé un générateur d'instances utilisant la même méthode qu'utilisée pour celles de OR-Library (shémas de \citeauthor{Balas1980}\cite{Balas1980}).
+			\paragraph*{}
+				Afin de benchmarcker les différentes méthodes implémentées, notamment les méthodes exactes avec des instances identiques pour avoir des valeures comparables, nous avons utilisé le générateur pour réaliser un ensemble d'instances de test de taille \(2\) a \(100\) avec \(200\) points.
+			\paragraph*{}
+				La table \ref{table:generated_scp_problems_optimal_solutions} regroupe les solutions optimales de nos instances lorsque les méthodes exactes nous ont permis de les obtenir.
+			\paragraph*{}
+			\begin{table}[H]
+				\centering
+				\begin{minipage}[t]{0.3\linewidth}
+					\centering
+					\input{tables/generated_scp_problems_optimal_solutions_1}
+				\end{minipage}
+				\begin{minipage}[t]{0.3\linewidth}
+					\centering
+					\input{tables/generated_scp_problems_optimal_solutions_2}
+				\end{minipage}
+				\begin{minipage}[t]{0.3\linewidth}
+					\centering
+					\input{tables/generated_scp_problems_optimal_solutions_3}
+				\end{minipage}
+				\caption{Solutions optimales des instances générées}
+				\label{table:generated_scp_problems_optimal_solutions}
+			\end{table}
 		\paragraph*{}
 			Il existe une méthode exacte plus efficace qui utilise la méthode Branch and Bound ainsi que le Simplexe (pour résoudre une version
 			du problème linéaire relaxée)~\cite{caprara2000algorithms}.
