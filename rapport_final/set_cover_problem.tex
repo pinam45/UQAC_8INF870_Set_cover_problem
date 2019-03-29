@@ -34,28 +34,25 @@
 					\item recherche d'informations (à partir de fichiers informatiques)
 					\item \ldots
 				\end{itemize}
-	\section{Exemple minimal}
-		\subsection{SCP}
-			\paragraph*{}
-				Soit un ensemble univers \(U = \{u_1, u_2, \dots, u_{12}\}\) (représenté par des points sur le figure \ref{fig:example}) et une famille \(S = \{s_1, s_2, \dots, s_6\}\) de sous-ensembles de \(U\) (représentés par des rectangles sur la figure \ref{fig:example}) avec:
-				\begin{itemize}
-					\item \(s_1 = \{u_1, u_2, u_3, u_4, u_5, u_6\}\)
-					\item \(s_2 = \{u_5, u_6, u_8, u_9\}\)
-					\item \(s_3 = \{u_1, u_4, u_7, u_{10}\}\)
-					\item \(s_4 = \{u_2, u_5, u_8, u_{11}\}\)
-					\item \(s_5 = \{u_3, u_6, u_9, u_{12}\}\)
-					\item \(s_6 = \{u_{10}, u_{11}, u_{12}\}\)
-				\end{itemize}
-			\paragraph*{}
-				La solution optimale à cette instance est la sous famille \(S'=\{s_3, s_4, s_5\}\) (colorée en gris sur la figure \ref{fig:example}).
-			\begin{figure}[H]
-				\centering%
-				\includegraphics[width=0.65\linewidth]{figures/example}%
-				\caption{Exemple d'instance du Set Cover Problem et solution optimale\cite{Mount2017}}%
-				\label{fig:example}%
-			\end{figure}
-		\subsection{WSCP}
-			TODO
+	\newpage\section{Exemple minimal}
+		\paragraph*{}
+			Soit un ensemble univers \(U = \{u_1, u_2, \dots, u_{12}\}\) (représenté par des points sur le figure \ref{fig:example}) et une famille \(S = \{s_1, s_2, \dots, s_6\}\) de sous-ensembles de \(U\) (représentés par des rectangles sur la figure \ref{fig:example}) avec:
+			\begin{itemize}
+				\item \(s_1 = \{u_1, u_2, u_3, u_4, u_5, u_6\}\)
+				\item \(s_2 = \{u_5, u_6, u_8, u_9\}\)
+				\item \(s_3 = \{u_1, u_4, u_7, u_{10}\}\)
+				\item \(s_4 = \{u_2, u_5, u_8, u_{11}\}\)
+				\item \(s_5 = \{u_3, u_6, u_9, u_{12}\}\)
+				\item \(s_6 = \{u_{10}, u_{11}, u_{12}\}\)
+			\end{itemize}
+		\paragraph*{}
+			La solution optimale à cette instance est la sous famille \(S'=\{s_3, s_4, s_5\}\) (colorée en gris sur la figure \ref{fig:example}).
+		\begin{figure}[H]
+			\centering%
+			\includegraphics[width=0.65\linewidth]{figures/example}%
+			\caption{Exemple d'instance du Set Cover Problem et solution optimale\cite{Mount2017}}%
+			\label{fig:example}%
+		\end{figure}
 	\section{Complexité}
 		\paragraph*{}
 			Le SCP est un problème d'optimisation NP-difficile, et NP-complet dans sa forme décisionnelle. IL fait notamment parti des 21 problèmes NP-complets de \citeauthor{Karp1972}~\cite{Karp1972} et est NP-complet au sens fort \cite{garey2002computers}.
