@@ -92,6 +92,9 @@
 % Routines for constrained scaling and stretching of objects, relative to a reference object or in absolute terms
 	\usepackage{scalerel}
 
+% \rel­size command
+	\usepackage{relsize}
+
 % Provides control over the typography of the Table of Contents, List of Figures and List of Tables, and the ability to create new ‘List of ...’.
 	\usepackage{tocloft}
 	\usepackage{titletoc}
@@ -117,7 +120,7 @@
 
 % Allow TeX pictures or other TeX code to be compiled standalone or as part of a main document
 	%\usepackage[subpreambles=true]{standalone}
-	\usepackage{standalone}
+	\usepackage[mode=tex]{standalone}
 	\usepackage{import}
 
 % Floating elements placement
@@ -126,6 +129,7 @@
 % PGF-TikZ
 	\usepackage{pgf}
 	\usepackage{pgfplots}
+	\pgfplotsset{compat=1.16}
 	\usepackage{tikz}
 	\usepackage{tikzpeople}
 

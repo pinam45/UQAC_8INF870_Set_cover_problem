@@ -179,7 +179,41 @@
 				\[\forall i \in M\ ,\sum_{j \in N}{a_{ij}x_i} \ge 1\]
 		\subsection{Représentation dans notre projet}
 			\paragraph*{}
-				TODO: bitset\ldots
+				La première chose que l'on peut remarquer dans la représentation de notre problème, est que la matrice d'incidence \(A\) ainsi que le vecteur solution \(x\) ne contiennent que des valeurs booléennes (égales \(0\) ou \(1\)).
+			\paragraph*{}
+				La deuxième chose, qui est asse commune dans le champ de l'optimisation, et particulièrement vrai dans le cas des algorithmes que nous avons implémenté, est qu'une grande partie du temps de calcul est dédié a la vérification de la validité des solutions ainsi qu'a l'évaluation des solution par la fonction objectif.
+			\paragraph*{}
+				Notre fonction objective étant
+				\[f(x) = \sum_{j \in N}{c_i x_i}\]
+				Cette dernière peut être implémentée avec une boucle simple et sa complexité est en \(\mathcal{O}(n)\).
+			\paragraph*{}
+				Pour ce qui est de la vérification de la validité des solution, il faut s'assurer que:
+				\[\forall i \in M\ ,\sum_{j \in N}{a_{ij}x_i} \ge 1\]
+				Un algorithme évident est de faire deux boucles imbriquées, la première de longueur \(m\) sur les points et la deuxième de longueur \(n\) sur les sous-ensembles. Cet algorithme aurais alors une complexité en \(\mathcal{O}(mn)\). Une première optimisation serais d’arrêter la deuxième boucle au premier sous-ensemble qui couvre le point, cependant nous avons plutôt décider d'adopter une approche qui permet de prendre avantage des processeurs modernes (post-2013).
+			\paragraph*{}
+				En effet les processeurs modernes sont équipé d'instruction SIMD (Single Instruction Multiple Data), on peut notamment penser a l'AVX512 sur les processeurs Intel qui permet de réaliser des opérations sur 512 bits simultanément. Nous avons donc décider de stoker la matrice d'incidence \(A\) ainsi que le vecteur solution \(x\) sur les bits de types primitifs \Cpp{} afin de pouvoir leur appliquer des opérations simultanément. Nous allons considéré pour les paragraphes suivant un processeur 64 bits standard et le fait que les types primitifs courants sont sur 64 bits (ce qui est une simplification ne prenant pas en compte les possibles optimisations que le compilateur pourrais réaliser).
+			\paragraph*{}
+				Pour cela une classe \texttt{dynamic\_bitset}\cite{dynamicbitset}, implémentée par un membre du groupe, et permet d'utiliser un bitset dynamique (dont la taille n'est pas connue a la compilation) et d'appliquer toutes les opérations booléennes de façon optimisé en tirant avantage des instructions SIMD du processeur si elles sont présentes. De plus les processeur standards sont aussi équipés d'instructions pour connaitre le nombre de bits a \(1\) et la position du bit de poids le plus faible a \(1\), cela divisant donc la complexité du parcourt de \(x\) pour trouver le prochain sous-ensemble inclut dans la solution par jusqu’à 64. Et enfin le fait de stocker \(k\) information sur \(k\) bits au lieu de \(64k\), permet de faire une bien meilleur utilisation du cache processeur et nous permet de gagner énormément en performances.
+			\paragraph*{}
+				La matrice d'incidence \(A\) devient donc un vecteur de \(n\) bitsets de taille \(m\), un par sous-ensemble et le vecteur solution \(x\) devient un bitset de taille \(n\). La figure \ref{fig:representation_to_bitsets} illustre ce passage pour une instance a 5 points et 7 sous-ensembles.
+			\begin{figure}[H]
+				\centering%
+				\resizebox{0.8\textwidth}{!}{\includestandalone{./figures/representation_to_bitsets}}%
+				\caption{Passage de la représentation mathématique aux bitsets (instance a 5 points et 7 sous-ensembles)}%
+				\label{fig:representation_to_bitsets}%
+			\end{figure}
+			\paragraph*{}
+				Avec une telle représentation, la vérification de la validité d'une solution peut se faire efficacement en réalisant une opération booléenne \textit{OR} sur tout les bitsets \(S_i\) pour lesquels \(x_1\) est a \(1\) et en vérifiant que le bitset résultat de cette opération a tout ces bits a \(1\). La figure \ref{fig:solution_validity_check_function} représente cette opération.
+			\begin{figure}[H]
+				\centering%
+				\resizebox{\textwidth}{!}{\includestandalone{./figures/solution_validity_check_function}}%
+				\caption{Vérification de la validité d'une solution avec la représentation a base de bitsets (instance a 5 points et 7 sous-ensembles)}%
+				\label{fig:solution_validity_check_function}%
+			\end{figure}
+			\paragraph*{}
+				L'opération \textit{OR} sur les bitsets ainsi que la vérification que tout les bits sont a \(1\) est de complexité \(\mathcal{O}(1)\) pour un nombre de bits raisonnable (ce qui est largement le cas même pour les plus grandes instances que nous utiliserons). Notre algorithme de vérification de la validité d'une solution est donc en \(\mathcal{O}(n)\).
+			\paragraph*{}
+				La complexité des opérations sur notre problème étant donc toutes en \(\mathcal{O}(n)\), on ne s'occupera plus par la suite du nombre de points \(m\) et on dira qu'un problème avec \(m\) points et \(n\) sous-ensembles est un problème de taille \(n\).
 	\section{Instances du problème}
 		\paragraph*{}
 			On utilise les groupes d'instances mis a disposition par \citeauthor{OR-Library} dans son regroupement d'instances OR-Library\cite{OR-Library}. Parmis ces instances, celles de 4 à 6 proviennent l'article \citetitle{Balas1980}\cite{Balas1980} de \citeauthor{Balas1980}, celles de A à D proviennent de l'article \citetitle{Beasley1987}\cite{Beasley1987} de \citeauthor{Beasley1987} et celles de E à H proviennent de l'article \citetitle{Beasley1990}\cite{Beasley1990} de \citeauthor{Beasley1990}.
