@@ -212,31 +212,32 @@
 			\paragraph*{}
 				La complexité des opérations sur notre problème étant donc toutes en \(\mathcal{O}(n)\), on ne s'occupera plus par la suite du nombre de points \(m\) et on dira qu'un problème avec \(m\) points et \(n\) sous-ensembles est un problème de taille \(n\).
 	\section{Instances du problème}
-		\paragraph*{}
-			On utilise les groupes d'instances mis a disposition par \citeauthor{OR-Library} dans son regroupement d'instances OR-Library\cite{OR-Library}. Parmis ces instances, celles de 4 à 6 proviennent l'article \citetitle{Balas1980}\cite{Balas1980} de \citeauthor{Balas1980}, celles de A à D proviennent de l'article \citetitle{Beasley1987}\cite{Beasley1987} de \citeauthor{Beasley1987} et celles de E à H proviennent de l'article \citetitle{Beasley1990}\cite{Beasley1990} de \citeauthor{Beasley1990}.
-		\paragraph*{}
-			Toutes les instances du problème de ces groupes on été générées en utilisant le shémas de \citeauthor{Balas1980}\cite{Balas1980} dans lequel le cout \(c_i\) de chaque colonne \(i\) est pris aléatoirement dans l'intervalle \(\llbracket0,100\rrbracket\), chaque colonne couvre au moins une ligne et chaque ligne est couverte par au moins deux clonnes.
-		\paragraph*{}
-		   Les propriétés de ces groupes d'instances sont décrites dans la table \ref{table:scp_problem_sets}, la densitée étant la proportion de \(1\) dans la matrice \(a_{i,j}\). La table \ref{table:problem_optimal_solutions}, contient les valeure optimales pour les problèmes pour lesquels elle est connue.
-		\begin{table}[H]
-			\centering
-			\input{tables/orlibrary_scp_problem_sets}
-			\caption{Groupes d'instances du SCP utilisées\cite{OR-Library,Balas1980,Beasley1987,Beasley1990}}
-			\label{table:scp_problem_sets}
-		\end{table}
-		\begin{table}[H]
-			\centering
-			\begin{minipage}[t]{0.45\linewidth}
+		\subsection{OR-Library}
+			\paragraph*{}
+				On utilise les groupes d'instances mis a disposition par \citeauthor{OR-Library} dans son regroupement d'instances OR-Library\cite{OR-Library}. Parmis ces instances, celles de 4 à 6 proviennent l'article \citetitle{Balas1980}\cite{Balas1980} de \citeauthor{Balas1980}, celles de A à D proviennent de l'article \citetitle{Beasley1987}\cite{Beasley1987} de \citeauthor{Beasley1987} et celles de E à H proviennent de l'article \citetitle{Beasley1990}\cite{Beasley1990} de \citeauthor{Beasley1990}.
+			\paragraph*{}
+				Toutes les instances du problème de ces groupes on été générées en utilisant le shémas de \citeauthor{Balas1980}\cite{Balas1980} dans lequel le cout \(c_i\) de chaque colonne \(i\) est pris aléatoirement dans l'intervalle \(\llbracket0,100\rrbracket\), chaque colonne couvre au moins une ligne et chaque ligne est couverte par au moins deux clonnes.
+			\paragraph*{}
+			   Les propriétés de ces groupes d'instances sont décrites dans la table \ref{table:scp_problem_sets}, la densitée étant la proportion de \(1\) dans la matrice \(a_{i,j}\). La table \ref{table:orlibrary_scp_problems_optimal_solutions}, contient les valeure optimales pour les problèmes pour lesquels elle est connue.
+			\begin{table}[H]
 				\centering
-				\input{tables/orlibrary_scp_problems_optimal_solutions_1}
-			\end{minipage}
-			\begin{minipage}[t]{0.45\linewidth}
+				\input{tables/orlibrary_scp_problem_sets}
+				\caption{Groupes d'instances du SCP utilisées\cite{OR-Library,Balas1980,Beasley1987,Beasley1990}}
+				\label{table:scp_problem_sets}
+			\end{table}
+			\begin{table}[H]
 				\centering
-				\input{tables/orlibrary_scp_problems_optimal_solutions_2}
-			\end{minipage}
-			\caption{Solutions optimales des instances du SCP utilisée\cite{Beasley1990}}
-			\label{table:problem_optimal_solutions}
-		\end{table}
+				\begin{minipage}[t]{0.45\linewidth}
+					\centering
+					\input{tables/orlibrary_scp_problems_optimal_solutions_1}
+				\end{minipage}
+				\begin{minipage}[t]{0.45\linewidth}
+					\centering
+					\input{tables/orlibrary_scp_problems_optimal_solutions_2}
+				\end{minipage}
+				\caption{Solutions optimales des instances du SCP utilisée\cite{Beasley1990}}
+				\label{table:orlibrary_scp_problems_optimal_solutions}
+			\end{table}
 	\section{Méthode exacte}
 		\paragraph*{}
 			Il existe une méthode exacte plus efficace qui utilise la méthode Branch and Bound ainsi que le Simplexe (pour résoudre une version
