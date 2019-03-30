@@ -60,7 +60,7 @@ scp::Solution scp::greedy::unweighted_solve(const scp::Problem& problem)
 
 	const auto end = std::chrono::system_clock::now();
 	const std::chrono::duration<double> elapsed_seconds = end - start;
-	LOGGER->info("found unweighted greedy solution with {} subsets cost of {} in {}s",
+	SPDLOG_LOGGER_DEBUG(LOGGER, "found unweighted greedy solution with {} subsets cost of {} in {}s",
 	             solution.selected_subsets.count(),
 	             solution.cost,
 	             elapsed_seconds.count());

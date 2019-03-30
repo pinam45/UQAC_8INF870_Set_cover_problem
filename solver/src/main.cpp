@@ -26,7 +26,7 @@
 
 namespace
 {
-	constexpr bool BENCHMARK = false;
+	constexpr bool BENCHMARK = true;
 	constexpr const char* BENCHMARK_PROBLEMS_FILES_PREFIX =
 	  "resources/benchmark/benchmarck_problem_";
 	constexpr const char* PROBLEM_FILE_PATH = "resources//OR-Library/scpa2.txt";
@@ -59,6 +59,8 @@ namespace
 		// call benchmarks
 		//scp::benchmark::benchmark_exhaustive_solve_counter(problems);
 		scp::benchmark::benchmark_bnb_solve(problems);
+		//scp::benchmark::benchmark_unweighted_greedy(problems);
+		//scp::benchmark::benchmark_weighted_greedy(problems);
 	}
 } // namespace
 

@@ -9,7 +9,7 @@ namespace
 	template<typename Func>
 	size_t helper_call_until_valid(scp::Solution& solution,
 	                               std::default_random_engine& generator,
-	                               Func functor)
+	                               Func&& functor)
 	{
 		size_t flipped_bit = functor(solution, generator);
 		solution.compute_cover();

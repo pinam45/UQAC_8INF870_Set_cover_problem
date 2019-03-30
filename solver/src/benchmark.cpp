@@ -11,6 +11,7 @@
 #include "Solution.hpp"
 #include "exhaustive.hpp"
 #include "bnb.hpp"
+#include "greedy.hpp"
 
 #include <dynamic_bitset.hpp>
 
@@ -195,4 +196,143 @@ void scp::benchmark::benchmark_bnb_solve(const std::vector<scp::Problem>& proble
 		  "{} ({}, {})", solution.cost, problem.subsets_points.size(), elapsed_seconds.count());
 	}
 	LOGGER->info("End bnb solve benchmark");
+}
+
+namespace
+{
+	constexpr std::array<size_t, 101> opt_costs = {
+			0, // 0
+			0, // 1
+			65, // 2
+			63,
+			165,
+			183,
+			220,
+			224,
+			230,
+			163,
+			287, // 10
+			253,
+			223,
+			345,
+			336,
+			391,
+			356,
+			249,
+			243,
+			264,
+			288,
+			390,
+			300,
+			234,
+			244,
+			274,
+			460,
+			336,
+			315,
+			253,
+			256, // 30
+			327,
+			409,
+			401,
+			334,
+			185,
+			411,
+			310,
+			247,
+			247,
+			358,
+			398,
+			368,
+			507,
+			360,
+			305,
+			263,
+			278,
+			214,
+			270,
+			0, // 50
+			317,
+			185,
+			275,
+			261,
+			302,
+			261,
+			279,
+			0,
+			0,
+			309, // 60
+			129,
+			260,
+			0,
+			290,
+			200,
+			0,
+			195,
+			231,
+			0,
+			225, // 70
+			0,
+			0,
+			141,
+			0,
+			0,
+			0,
+			226,
+			186,
+			166,
+			276, // 80
+			0,
+			0,
+			0,
+			0,
+			0,
+			0,
+			0,
+			0,
+			219,
+			0, // 90
+			0,
+			0,
+			0,
+			0,
+			0,
+			0,
+			0,
+			0,
+			0 // 100
+	};
+
+	template<typename Func>
+	void helper_greedy_benchmark(const std::vector<scp::Problem>& problems,
+	                             const std::string& greedy_name,
+	                             Func&& solve)
+	{
+		LOGGER->info("Start {} benchmark", greedy_name);
+		LOGGER->info("subsets number\taccuracy");
+		for(const scp::Problem& problem: problems)
+		{
+			size_t prob_size = problem.subsets_points.size();
+			size_t opt = opt_costs.at(prob_size);
+			if (opt == 0) {
+				continue;
+			}
+
+			scp::Solution solution = solve(problem);
+			solution.compute_cost();
+			double accuracy = static_cast<double>(solution.cost - opt) / static_cast<double>(opt) * 100.0;
+			LOGGER->info("{}\t{}", prob_size, accuracy);
+		}
+		LOGGER->info("End {} benchmark", greedy_name);
+	}
+} // namespace
+
+void scp::benchmark::benchmark_weighted_greedy(const std::vector<scp::Problem>& problems)
+{
+	helper_greedy_benchmark(problems, "weighted greedy", [](const Problem& p) { return scp::greedy::weighted_solve(p); });
+}
+
+void scp::benchmark::benchmark_unweighted_greedy(const std::vector<scp::Problem>& problems)
+{
+	helper_greedy_benchmark(problems, "unweighted greedy", scp::greedy::unweighted_solve);
 }
