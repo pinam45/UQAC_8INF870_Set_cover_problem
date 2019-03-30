@@ -122,7 +122,7 @@ scp::Solution scp::genetic::solve(const scp::Problem& problem, const Config& con
 			  population_unique[select_by_rank(population_unique.size(), generator)];
 
 			// crossover
-			Solution offspring = crossover::random_merge(parent1, parent2, generator);
+			Solution offspring = crossover::solve_subproblem_from(parent1, parent2);
 
 			// local search
 			if(probabilities_dist(generator) < conf.local_search_probability)

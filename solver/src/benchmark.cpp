@@ -313,14 +313,14 @@ namespace
 		for(const scp::Problem& problem: problems)
 		{
 			size_t prob_size = problem.subsets_points.size();
-			size_t opt = opt_costs.at(prob_size);
+			size_t opt = opt_costs[prob_size];
 			if (opt == 0) {
 				continue;
 			}
 
 			scp::Solution solution = solve(problem);
 			solution.compute_cost();
-			double accuracy = static_cast<double>(solution.cost - opt) / static_cast<double>(opt) * 100.0;
+			double accuracy = static_cast<double>(solution.cost - opt) / static_cast<double>(opt);
 			LOGGER->info("{}\t{}", prob_size, accuracy);
 		}
 		LOGGER->info("End {} benchmark", greedy_name);

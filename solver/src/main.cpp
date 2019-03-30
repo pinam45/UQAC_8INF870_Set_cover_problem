@@ -16,6 +16,7 @@
 #include "ckeck.hpp"
 #include "benchmark.hpp"
 #include "bnb.hpp"
+#include "nomad.hpp"
 
 #include <dynamic_bitset.hpp>
 
@@ -27,6 +28,8 @@
 namespace
 {
 	constexpr bool BENCHMARK = true;
+	constexpr bool NOMAD_GENETIC = false;
+	constexpr bool NOMAD_ANNEALING = false;
 	constexpr const char* BENCHMARK_PROBLEMS_FILES_PREFIX =
 	  "resources/benchmark/benchmarck_problem_";
 	constexpr const char* PROBLEM_FILE_PATH = "resources//OR-Library/scpa2.txt";
@@ -64,8 +67,14 @@ namespace
 	}
 } // namespace
 
-int main()
+int main(int argc, char** argv)
 {
+	if constexpr (NOMAD_GENETIC) {
+		return nomad::run_genetic(argc, argv);
+	} else if constexpr (NOMAD_ANNEALING) {
+		return nomad::run_annealing(argc, argv);
+	}
+
 	if(!init_logger())
 	{
 		return EXIT_FAILURE;
