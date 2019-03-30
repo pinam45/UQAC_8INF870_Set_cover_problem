@@ -27,12 +27,14 @@
 
 namespace
 {
+	constexpr bool GENERATE_PROBLEM = false;
 	constexpr bool BENCHMARK = true;
 	constexpr bool NOMAD_GENETIC = false;
 	constexpr bool NOMAD_ANNEALING = false;
+
 	constexpr const char* BENCHMARK_PROBLEMS_FILES_PREFIX =
 	  "resources/benchmark/benchmarck_problem_";
-	constexpr const char* PROBLEM_FILE_PATH = "resources//OR-Library/scpa2.txt";
+	constexpr const char* PROBLEM_FILE_PATH = "resources/OR-Library/scpa2.txt";
 	//constexpr const char* PROBLEM_FILE_PATH = "last_problem.txt";
 
 	bool generate_benchmark_problems()
@@ -69,9 +71,12 @@ namespace
 
 int main(int argc, char** argv)
 {
-	if constexpr (NOMAD_GENETIC) {
+	if constexpr(NOMAD_GENETIC)
+	{
 		return nomad::run_genetic(argc, argv);
-	} else if constexpr (NOMAD_ANNEALING) {
+	}
+	else if constexpr(NOMAD_ANNEALING)
+	{
 		return nomad::run_annealing(argc, argv);
 	}
 
@@ -90,22 +95,26 @@ int main(int argc, char** argv)
 		std::default_random_engine g(std::random_device{}());
 
 		// read problem
-		/*scp::Problem problem;
-		if(!scp::read_problem(PROBLEM_FILE_PATH, problem))
+		scp::Problem problem;
+		if constexpr(GENERATE_PROBLEM)
 		{
-			LOGGER->error("Failed to read problem");
-			return EXIT_FAILURE;
-		}*/
+			problem = scp::generate_problem(50, 25, g);
 
-		// generate problem
-		scp::Problem problem = scp::generate_problem(50, 25, g);
-
-		// save problem
-		/*if(!scp::write_problem(problem, "last_problem.txt", true))
+			// save problem
+			if(!scp::write_problem(problem, "last_problem.txt", true))
+			{
+				LOGGER->error("Failed to write problem");
+				return EXIT_FAILURE;
+			}
+		}
+		else
 		{
-			LOGGER->error("Failed to write problem");
-			return EXIT_FAILURE;
-		}*/
+			if(!scp::read_problem(PROBLEM_FILE_PATH, problem))
+			{
+				LOGGER->error("Failed to read problem");
+				return EXIT_FAILURE;
+			}
+		}
 
 		// print problem
 		LOGGER->info("Problem: {}", problem);

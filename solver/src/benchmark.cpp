@@ -201,106 +201,25 @@ void scp::benchmark::benchmark_bnb_solve(const std::vector<scp::Problem>& proble
 namespace
 {
 	constexpr std::array<size_t, 101> opt_costs = {
-			0, // 0
-			0, // 1
-			65, // 2
-			63,
-			165,
-			183,
-			220,
-			224,
-			230,
-			163,
-			287, // 10
-			253,
-			223,
-			345,
-			336,
-			391,
-			356,
-			249,
-			243,
-			264,
-			288,
-			390,
-			300,
-			234,
-			244,
-			274,
-			460,
-			336,
-			315,
-			253,
-			256, // 30
-			327,
-			409,
-			401,
-			334,
-			185,
-			411,
-			310,
-			247,
-			247,
-			358,
-			398,
-			368,
-			507,
-			360,
-			305,
-			263,
-			278,
-			214,
-			270,
-			0, // 50
-			317,
-			185,
-			275,
-			261,
-			302,
-			261,
-			279,
-			0,
-			0,
-			309, // 60
-			129,
-			260,
-			0,
-			290,
-			200,
-			0,
-			195,
-			231,
-			0,
-			225, // 70
-			0,
-			0,
-			141,
-			0,
-			0,
-			0,
-			226,
-			186,
-			166,
-			276, // 80
-			0,
-			0,
-			0,
-			0,
-			0,
-			0,
-			0,
-			0,
-			219,
-			0, // 90
-			0,
-			0,
-			0,
-			0,
-			0,
-			0,
-			0,
-			0,
-			0 // 100
+	  0, // 0
+	  0, // 1
+	  65, // 2
+	  63,  165, 183, 220, 224, 230, 163,
+	  287, // 10
+	  253, 223, 345, 336, 391, 356, 249, 243, 264, 288, 390, 300, 234, 244, 274, 460, 336, 315, 253,
+	  256, // 30
+	  327, 409, 401, 334, 185, 411, 310, 247, 247, 358, 398, 368, 507, 360, 305, 263, 278, 214, 270,
+	  0, // 50
+	  317, 185, 275, 261, 302, 261, 279, 0,   0,
+	  309, // 60
+	  129, 260, 0,   290, 200, 0,   195, 231, 0,
+	  225, // 70
+	  0,   0,   141, 0,   0,   0,   226, 186, 166,
+	  276, // 80
+	  0,   0,   0,   0,   0,   0,   0,   0,   219,
+	  0, // 90
+	  0,   0,   0,   0,   0,   0,   0,   0,
+	  0 // 100
 	};
 
 	template<typename Func>
@@ -314,7 +233,8 @@ namespace
 		{
 			size_t prob_size = problem.subsets_points.size();
 			size_t opt = opt_costs[prob_size];
-			if (opt == 0) {
+			if(opt == 0)
+			{
 				continue;
 			}
 
@@ -329,7 +249,8 @@ namespace
 
 void scp::benchmark::benchmark_weighted_greedy(const std::vector<scp::Problem>& problems)
 {
-	helper_greedy_benchmark(problems, "weighted greedy", [](const Problem& p) { return scp::greedy::weighted_solve(p); });
+	helper_greedy_benchmark(
+	  problems, "weighted greedy", [](const Problem& p) { return scp::greedy::weighted_solve(p); });
 }
 
 void scp::benchmark::benchmark_unweighted_greedy(const std::vector<scp::Problem>& problems)
