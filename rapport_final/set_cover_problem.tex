@@ -238,7 +238,7 @@
 				\caption{Solutions optimales des instances du SCP utilisée\cite{Beasley1990}}
 				\label{table:orlibrary_scp_problems_optimal_solutions}
 			\end{table}
-		\subsection{Instances générées}
+		\subsection{Instances générées}\label{sec:generated-instances}
 			\paragraph*{}
 				Les instances de OR-Library étant de grande taille, elles ne nous permettent pas de tester nos méthodes exactes, nous avons donc codé un générateur d'instances utilisant la même méthode qu'utilisée pour celles de OR-Library (shémas de \citeauthor{Balas1980}\cite{Balas1980}).
 			\paragraph*{}
@@ -305,21 +305,45 @@
 				\label{figure:plots/permutations_generators_time}
 			\end{figure}
 			\paragraph*{}
-				En se fiant aux données de notre étude, sur l'ordinateur de test, la durée nécessaire au générateur G3 pour générer les permutations d'un vecteur de taille \(x\) est approximable par la fonction \(4.114961289.10^{-9}\left(e^{0.693072216x} + 1\right)\). Si l'on voulait résoudre les plus petites instances de OR-Library à \(1000\) éléments, il faudrait donc un temps théorique de \(4 \times 10^{492}\)s au générateur G3 pour générer les permutations du vecteur \(x\) et tester toutes les possibilités. Au vu de inefficacité de la recherche exhaustive nous avon décidé d'implémenté une seconde méthode exacte: le branch and bound.
-		\subsection{Branch and bound}
+				En se fiant aux données de notre étude, sur l'ordinateur de test, la durée nécessaire au générateur G3 pour générer les permutations d'un vecteur de taille \(x\) est approximable par la fonction \(4.114961289.10^{-9}\left(e^{0.693072216x} + 1\right)\). Si l'on voulait résoudre les plus petites instances de OR-Library à \(1000\) éléments, il faudrait donc un temps théorique de \(4 \times 10^{492}\)s au générateur G3 pour générer les permutations du vecteur \(x\) et tester toutes les possibilités. Au vu de inefficacité de la recherche exhaustive nous avons décidé d'implémenter une seconde méthode exacte: le Branch-and-Bound.
+		\subsection{Branch-and-Bound}
 			\paragraph*{}
-				TODO
+				Dans l'article \citetitle{caprara2000algorithms} de \citeauthor{caprara2000algorithms} on peut lire ceci:
+				\begin{quote}
+					The most effective exact approaches to SCP are branch-and-bound algorithms in which lower bounds are computed by solving the LP relaxation of SCP[\ldots]. In particular, all the [exact] algorithms which have been tested on the instances from the OR Library are of this type. The main reason for the success of these approaches is the fact that, despite the LP lower bound is not always very strong for these instances, it is apparently very dificult to get significantly stronger lower bounds by alternative methods which are computationally more expensive.\cite{caprara2000algorithms}
+				\end{quote}
+			\paragraph*{}
+				Le Branch-and-Bound est donc une méthode efficace pour notre problème mais requiert un solveur de programme linéaire dans son application la plus performante. Développer un tel solveur ou l'intégrer au projet d'une source externe prenant trop de temps et s'éloignant de notre but de travailler sur des méthodes spécifiques au WSCP, nous avons décidé d'implémenter un Branch-and-Bound spécifique au problème sans solveur de programme linéaire.
+			\paragraph*{}
+				Notre Branch-and-Bound parcourt donc un arbre de décision où, au niveau \(i\), le choix de la valeur du bit \(i\) (\(0\) ou \(1\)) crée une séparation en 2 branches tel que représenté sur le figure \ref{fig:bnb}. Les bits dont la valeur n'a pas encore été décidés sont a \(0\) afin que les sous-ensembles auxquels ils correspondent n'interviennent pas dans le coût de la solution.
+			\paragraph*{}
+			\begin{figure}[H]
+				\centering%
+				\resizebox{0.75\textwidth}{!}{\includestandalone{./figures/bnb}}%
+				\caption{Arbre parcourut par la Branch-and-Bound (sans coupures) pour un bitset de taille 3}%
+				\label{fig:bnb}%
+			\end{figure}
+			\paragraph*{}
+				La borne utilisée pour couper des branches de l'arbre est une borne maximum sur le coût de la solution. Cette borne est initialisé avec le coût de la solution trouvée par l'algorithme vorace pondéré (weighted greedy) qui sera présenté dans la section \ref{sec:approx-greedy}. Cette solution initiale est aussi utilisée comme solution optimale potentielle initiale.
+			\paragraph*{}
+				A chaque noeud de l'arbre la solution est évaluée, si cette dernière a une évaluation plus grande que la borne, la branche est coupé, ajouter des sous-ensembles a la solution ne pouvant qu'augmenter sont coût qui dépasse déjà celui de la borne. Si elle a une évaluation plus faible que la borne, si la solution n'est pas valide, l'algorithme continue, peut-être en ajoutant plus de sous-ensemble cela arrivera a une solution valide avec un coût toujours inférieur a la borne, si la solution est valide, sont coût devient la nouvelle borne et la solution devient la nouvelle solution optimale potentielle.
+			\paragraph*{}
+				La complexité moyenne d'un Branch-and-Bound est très dure a évaluer mais on peut au moins être sur que dans le pire cas la complexité est égale a celle de la recherche exhaustive et est donc en \(\mathcal{O}(n2^n)\). Nous avons donc réalisé une étude empirique afin d'avoir une idée de l'amélioration apportée par le Branch-and-Bound par rapport à la recherche exhaustive. Nous avons donc mesuré le temps de résolution de la recherche exhaustive avec le générateur G3 (le plus rapide) ainsi que avec le Branch-and-Bound, les résultats sont visibles sur les graphiques de la figure \ref{figure:plots/exhaustive_bnb_time}.
+			\paragraph*{}
+				Les résolutions on été réalisées sur les instances de problèmes que nous avons généré (voir section \ref{sec:generated-instances}) de la plus petite à la plus grande en arrêtant la résolution au bout de 1 heure si cette dernière n'était pas terminée (donnant des points de discontinuité dans les graphiques de la figure \ref{figure:plots/exhaustive_bnb_time}). C'est aussi lors de cette étude que le Branch-and-Bound nous a donné les résultats exacts présentés dans la section \ref{sec:generated-instances}, les résultats manquant étant ceux des instances pour lequel 1 heure n'à pas suffit a les résoudre.
+			\paragraph*{}
+				Les temps de résolution du Branch-and-Bound sont bien meilleurs que ceux de le recherche exhaustive, cependant sa performance dépend des instances et sans une configuration avantageuse, il ne nous sera toujours pas passible de résoudre les instances de OR-Library qui contient uniquement des problèmes de taille \(\ge 1000\). Les méthodes exactes atteignant leur limites, ils nous faut donc nous tourner du coté des méthodes approchées.
+			\paragraph*{}
+				\hfill{}
 			\begin{figure}[H]
 				\centering
-				\input{plots/permutations_generators_ram}%
-				\caption{Utilisation de la RAM par les générateurs de permutations}
-				\label{figure:permutations_generators_ram}
+				\input{plots/exhaustive_bnb_time_lin}\\
+				\input{plots/exhaustive_bnb_time_log}%
+				\caption{Temps nécéssaire pour résoudre un problème pour la recherche exhaustive et le Branch and bound (les résolutions trop longues ont été arreté apres 1h d'éxécution et leur valeures ne sont pas représentés)}
+				\label{figure:plots/exhaustive_bnb_time}
 			\end{figure}
-		\paragraph*{}
-			Il existe une méthode exacte plus efficace qui utilise la méthode Branch and Bound ainsi que le Simplexe (pour résoudre une version
-			du problème linéaire relaxée)~\cite{caprara2000algorithms}.
 	\section{Méthodes approchées}
-		\subsection{Algorithmes voraces}
+		\subsection{Algorithmes voraces}\label{sec:approx-greedy}
 			\paragraph*{}
 				Nous avons commencé par implémenter des algorithmes voraces qui permettent de trouver des solutions approchées très rapidement.
 			\paragraph*{}

@@ -1,0 +1,22 @@
+%!TEX root = ../set_cover_problem.tex
+\begin{tikzpicture}
+	\begin{axis}[
+		width=\linewidth,
+		height=0.6\linewidth,
+		xlabel={Taille du problème (nombre de sous-ensembles)},
+		ylabel={temps de résolution (s)},
+		xmin=0, xmax=101,
+		ymin=0, ymax=3800,
+		legend style={
+			cells={
+				anchor=west
+			},
+			legend pos=north east,
+		},
+	]
+		\addplot[smooth,color=blue,mark=*] table{plots/exhaustive_time.data};
+		\addlegendentry{Recherche exhaustive (G3)}
+		\addplot[unbounded coords=jump,smooth,color=red,mark=*] table{plots/bnb_time.data};
+		\addlegendentry{Branch and bound}
+	\end{axis}
+\end{tikzpicture}%
