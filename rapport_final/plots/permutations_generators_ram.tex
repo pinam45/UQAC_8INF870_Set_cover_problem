@@ -1,0 +1,24 @@
+%!TEX root = ../set_cover_problem.tex
+\begin{tikzpicture}
+	\begin{axis}[
+		width=\linewidth,
+		height=0.5\linewidth,
+		xlabel={bitset size (bits number)},
+		ylabel={ram usage (Go)},
+		xmin=0, xmax=40,
+		ymin=0, ymax=9,
+		legend style={
+			cells={
+				anchor=west
+			},
+			legend pos=north west,
+		},
+	]
+		\addplot[smooth,color=blue,mark=*] table{plots/g1_ram.data};
+		\addlegendentry{G1: ram expensive generator}
+		\addplot[smooth,color=red,mark=*] table{plots/g2_ram.data};
+		\addlegendentry{G2: cpu expensive generator}
+		\addplot[smooth,color=cyan,mark=*] table{plots/g3_ram.data};
+		\addlegendentry{G3: counter generator}
+	\end{axis}
+\end{tikzpicture}%
