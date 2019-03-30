@@ -1,0 +1,74 @@
+%!TEX program = lualatex
+\documentclass[11pt,class=beamer]{standalone}
+\usepackage{etoolbox}
+\usepackage{ifxetex}
+\usepackage{ifluatex}
+\usepackage[T1]{fontenc}
+\ifboolexpr{bool{xetex} or bool{luatex}}{%
+	\usepackage{fontspec}
+}{%
+	\usepackage[utf8]{inputenc}
+}
+\usepackage{xcolor}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{braket}
+
+\usepackage{pgf}
+\usepackage{tikz}
+\usepackage{tikzpeople}
+
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{multirow}
+
+\input{figures_common}
+
+\beamertemplatenavigationsymbolsempty{}
+
+\begin{document}
+	\pgfmathsetmacro\xsep{30}%
+	\pgfmathsetmacro\ysep{25}%
+	\def\maxn{5}
+	\begin{tikzpicture}[
+		x=1pt,
+		y=1pt,
+		/utils/exec={\sffamily},
+		font=\fontsize{9pt}{9.5pt}\selectfont,
+		>=Triangle,
+		decoration={snake,segment length=5,amplitude=0.7},
+	]
+
+		\node (p1in1) at (0,0) {\(P_1^1\)};
+
+		\node[xshift=0,yshift=-\ysep] (p1in2) at (0,0) {\(P_1^2\)};
+		\node[xshift=\xsep,yshift=-\ysep] (p2in2) at (0,0) {\(P_2^2\)};
+		\draw[->] (p1in2) -- (p1in1);
+		\draw[->] (p2in2) -- (p1in1);
+
+		\def\lastn{2}
+		\def\lastk{1}
+		\foreach[remember=\n as \lastn] \n in {3,...,\maxn} {
+			\foreach \k in {1,...,\n} {
+				\node[
+					xshift=(\k-1)*\xsep,
+					yshift=-(\n-1)*\ysep
+				] (p\k in\n) at (0,0) {\(P_\k^\n\)};
+			}
+
+			\draw[->] (p1in\n) -- (p1in\lastn);
+			\def\lastk{1}
+			\foreach[remember=\k as \lastk] \k in {2,...,\lastn} {
+				\draw[->] (p\k in\n) -- (p\k in\lastn);
+				\draw[->] (p\k in\n) -- (p\lastk in\lastn);
+			}
+			\draw[->] (p\n in\n) -- (p\lastn in\lastn);
+		}
+
+		\coordinate (A) at ([xshift=-15]p1in1);
+		\coordinate (B) at ([xshift=-15]p1in\maxn);
+		\draw[->,dashed] (A) to node[rotate=90,above,pos=0.5] {Génération} (B);
+	\end{tikzpicture}%
+\end{document}%

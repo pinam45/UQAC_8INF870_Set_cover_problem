@@ -264,6 +264,51 @@
 				\label{table:generated_scp_problems_optimal_solutions}
 			\end{table}
 	\section{Méthodes exactes}
+		\subsection{Recherche exhaustive}
+			\paragraph*{}
+				La méthode exacte la plus simple est encore la recherche exhaustive, dans notre cas, cela consiste a tester toutes les valeurs possibles du vecteur de solution \(x\). Ce vecteur étant un vecteur booléen, il y a \(2^n\) possibilité pour un vecteur de taille \(n\) qui correspond a un problème de taille \(n\).
+			\paragraph*{}
+				Pour le SCP simple, il n'est pas nécessaire de tester toutes les permutations possibles, il suffit de commencer par les permutations de 1 bit, puis 2,3\ldots et dès que la permutation est une solution valide, cette dernière est la solution optimale puisque la première valide en le moins de sous-ensembles possibles.
+			\paragraph*{}
+				Nous avons commencé par utiliser les algorithmes classiques connu qui sont récursifs, mais ces derniers atteignent très rapidement la limite de stack du programme de par le nombre élevé d'appels récursifs pour les taille de bitset dont nous avons besoin. Ils ne sont donc pas envisageables pour notre problème.
+			\paragraph*{}
+				Nous avons donc réalisé un générateur de permutations G1 qui utilise une méthode s'inspirant de la programmation dynamique. En effet les permutations de \(k\) bits parmi \(n\) sont les permutations de \(k\) bits parmi \(n-1\) avec le \(n\)-ème bit a \(0\) ajouté aux permutations de \(k-1\) bits parmi \(n-1\) avec le \(n\)-ème bit a \(1\). En notant \(P_k^n\) les permutations de \(k\) bits parmi \(n\), on peut donc généré facilement \(P_k^n\) a l'aide de \(P_k^{n-1}\) et de \(P_{k-1}^{n-1}\).
+			\paragraph*{}
+				Le générateur G1 génère donc les \(P_i^n\) pour \(i \in \llbracket 0, n \rrbracket\) en générant successivement les \(P_i^t\) pour \(t\in \llbracket 1, n \rrbracket\) en utilisant les \(P_i^t\) de la génération précédente comme représenté sur la figure \ref{fig:g1_permutations}.
+			\begin{figure}[H]
+				\centering%
+				\resizebox{0.4\textwidth}{!}{\includestandalone{./figures/g1_permutations}}%
+				\caption{Méthode de génération des \(\forall i \in \llbracket 0, n \rrbracket,\ P_i^n\) du générateur G1}%
+				\label{fig:g1_permutations}%
+			\end{figure}
+			\paragraph*{}
+				Le problème avec générateur G1 est qu'il a besoin de stocker toutes les permutations de la génération précédente pour générer la suivante or le nombre de permutation augmente en \(2^n\) et son utilisation de RAM pour stocker les permutations dépasse les 8Go pour générer les permutations sur un bitset de taille 27 (voir figure \ref{figure:permutations_generators_ram}).
+			\begin{figure}[H]
+				\centering
+				\input{plots/permutations_generators_ram}%
+				\caption{Utilisation de la RAM par les générateurs de permutations}
+				\label{figure:permutations_generators_ram}
+			\end{figure}
+			\paragraph*{}
+				Nous avons donc réalisé un générateur G2 qui ne nécessite pas de stocker les permutation des génération précédentes mais va les construires dynamiquement au fil de la génération des \(P_i^n\), ce générateur est donc bien moins performant (voir figure \ref{figure:plots/permutations_generators_time}) mais a l'avantage de ne pas consommer excessivement de RAM (voir figure \ref{figure:permutations_generators_ram}). Le générateur G2 peut générer les \(P_i^n\) jusqu'à \(n = 32\) en moins d'une heure, ce qui est bien loin d’être suffisant pour des grandes instances tels que celles de OR-Library.
+			\paragraph*{}
+				Les générateurs G1 et G2 génèrent les permutations de 1 bit, puis 2,3\ldots afin d’être efficace pour le SCP simple mais il est possible de générer ces permutations de façon plus efficace si on ne restrein pas l'ordre de génération. Nous avons donc codé un générateur G3 WSCP qui est plus performant que G1 et G2 mais ne garanti pas un ordre croissant sur le nombre de bits a \(1\). G3 est donc moins performant que G1 et G2 pour le SCP mais plus performant pour le WSCP.
+			\paragraph*{}
+				Le générateur G3 génère les permutations en considérant le bitset comme la représentation binaire d'un nombre, il suffit de commencer a 0 et d'incrémenter le nombre représenté jusqu'à retourner a 0 pour être passé par toutes les valeurs représentables sur \(n\) bits et donc toutes les permutations. L'algorithme consiste donc à appliquer donc successivement l'algorithme d'incrément binaire qui commence par le bit de poids le plus faible et remonte les bits en transformant les \(1\) en \(0\) jusqu’à arriver a la fin du bitset ou a un \(0\) qu'il transforme en \(1\).
+			\paragraph*{}
+				Les 3 générateurs réalisent (en pire cas pour G3) \(\mathcal{O}(n)\) opération pour générer chaque permutation, la complexité des 3 générateurs pour générer les \(2^n\) permutations est donc en \(\mathcal{O}(n2^n)\). Pour les comparer, on réalise donc une étude empirique dont les résultats sont visibles sur les graphiques de la figure \ref{figure:plots/permutations_generators_time}. Comme prévu, le générateur G3 est le plus performant, cependant il n'est pas adapté pour le SCP simple.
+			\begin{figure}[H]
+				\centering
+				\input{plots/permutations_generators_time_lin}\\
+				\input{plots/permutations_generators_time_log}%
+				\caption{Temps nécessaire pour générer toutes les permutations d'un bitset}
+				\label{figure:plots/permutations_generators_time}
+			\end{figure}
+			\paragraph*{}
+				En se fiant aux données de notre étude, sur l'ordinateur de test, la durée nécessaire au générateur G3 pour générer les permutations d'un vecteur de taille \(x\) est approximable par la fonction \(4.114961289.10^{-9}\left(e^{0.693072216x} + 1\right)\). Si l'on voulait résoudre les plus petites instances de OR-Library à \(1000\) éléments, il faudrait donc un temps théorique de \(4 \times 10^{492}\)s au générateur G3 pour générer les permutations du vecteur \(x\) et tester toutes les possibilités. Au vu de inefficacité de la recherche exhaustive nous avon décidé d'implémenté une seconde méthode exacte: le branch and bound.
+		\subsection{Branch and bound}
+			\paragraph*{}
+				TODO
 			\begin{figure}[H]
 				\centering
 				\input{plots/permutations_generators_ram}%

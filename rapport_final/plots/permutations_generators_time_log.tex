@@ -1,0 +1,36 @@
+%!TEX root = ../set_cover_problem.tex
+\begin{tikzpicture}
+	\begin{semilogyaxis}[
+		width=\linewidth,
+		height=0.6\linewidth,
+		xlabel={bitset size (bits number)},
+		ylabel={time (s)},
+		xmin=0, xmax=40,
+		ymin=0, ymax=10000,
+		legend style={
+			cells={
+				anchor=west
+			},
+			legend pos=north west,
+		},
+	]
+		\addplot[smooth,color=blue,mark=*] table{plots/g1_time.data};
+		\addlegendentry{G1: ram expensive generator}
+		\addplot[smooth,color=red,mark=*] table{plots/g2_time.data};
+		\addlegendentry{G2: cpu expensive generator}
+		% \addplot[
+		% 	green,
+		% 	domain=0:33,
+		% 	samples=330,
+		% ]{1.556624216*10^(-7) * e^(7.298880681*10^(-1)*x)};
+		% \addlegendentry{\(1.556624216.10^{-7}e^{7.298880681.10^{-1}x}\)}
+		\addplot[smooth,color=cyan,mark=*] table{plots/g3_time.data};
+		\addlegendentry{G3: counter generator}
+		\addplot[
+			green,
+			domain=0:40,
+			samples=400,
+		]{4.114961289*10^(-9) * (e^(0.693072216*x) + 1};
+		\addlegendentry{\(4.114961289.10^{-9}\left(e^{0.693072216x} + 1\right)\)}
+	\end{semilogyaxis}
+\end{tikzpicture}%
