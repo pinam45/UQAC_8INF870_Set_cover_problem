@@ -97,7 +97,7 @@ int nomad::run_annealing(int argc, char** argv)
 	std::default_random_engine g(std::random_device{}());
 
 	scp::descent::Config conf{};
-	conf.iterations_number = 1000000;
+	conf.iterations_number = 50000000;
 	conf.initial_temperature = x[0];
 	conf.final_temperature = x[1];
 	if(conf.initial_temperature < conf.final_temperature)
@@ -105,8 +105,10 @@ int nomad::run_annealing(int argc, char** argv)
 		std::cerr << "failure: initial temperature < final temperature\n";
 		return EXIT_FAILURE;
 	}
-	std::cout
-	  << scp::descent::improve_by_annealing(scp::greedy::weighted_solve(problem), g, conf).cost;
+	std::cout << scp::descent::improve_by_annealing(
+	               scp::generate_random_solution(problem, g),
+	               g,
+	               conf).cost;
 
 	return EXIT_SUCCESS;
 }

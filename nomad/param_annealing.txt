@@ -8,7 +8,7 @@ X0             ( 40 1 )
 LOWER_BOUND    ( 0  0 )
 UPPER_BOUND    ( -  - )
 
-MAX_BB_EVAL    100
+MAX_BB_EVAL    20
 
 TMP_DIR        /tmp
 
