@@ -306,7 +306,7 @@
 			\end{figure}
 			\paragraph*{}
 				En se fiant aux données de notre étude, sur l'ordinateur de test, la durée nécessaire au générateur G3 pour générer les permutations d'un vecteur de taille \(x\) est approximable par la fonction \(4.114961289.10^{-9}\left(e^{0.693072216x} + 1\right)\). Si l'on voulait résoudre les plus petites instances de OR-Library à \(1000\) éléments, il faudrait donc un temps théorique de \(4 \times 10^{492}\)s au générateur G3 pour générer les permutations du vecteur \(x\) et tester toutes les possibilités. Au vu de inefficacité de la recherche exhaustive nous avons décidé d'implémenter une seconde méthode exacte: le Branch-and-Bound.
-		\subsection{Branch-and-Bound}
+		\subsection{Branch-and-Bound}\label{sec:bnb}
 			\paragraph*{}
 				Dans l'article \citetitle{caprara2000algorithms} de \citeauthor{caprara2000algorithms} on peut lire ceci:
 				\begin{quote}
@@ -352,17 +352,9 @@
 				où l'on intègre dans la solution les sous-ensembles couvrant le plus de point d'abord.
 				On utilise le nombre de points qu'un sous-ensemble permet de couvrir de façon non redondante comme score.
 			\paragraph*{}
-				Pour le problème \emph{A.1} dont la solution optimale est \(253\), on obtient la solution de coût \(1444\) suivante :
-			\begin{lstlisting}
-[info] found unweighted greedy solution with 42 subsets cost of 1444 in 0.108285s
-[info] Unweighted greedy solution: scp::Solution{
-	selected subsets number = 42,
-	selected subsets = 7, 32, 112, 132, 134, 136, 188, 191, 244, 245, 248, 274, 299, 392, 399, 428, 548, 816, 819, 922, 925, 960, 1042, 1068, 1096, 1161, 1208, 1271, 1300, 1302, 1412, 1418, 1454, 1505, 1565, 1971, 2056, 2154, 2341, 2462, 2752, 2941,
-	cover all points = true,
-	cost = 1444,
-}\end{lstlisting}
+				Pour le problème \emph{A.1} dont la solution optimale est \(253\), on obtient la solution de coût \(1444\).
+				Pour un problème de couverture d'ensembles pondéré, cet algorithme semble donc très mauvais.
 			\paragraph*{}
-				Pour un problème de couverture d'ensembles pondéré, cet algorithme est très mauvais.
 				Nous avons donc décidé d'implémenter une version de l'algorithme qui prend en compte le coût des sous ensembles pour
 				sélectionner lequel ajouter.
 				Pour cela, nous utilisons le rapport \(\frac{n}{c}\) avec \(n\) le nombre de points actuellement non couverts que le
@@ -370,19 +362,33 @@
 				le coût de la même façon que présenté dans le cours dans le chapitre sur les algorithmes voraces.
 			\paragraph*{}
 				De la même façon que précédememnt, pour le problème \emph{A.1} dont la solution optimale est \(253\), on obtient cette fois
-				une solution de coût \(288\) :
-			\begin{lstlisting}
-[info] found weighted greedy solution with 89 subsets and cost of 288 in 0.564261s
-[info] Weighted greedy solution: scp::Solution{
-	selected subsets number = 89,
-	selected subsets = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 27, 28, 30, 32, 33, 34, 37, 38, 39, 40, 42, 45, 46, 47, 48, 49, 50, 51, 54, 55, 59, 62, 63, 65, 66, 67, 69, 74, 76, 77, 78, 85, 86, 87, 88, 89, 90, 91, 92, 94, 97, 104, 105, 108, 112, 114, 115, 116, 117, 122, 123, 132, 137, 143, 162, 164, 172, 188, 189, 191, 214, 221, 268, 331,
-	cover all points = true,
-	cost = 288,
-}\end{lstlisting}
+				une solution de coût \(288\).
+
 			\paragraph*{}
-				Utiliser le ratio utilité / coût nous permet donc d'obtenir une solution bien meilleure. On constate que dans le cas du
-				problème de couverture d'ensemble pondéré, la meilleure solution n'est pas toujours celle qui utilise le moins de
-				sous-ensembles. En effet, cette dernière solution utilise \(89\) solutions contre \(42\).
+				On voit donc qu'utiliser le ratio utilité / coût nous permet donc d'obtenir une solution bien meilleure.
+				On constate que dans le cas du problème de couverture d'ensemble pondéré, la meilleure solution n'est pas
+				toujours celle qui utilise le moins de sous-ensembles. En effet, cette dernière solution utilise \(89\) solutions contre \(42\).
+
+			\paragraph*{}
+				Nous avons comparé plus en profondeur en utilisant les solutions optimales calculées dans la Section~\ref{sec:bnb}.
+				Pour cela, on utilise le ratio de différence \(\frac{r - opt}{opt}\) avec \(r\) le résultat obtenu et \(opt\) la
+				valeur optimale.
+				La Figure~\ref{fig:plots/greedy-diff} est un graphique représentant ce ratio pour chacun des problèmes
+				dont nous avons réussi à calculer la solution optimale.
+
+			\begin{figure}[H]
+				\centering
+				\input{plots/greedy_diff.tex}\\
+				\caption{}
+				\label{fig:plots/greedy-diff}
+			\end{figure}
+
+			\paragraph*{}
+				On voit que sur un problème de petite taille, il peut arriver que l'heuristique ne prenant pas en compte le poids
+				des ensembles trouve une meilleure solution (voire parfois la solution optimale elle-même), cependant
+				sur des problèmes de taille plus grande, l'heuristique prenant en compte le poids des sous-ensembles est
+				systématiquement meilleure.
+
 		\subsection{Méta-heuristiques}
 			\subsubsection{Recuit simulé}
 				\paragraph*{}
@@ -403,6 +409,7 @@
 
 			\begin{table}[H]
 				\centering
+				\footnotesize
 				\input{tables/genetic_parameters}
 				\caption{Les paramètres qui nous ont permis d'obtenir la meilleure solution avec l'algorithme génétique.
 					Le format est: (\(p\) \(t_r\) \(t_m\) \(t_l\) \(r_{iter}\) \(r_{tmp}\)) avec \(p\) = taille de la population,
@@ -417,7 +424,7 @@
 				\caption{Les paramètres qui nous ont permis d'obtenir la meilleure solution avec le recuit simulé.
 					Le format est: (\(t_{init}\) \(t_{final}\)) avec \(t_{init}\) = température initiale et
 					\(t_{final}\) = température finale}
-				\label{table:genetic-parameters}
+				\label{table:annealing-parameters}
 			\end{table}
 	\section{Conclusion}
 		\paragraph*{}
