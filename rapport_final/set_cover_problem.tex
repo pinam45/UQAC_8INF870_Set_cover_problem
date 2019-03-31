@@ -310,21 +310,21 @@
 			\paragraph*{}
 				Dans l'article \citetitle{caprara2000algorithms} de \citeauthor{caprara2000algorithms} on peut lire ceci:
 				\begin{quote}
-					The most effective exact approaches to SCP are branch-and-bound algorithms in which lower bounds are computed by solving the LP relaxation of SCP[\ldots]. In particular, all the [exact] algorithms which have been tested on the instances from the OR Library are of this type. The main reason for the success of these approaches is the fact that, despite the LP lower bound is not always very strong for these instances, it is apparently very dificult to get significantly stronger lower bounds by alternative methods which are computationally more expensive.\cite{caprara2000algorithms}
+					``The most effective exact approaches to SCP are branch-and-bound algorithms in which lower bounds are computed by solving the LP relaxation of SCP[\ldots]. In particular, all the [exact] algorithms which have been tested on the instances from the OR Library are of this type. The main reason for the success of these approaches is the fact that, despite the LP lower bound is not always very strong for these instances, it is apparently very difficult to get significantly stronger lower bounds by alternative methods which are computationally more expensive.''~\cite{caprara2000algorithms}
 				\end{quote}
 			\paragraph*{}
 				Le Branch-and-Bound est donc une méthode efficace pour notre problème mais requiert un solveur de programme linéaire dans son application la plus performante. Développer un tel solveur ou l'intégrer au projet d'une source externe prenant trop de temps et s'éloignant de notre but de travailler sur des méthodes spécifiques au WSCP, nous avons décidé d'implémenter un Branch-and-Bound spécifique au problème sans solveur de programme linéaire.
 			\paragraph*{}
-				Notre Branch-and-Bound parcourt donc un arbre de décision où, au niveau \(i\), le choix de la valeur du bit \(i\) (\(0\) ou \(1\)) crée une séparation en 2 branches tel que représenté sur le figure \ref{fig:bnb}. Les bits dont la valeur n'a pas encore été décidés sont a \(0\) afin que les sous-ensembles auxquels ils correspondent n'interviennent pas dans le coût de la solution.
+				Notre Branch-and-Bound parcourt donc un arbre de décision où, au niveau \(i\), le choix de la valeur du bit \(i\) (\(0\) ou \(1\)) crée une séparation en 2 branches tel que représenté sur le figure \ref{fig:bnb}. Les bits dont la valeur n'a pas encore été décidée sont a \(0\) afin que les sous-ensembles auxquels ils correspondent n'interviennent pas dans le coût de la solution.
 			\paragraph*{}
 			\begin{figure}[H]
 				\centering%
 				\resizebox{0.75\textwidth}{!}{\includestandalone{./figures/bnb}}%
-				\caption{Arbre parcourut par la Branch-and-Bound (sans coupures) pour un bitset de taille 3}%
+				\caption{Arbre parcourut par la Branch-and-Bound (ici sans coupures) pour un bitset de taille 3}%
 				\label{fig:bnb}%
 			\end{figure}
 			\paragraph*{}
-				La borne utilisée pour couper des branches de l'arbre est une borne maximum sur le coût de la solution. Cette borne est initialisé avec le coût de la solution trouvée par l'algorithme vorace pondéré (weighted greedy) qui sera présenté dans la section \ref{sec:approx-greedy}. Cette solution initiale est aussi utilisée comme solution optimale potentielle initiale.
+				La borne utilisée pour couper des branches de l'arbre est une borne maximum sur le coût de la solution. Cette borne est initialisée avec le coût de la solution trouvée par l'algorithme vorace pondéré (weighted greedy) qui sera présenté dans la section \ref{sec:approx-greedy}. Cette solution initiale est aussi utilisée comme solution optimale potentielle initiale.
 			\paragraph*{}
 				A chaque noeud de l'arbre la solution est évaluée, si cette dernière a une évaluation plus grande que la borne, la branche est coupé, ajouter des sous-ensembles a la solution ne pouvant qu'augmenter sont coût qui dépasse déjà celui de la borne. Si elle a une évaluation plus faible que la borne, si la solution n'est pas valide, l'algorithme continue, peut-être en ajoutant plus de sous-ensemble cela arrivera a une solution valide avec un coût toujours inférieur a la borne, si la solution est valide, sont coût devient la nouvelle borne et la solution devient la nouvelle solution optimale potentielle.
 			\paragraph*{}
@@ -339,7 +339,7 @@
 				\centering
 				\input{plots/exhaustive_bnb_time_lin}\\
 				\input{plots/exhaustive_bnb_time_log}%
-				\caption{Temps nécéssaire pour résoudre un problème pour la recherche exhaustive et le Branch and bound (les résolutions trop longues ont été arreté apres 1h d'éxécution et leur valeures ne sont pas représentés)}
+				\caption{Temps nécéssaire pour résoudre un problème pour la recherche exhaustive et le Branch and bound (les résolutions trop longues ont été arrêtées après 1h d'éxécution et leurs valeurs ne sont pas représentées)}
 				\label{figure:plots/exhaustive_bnb_time}
 			\end{figure}
 	\section{Méthodes approchées}
