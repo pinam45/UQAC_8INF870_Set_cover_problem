@@ -106,9 +106,8 @@ int nomad::run_annealing(int argc, char** argv)
 		return EXIT_FAILURE;
 	}
 	std::cout << scp::descent::improve_by_annealing(
-	               scp::generate_random_solution(problem, g),
-	               g,
-	               conf).cost;
+	               scp::generate_random_solution(problem, g), g, conf)
+	               .cost;
 
 	return EXIT_SUCCESS;
 }

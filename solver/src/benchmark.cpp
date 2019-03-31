@@ -218,8 +218,8 @@ namespace
 	  276, // 80
 	  0,   0,   0,   0,   0,   0,   0,   0,   219,
 	  0, // 90
-	  0,   0,   0,   0,   0,   0,   0,   0,
-	  0 // 100
+	  0,   222, 150, 0,   0,   0,   202, 0,   0,
+	  193 // 100
 	};
 
 	template<typename Func>
@@ -235,6 +235,7 @@ namespace
 			size_t opt = opt_costs[prob_size];
 			if(opt == 0)
 			{
+				LOGGER->info("{}\tinf", prob_size);
 				continue;
 			}
 
