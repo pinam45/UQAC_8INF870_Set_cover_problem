@@ -385,9 +385,40 @@
 				sous-ensembles. En effet, cette dernière solution utilise \(89\) solutions contre \(42\).
 		\subsection{Méta-heuristiques}
 			\subsubsection{Recuit simulé}
-				TODO
+				\paragraph*{}
+					TODO
 			\subsubsection{Algorithme génétique}
+				\paragraph*{}
+					TODO
+		\subsection{Analyse des méthodes approchées appliquées aux problèmes d'OR-Library}
+			\paragraph*{}
 				TODO
+
+			\begin{table}[H]
+				\centering
+				\input{tables/orlibrary_scp_approached}
+				\caption{Les solutions obtenues à l'aide des méthodes approchées}
+				\label{table:approached-solutions}
+			\end{table}
+
+			\begin{table}[H]
+				\centering
+				\input{tables/genetic_parameters}
+				\caption{Les paramètres qui nous ont permis d'obtenir la meilleure solution avec l'algorithme génétique.
+					Le format est: (\(p\) \(t_r\) \(t_m\) \(t_l\) \(r_{iter}\) \(r_{tmp}\)) avec \(p\) = taille de la population,
+					\(t_r\) = taux de remplacement, \(t_m\) = taux de mutations, \(t_l\) = taux de recherche locale, \(r_{iter}\) =
+					le nombre d'itérations du recuit simulé, \(r_{tmp}\) = température initiale du recuit simulé.}
+				\label{table:genetic-parameters}
+			\end{table}
+
+			\begin{table}[H]
+				\centering
+				\input{tables/simulated_annealing_parameters}
+				\caption{Les paramètres qui nous ont permis d'obtenir la meilleure solution avec le recuit simulé.
+					Le format est: (\(t_{init}\) \(t_{final}\)) avec \(t_{init}\) = température initiale et
+					\(t_{final}\) = température finale}
+				\label{table:genetic-parameters}
+			\end{table}
 	\section{Conclusion}
 		\paragraph*{}
 			En tant que problème NP complet, la méthode exacte avec le branch-and-bound peut être très rapide ou très lent selon la configuration du problème.
