@@ -60,58 +60,6 @@ namespace
 		}
 		solution.selected_subsets.reset(current_bit);
 	}
-
-	void bnb_old(scp::Solution& solution, size_t current_bit, scp::Solution& best_solution)
-	{
-		if(current_bit >= solution.selected_subsets.size())
-		{
-			return;
-		}
-
-		// case 0
-		if((!solution.cover_all_points) || (solution.cost > best_solution.cost))
-		{
-			bnb(solution, current_bit + 1, best_solution);
-		}
-		else
-		{
-			assert(false); // impossible, branch cut at last 1 set
-			best_solution = solution;
-			// best in this branch
-			// adding 1 will increase cost
-			// adding 0 will do nothing
-			return;
-		}
-
-		// case 1
-		solution.selected_subsets.set(current_bit);
-		solution.cost += solution.problem.subsets_costs[current_bit];
-		solution.compute_cover();
-		if(!solution.cover_all_points)
-		{
-			bnb(solution, current_bit + 1, best_solution);
-		}
-		else
-		{
-			//solution.compute_cost();
-			if(solution.cost > best_solution.cost)
-			{
-				bnb(solution, current_bit + 1, best_solution);
-			}
-			else
-			{
-				best_solution = solution;
-				// best in this branch
-				// adding 1 will increase cost
-				// adding 0 will do nothing
-				solution.selected_subsets.reset(current_bit);
-				solution.cost -= solution.problem.subsets_costs[current_bit];
-				return;
-			}
-		}
-
-		solution.selected_subsets.reset(current_bit);
-	}
 } // namespace
 
 scp::Solution scp::bnb::solve(const scp::Problem& problem)
