@@ -28,14 +28,15 @@
 namespace
 {
 	constexpr bool GENERATE_PROBLEM = false;
-	constexpr bool BENCHMARK = true;
+	constexpr bool BENCHMARK = false;
 	constexpr bool NOMAD_GENETIC = false;
 	constexpr bool NOMAD_ANNEALING = false;
 
-	constexpr const char* BENCHMARK_PROBLEMS_FILES_PREFIX =
-	  "resources/benchmark/benchmarck_problem_";
 	constexpr const char* PROBLEM_FILE_PATH = "resources/OR-Library/scpa2.txt";
 	//constexpr const char* PROBLEM_FILE_PATH = "last_problem.txt";
+
+	constexpr const char* BENCHMARK_PROBLEMS_FILES_PREFIX =
+	  "resources/benchmark/benchmarck_problem_";
 
 	bool generate_benchmark_problems()
 	{
