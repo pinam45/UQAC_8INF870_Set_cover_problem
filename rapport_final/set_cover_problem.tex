@@ -525,9 +525,25 @@
 			\end{table}
 	\section{Conclusion}
 		\paragraph*{}
-			En tant que problème NP complet, la méthode exacte avec le branch-and-bound peut être très rapide ou très lent selon la configuration du problème.
-			Pour résoudre des problèmes de taille supérieure, il nous a fallu implémenter des méthodes approchées.
-			TODO
+			Comme on pouvait s'y attendre d'un problème NP complet,
+			il est très difficile de résoudre des problèmes en moins d'une heure, dans notre cas au delà d'une
+			taille d'environ 35, à l'aide de la recherche exhaustive.
+			La méthode exacte basée sur un branch-and-bound permet de pousser les limites considérablement.
+			Cependant, selon la configuration du problème, un problème de taille \(n\) peut très bien prendre plus d'une heure tandis
+			qu'un problème de taille \(n+1\) prendra seulement une minute.
+			Nous n'avons en fait pas plus de garanties sur le temps d'exécution qu'avec la méthode exhaustive.
+			Pour résoudre des problèmes de grande taille en un temps raisonnable, il est nécessaire de passer par des méthodes
+			approchées. En utilisant des méthode voraces, il nous est possible de construire une solution faisable
+			très rapidement en un temps polynomial. La méthode vorace pondérée présentée permet d'obtenir des résultats
+			relativement bons comparativement au temps nécessaire. Nous n'avons pas eu plus de \(25\%\) de différence à l'optimale
+			dans les problèmes testés. D'autre part, tel que nous l'avons implémenté, le recuit simulé ne nous a pas permis
+			d'obtenir avec certitude des résultats vraiment meilleurs que la méthode vorace pondérée.
+			Cependant, la méthode génétique implémentée par la suite utilisant le recuit simulé (algorithme mimétique)
+			nous a permis d'obtenir des résultats de très bonne qualité (moins de \(5\%\) de différence à l'optimale sur
+			les problèmes considérés) en un temps raisonnable (moins d'une minute). Mais le grand nombre de paramètres à
+			choisir est une difficulté non négligible. Nous avons utilisé un logiciel d'optimisation de boîte noire pour nous aider
+			à trouver de bons paramètres, mais cela prend alors plus de temps, et nous n'avons pas pu trouver de paramètres bons dans
+			tous les cas. Les paramètres obtimaux semblent varier grandement selon le problème considéré.
 	\newpage\printbibliography[heading=bibintoc]{}
 \end{document}
 
