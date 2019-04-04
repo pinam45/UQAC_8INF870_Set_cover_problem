@@ -390,22 +390,116 @@
 				systématiquement meilleure.
 
 		\subsection{Méta-heuristiques}
-			\subsubsection{Recuit simulé}
+			\subsubsection{Opérateurs de voisinage}
 				\paragraph*{}
-					TODO
+					Nous avons besoin d'opérateurs de voisinage pour implémenter certaines méta-heuristiques.
+					C'est le cas des méthodes que nous avons implémenté.
+					Étant donné notre représentation binaire, nous avons fait le choix d'implémenter des
+					opérateurs de voisinage qui changent simplement la valeur d'un bit pour obtenir une solution voisine~:
+					\begin{itemize}
+						\item \emph{uniform\_flip\_bit}: choisi un bit au hasard uniformément et change sa valeur.
+							En revanche, si, par exemple, on a beaucoup plus de 0 que de 1, on a aussi beaucoup plus de chance de
+							passer un 0 à 1.
+						\item \emph{flip\_bit}: choisi avec une chance sur deux de changer la valeur d'un bit 0 ou 1.
+					\end{itemize}
+					Dans les deux cas, on recommance l'opération jusqu'à avoir une solution valide.
+
+			\subsubsection{Recuit simulé}\label{sec:sim-annealing}
+				\paragraph*{}
+					Nous avons implémenté le recuit simulé standard~: à chaque itération on applique un opérateur de voisinage.
+					Si cela améliore la solution, on conserve la solution, sinon on on accepte avec une probalité \(e^{\frac{-\Delta}{T}}\) avec \(\Delta\) la différence de coût
+					entre la solution courante et la nouvelle solution et \(T\) la température courante.
+					Nous faisons varier la température uniformément entre deux bornes au fil des itérations.
+
 			\subsubsection{Algorithme génétique}
 				\paragraph*{}
-					TODO
+					Nous avons également implémenté un algorithme génétique qui utilise une sélection sélection par rang ainsi qu'une recherche locale
+					à l'aide du recuit simulé présenté dans la Section~\ref{sec:sim-annealing}.
+					Les paramètres sont \(p\) la taille de la population, \(t_r\) le taux de remplacement, \(t_m\) le taux de mutations,
+					\(t_l\) le taux de recherche locale, \(r_{iter}\) le nombre d'itérations du recuit simulé, \(r_{tmp}\) la température initiale du recuit simulé,
+					\(r_{fin}\) la température finale du recuit simulé.
+
+					\begin{itemize}
+						\item On commence par générer une population \(P\) de \(n\) individus aléatoirement.
+						\item À chaque itération (ou génération):
+							\begin{itemize}
+								\item On trie les individus par coût décroissant. L'indice d'un individu correspond alors à son rang.
+								\item On supprime les individus on doublon pour favoriser l'exploration. On note \(D\) le nombre de doublons supprimés.
+								\item On créer \(n' = n \times t_r\) nouveaux individus à partir de deux parents à chaque fois.
+									Les deux parents sont sélectionnés selon leur rang. On applique un opérateur de croisement
+									pour obtenir une troisième solution. Cette solution a une probabilité \(t_l\) de subir une
+									recherche locale par recuit simulé avec les paramètres \(r_{tmp}\) et \(r_{fin}\) et une probabilité
+									\(t_m\) de subir une mutation par opérateur de voisinage.
+								\item Les \(n'\) nouveaux individus remplacement les \(n' - D\) pire individus de la génération précédente.
+							\end{itemize}
+						\item On élémine des sous-ensembles de la meilleure solution trouvée en lançant la procédure vorace pondérée limitée
+							aux sous-ensembles choisis par la solution.
+						\item On retourne cette solution.
+					\end{itemize}
+
+					L'opérateur de croisement implémenté consiste à résoudre le problème de façon vorace à l'aide de la méthode vorace pondérée
+					sur les sous-ensembles choisis par les deux solutions à croiser uniquement.
+
 		\subsection{Analyse des méthodes approchées appliquées aux problèmes d'OR-Library}
 			\paragraph*{}
-				TODO
+				Pour évaluer les méthodes approchées dévelppées, nous avons utiliser les problèmes d'OR-Library.
+				Plus précisément, nous avons pris une instance de chaque groupe dont nous connaissons la solution optimale~: A.1, B.1, C.1., D.1, 4.1, 5.1.
+				De plus, nous avons également pris une instance d'un groupe dont nous ne connaissons pas la solution optimale~: 6.1.
+
+			\paragraph*{}
+				Pour l'ajustement des paramètres des méta-heuristiques nous avons décidé d'utiliser un logiciel d'optimisation par boîte noire.
+				Pour cela, il faut transformer le programme en boîte noire.
+				C'est-à-dire que nous avons fait une version qui prend en argument les paramètres que l'on souhaite déterminer, et
+				qui retourne seulement le résultat de la fonction objectif.
+
+			\paragraph*{}
+				Les paramètres que l'on souhaite optimiser sont~:
+				\begin{itemize}
+					\item Pour le recuit simulé~:
+						\begin{itemize}
+							\item la température initiale
+							\item la température finale
+						\end{itemize}
+					\item Pour l'algorithme génétique~:
+						\begin{itemize}
+							\item la taille de la population
+							\item le taux de remplacement
+							\item le taux de mutations
+							\item le taux de recherche locale par recuit simulé
+							\item le nombre d'itérations par recuit simulé
+							\item la température initiale du recuit simulé
+						\end{itemize}
+				\end{itemize}
+
+			\paragraph*{}
+				Nous utilisons l'algorithme de Mesh Adaptive Directed Search avec le logiciel NOMAD\footnote{{https://sourceforge.net/projects/nomad-bb-opt/}}
+				pour chacun des problèmes proposés.
+				Il faut noter que NOMAD fonctionne autant avec des boîtes noires déterministes qu'avec des boite non-déterministes.
+				Il nous semble donc bien adapté à la situation.
+
+			\paragraph*{}
+				Pour l'algorithme génétique, nous avons configuré NOMAD pour effectuer 60 évaluations de boîte noire maximum.
+				L'algorithme génétique est réglé pour s'arrêter au bout d'une minute d'exécution (il effectue autant de générations
+				que possible en une minute).
+				Le recuit simulé à été réglé pour effectuer 50 millions d'itérations (environ 3 minutes d'exécution) lors de 20 évaluations de boîte noire (toujours au maximum).
+
+			\paragraph*{}
+				La Table~\ref{table:approached-solutions} montre les résultats obtenus.
+				On constate que le recuit simulé seul n'est pas nécessairement plus efficace que la simple procédure vorace pondérée (mais nécessite un temps
+				de calcul bien plus conséquent). En revanche, l'algorithme génétique permet d'obtenir des solutions de qualité bien plus élevée en moins de temps que
+				le recuit simulé. Toutes les solutions obtenues par l'algorithme génétique ont un pourcentage de différence à l'optimale de moins de \(5\%\).
 
 			\begin{table}[H]
 				\centering
 				\input{tables/orlibrary_scp_approached}
-				\caption{Les solutions obtenues à l'aide des méthodes approchées}
+				\caption{Coût des solutions obtenues à l'aide des méthodes approchées. La valeur entre parenthèses est le pourcentage de différence à l'optimale calculé
+					à partir du ratio \(\frac{r-opt}{opt}\) avec \(r\) le meilleur coût obtenu et \(opt\) le coût optimal.}
 				\label{table:approached-solutions}
 			\end{table}
+
+			\paragraph*{}
+				La Table~\ref{table:genetic-parameters} contient les paramètres ayant permis d'obtenir la ou les solutions de meilleur coût avec l'algorithme génétique.
+				La Table~\ref{table:annealing-parameters} contient ceux du recuit simulé.
 
 			\begin{table}[H]
 				\centering
