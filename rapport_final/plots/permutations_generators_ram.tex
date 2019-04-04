@@ -14,11 +14,11 @@
 			legend pos=north west,
 		},
 	]
-		\addplot[smooth,color=blue,mark=*] table{plots/g1_ram.data};
+		\addplot[smooth,color=blue,mark=square*] table{plots/g1_ram.data};
 		\addlegendentry{G1: ram expensive generator}
 		\addplot[smooth,color=red,mark=*] table{plots/g2_ram.data};
 		\addlegendentry{G2: cpu expensive generator}
-		\addplot[smooth,color=cyan,mark=*] table{plots/g3_ram.data};
+		\addplot[smooth,color=cyan,mark=triangle*] table{plots/g3_ram.data};
 		\addlegendentry{G3: counter generator}
 	\end{axis}
 \end{tikzpicture}%
