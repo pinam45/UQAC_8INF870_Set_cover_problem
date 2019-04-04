@@ -85,6 +85,7 @@ namespace
 
 		// case 1
 		solution.selected_subsets.set(current_bit);
+		solution.cost += solution.problem.subsets_costs[current_bit];
 		solution.compute_cover();
 		if(!solution.cover_all_points)
 		{
@@ -92,7 +93,7 @@ namespace
 		}
 		else
 		{
-			solution.compute_cost();
+			//solution.compute_cost();
 			if(solution.cost > best_solution.cost)
 			{
 				bnb(solution, current_bit + 1, best_solution);
@@ -104,6 +105,7 @@ namespace
 				// adding 1 will increase cost
 				// adding 0 will do nothing
 				solution.selected_subsets.reset(current_bit);
+				solution.cost -= solution.problem.subsets_costs[current_bit];
 				return;
 			}
 		}
