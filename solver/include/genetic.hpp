@@ -1,7 +1,10 @@
 //
-// Created by Benoit Cortier on 3/14/19.
+// Copyright (c) 2019 Maxime Pinard and Benoît Cortier
 //
-
+// Distributed under the MIT license
+// See accompanying file LICENSE or copy at
+// https://opensource.org/licenses/MIT
+//
 #ifndef SCPSOLVER_GENETIC_HPP
 #define SCPSOLVER_GENETIC_HPP
 

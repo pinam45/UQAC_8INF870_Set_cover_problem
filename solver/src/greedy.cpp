@@ -1,11 +1,10 @@
 //
-// Copyright (c) 2019 Maxime Pinard
+// Copyright (c) 2019 Maxime Pinard and Benoît Cortier
 //
 // Distributed under the MIT license
 // See accompanying file LICENSE or copy at
 // https://opensource.org/licenses/MIT
 //
-
 #include <limits>
 
 #include "greedy.hpp"

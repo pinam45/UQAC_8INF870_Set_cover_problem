@@ -1,7 +1,10 @@
 //
-// Created by Benoît Cortier on 3/29/19.
+// Copyright (c) 2019 Maxime Pinard and Benoît Cortier
 //
-
+// Distributed under the MIT license
+// See accompanying file LICENSE or copy at
+// https://opensource.org/licenses/MIT
+//
 #ifndef SCPSOLVER_NOMAD_H
 #define SCPSOLVER_NOMAD_H
 
