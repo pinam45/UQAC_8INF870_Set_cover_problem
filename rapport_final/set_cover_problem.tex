@@ -75,7 +75,7 @@
 		\paragraph*{}
 			Les algorithmes présentés dans cette section utilisent souvent le modèle de la relaxation lagrangienne.
 			Cette relaxation consiste à supprimer des contraintes difficiles en les intégrant dans la fonction objectif en tant que pénalités.
-			Les coefficients appliqués sont dans ce qu'on appelle le « vecteur multiplicateur de lagrange ».~\cite{fisher1985applications}
+			Les coefficients appliqués sont dans ce qu'on appelle le « vecteur multiplicateur de lagrange ».~\cite{fisher1985applications}
 		\subsection{Méthodes exactes}
 			\paragraph*{}
 				La plupart des méthodes exactes les plus efficaces pour résoudre le problème de couverture d'ensemble sont
@@ -114,7 +114,7 @@
 					à un algorithme vorace pour obtenir une solution valide.~\cite{caprara2000algorithms}
 				\paragraph*{}
 					\citeauthor{Beasley1990} a proposé un algorithme qui calcule à chaque itération de l'optimisation par sous-gradient une
-					solution valide de la façon suivante : un ensemble \(S\) est initialisé avec les sous-ensembles sélectionnés
+					solution valide de la façon suivante : un ensemble \(S\) est initialisé avec les sous-ensembles sélectionnés
 					par la solution de la relaxation lagrangienne. Puis, pour chaque point non couvert par \(S\),
 					le sous ensemble avec le coût original le plus faible est ajouté à \(S\). Pour finir, les différents sous-ensembles
 					de \(S\) sont considérés par ordre de coût original décroissant et on enlève le sous-ensemble \(j\) si \(S \backslash \{j\}\)
@@ -125,7 +125,7 @@
 					est générée par un algorithme vorace qui à chaque itération sélectionne aléatoirement un point non couvert
 					et ajoute à la solution le premier sous-ensemble qui couvre ce point. Après cette addition, les colonnes
 					redondantes sont enlevées de la solution, et le processus est continué jusqu'à l'obtention d'une solution valide.
-					Ensuite, on effectue un certain nombre d'itérations de recuit simulé : on choisi un sous-ensemble dans \(S\) aléatoirement
+					Ensuite, on effectue un certain nombre d'itérations de recuit simulé : on choisi un sous-ensemble dans \(S\) aléatoirement
 					et on l'enlève, puis on complète de manière vorace de manière à obtenir une autre solution valide \(S'\). Si \(S'\)
 					est une meilleure solution que \(S\), \(S'\) remplace \(S\), sinon il remplace avec une certaine probabilité qui
 					décroit exponentiellement au fil des itérations.~\cite{jacobs1995lsh}
@@ -134,10 +134,10 @@
 					Premièrement, au lieu de choisir le sous-ensemble à enlever aléatoirement à chaque itération, on ne le fait plus
 					que toutes les trois itérations. Pendant les deux itérations restantes, on choisi simplement le sous-ensemble qui
 					laisse le moins de point non couvert possible. Deuxièmement, pour chaque sous-ensemble \(j\) de la solution,
-					on utilise une liste de « morphs », qui sont tout simplement les autres sous-ensembles « similaires » à \(j\).
+					on utilise une liste de « morphs », qui sont tout simplement les autres sous-ensembles « similaires » à \(j\).
 					Après avoir obtenu la solution partielle et tous les quatre sous-ennsemble ajouté pour la compléter, on itère
 					sur tous les sous-ensembles de la solution partielle courante
-					et on remplace chaque sous ensemble par l'un de ses « morphs » si cela améliore le ratio entre le coût actuel
+					et on remplace chaque sous ensemble par l'un de ses « morphs » si cela améliore le ratio entre le coût actuel
 					et le nombre de point couverts.~\cite{Brusco1999}
 				\paragraph*{}
 					\citeauthor{Afif1995} ont présenté une solution basée sur l'algorithme du flot de Ford-Fulkerson qui est un algorithme
@@ -189,7 +189,7 @@
 				\[\forall i \in M\ ,\sum_{j \in N}{a_{ij}x_i} \ge 1\]
 				Un algorithme évident est de faire deux boucles imbriquées, la première de longueur \(m\) sur les points et la deuxième de longueur \(n\) sur les sous-ensembles. Cet algorithme aurait alors une complexité en \(\mathcal{O}(mn)\). Une première optimisation serait d’arrêter la deuxième boucle au premier sous-ensemble qui couvre le point, cependant nous avons plutôt décider d'adopter une approche qui permet de prendre avantage des processeurs modernes (post-2013).
 			\paragraph*{}
-				En effet les processeurs modernes sont équipés d'instruction SIMD (Single Instruction Multiple Data), on peut notamment penser a l'AVX512 sur les processeurs Intel qui permet de réaliser des opérations sur 512 bits simultanément. Nous avons donc décidé de stocker la matrice d'incidence \(A\) ainsi que le vecteur solution \(x\) sur les bits de types primitifs \Cpp{} afin de pouvoir leur appliquer des opérations simultanément. Nous allons considéré pour les paragraphes suivants un processeur 64 bits standard et le fait que les types primitifs courants sont sur 64 bits (ce qui est une simplification ne prenant pas en compte les possibles optimisations que le compilateur pourrait réaliser).
+				En effet les processeurs modernes sont équipés d'instruction SIMD (Single Instruction Multiple Data), on peut notamment penser à l'AVX512 sur les processeurs Intel qui permet de réaliser des opérations sur 512 bits simultanément. Nous avons donc décidé de stocker la matrice d'incidence \(A\) ainsi que le vecteur solution \(x\) sur les bits de types primitifs \Cpp{} afin de pouvoir leur appliquer des opérations simultanément. Nous allons considérer pour les paragraphes suivants un processeur 64 bits standard et le fait que les types primitifs courants sont sur 64 bits (ce qui est une simplification ne prenant pas en compte les possibles optimisations que le compilateur pourrait réaliser).
 			\paragraph*{}
 				Pour cela nous utilisons une classe \texttt{dynamic\_bitset}\cite{dynamicbitset}, implémentée par un membre du groupe, permettant d'utiliser un bitset dynamique (dont la taille n'est pas connue a la compilation) et d'appliquer toutes les opérations booléennes de façon optimisée en tirant avantage des instructions SIMD du processeur si elles sont présentes. De plus les processeur standards sont aussi équipés d'instructions pour connaitre le nombre de bits à \(1\) et la position du bit de poids le plus faible à \(1\). Cela divise donc au mieux par 64 la complexité du parcourt de \(x\) pour trouver le prochain sous-ensemble inclut dans la solution. Et enfin le fait de stocker \(k\) informations sur \(k\) bits au lieu de \(64k\), permet de faire une bien meilleure utilisation du cache processeur et nous permet de gagner énormément en performances et d'espace mémoire.
 			\paragraph*{}
@@ -205,7 +205,7 @@
 			\begin{figure}[H]
 				\centering%
 				\resizebox{\textwidth}{!}{\includestandalone{./figures/solution_validity_check_function}}%
-				\caption{Vérification de la validité d'une solution avec la représentation a base de bitsets (instance a 5 points et 7 sous-ensembles)}%
+				\caption{Vérification de la validité d'une solution avec la représentation à base de bitsets (instance a 5 points et 7 sous-ensembles)}%
 				\label{fig:solution_validity_check_function}%
 			\end{figure}
 			\paragraph*{}
@@ -217,7 +217,7 @@
 			\paragraph*{}
 				On utilise les groupes d'instances mis a disposition par \citeauthor{OR-Library} dans son regroupement d'instances OR-Library\cite{OR-Library}. Parmis ces instances, celles de 4 à 6 proviennent l'article \citetitle{Balas1980}\cite{Balas1980} de \citeauthor{Balas1980}, celles de A à D proviennent de l'article \citetitle{Beasley1987}\cite{Beasley1987} de \citeauthor{Beasley1987} et celles de E à H proviennent de l'article \citetitle{Beasley1990}\cite{Beasley1990} de \citeauthor{Beasley1990}.
 			\paragraph*{}
-				Toutes les instances du problème de ces groupes on été générées en utilisant le shémas de \citeauthor{Balas1980}\cite{Balas1980} dans lequel le coût \(c_i\) de chaque colonne \(i\) est pris aléatoirement dans l'intervalle \(\llbracket0,100\rrbracket\), chaque colonne couvre au moins une ligne et chaque ligne est couverte par au moins deux colonnes.
+				Toutes les instances du problème de ces groupes ont été générées en utilisant le shémas de \citeauthor{Balas1980}\cite{Balas1980} dans lequel le coût \(c_i\) de chaque colonne \(i\) est pris aléatoirement dans l'intervalle \(\llbracket0,100\rrbracket\), chaque colonne couvre au moins une ligne et chaque ligne est couverte par au moins deux colonnes.
 			\paragraph*{}
 			   Les propriétés de ces groupes d'instances sont décrites dans la table \ref{table:scp_problem_sets}, la densitée étant la proportion de \(1\) dans la matrice \(a_{i,j}\). La table \ref{table:orlibrary_scp_problems_optimal_solutions}, contient les valeurs optimales pour les problèmes pour lesquels elle est connue.
 			\begin{table}[H]
@@ -267,7 +267,7 @@
 	\section{Méthodes exactes}
 		\subsection{Recherche exhaustive}
 			\paragraph*{}
-				La méthode exacte la plus simple est encore la recherche exhaustive, dans notre cas, cela consiste à tester toutes les valeurs possibles du vecteur de solution \(x\). Ce vecteur étant un vecteur booléen, il y a \(2^n\) possibilités pour un vecteur de taille \(n\) qui correspond a un problème de taille \(n\).
+				La méthode exacte la plus simple est encore la recherche exhaustive, dans notre cas, cela consiste à tester toutes les valeurs possibles du vecteur de solution \(x\). Ce vecteur étant un vecteur booléen, il y a \(2^n\) possibilités pour un vecteur de taille \(n\) qui correspond à un problème de taille \(n\).
 			\paragraph*{}
 				Pour le SCP simple, il n'est pas nécessaire de tester toutes les permutations possibles, il suffit de commencer par les permutations de 1 bit, puis 2,3\ldots et dès que la permutation est une solution valide, cette dernière est la solution optimale puisque la première valide en le moins de sous-ensembles possibles.
 			\paragraph*{}
@@ -293,9 +293,9 @@
 			\paragraph*{}
 				Nous avons donc réalisé un générateur G2 qui ne nécessite pas de stocker les permutation des génération précédentes mais va les construires dynamiquement au fil de la génération des \(P_i^n\), ce générateur est donc bien moins performant (voir figure \ref{figure:plots/permutations_generators_time}) mais a l'avantage de ne pas consommer excessivement de RAM (voir figure \ref{figure:permutations_generators_ram}). Le générateur G2 peut générer les \(P_i^n\) jusqu'à \(n = 32\) en moins d'une heure, ce qui est bien loin d’être suffisant pour des grandes instances tels que celles de OR-Library.
 			\paragraph*{}
-				Les générateurs G1 et G2 génèrent les permutations de 1 bit, puis 2,3\ldots afin d’être efficace pour le SCP simple mais il est possible de générer ces permutations de façon plus efficace si on ne restreint pas l'ordre de génération. Nous avons donc codé un générateur G3 qui est plus performant que G1 et G2 mais ne garanti pas un ordre croissant sur le nombre de bits a \(1\). G3 est donc moins performant que G1 et G2 pour le SCP mais plus performant pour le WSCP.
+				Les générateurs G1 et G2 génèrent les permutations de 1 bit, puis 2,3\ldots afin d’être efficace pour le SCP simple mais il est possible de générer ces permutations de façon plus efficace si on ne restreint pas l'ordre de génération. Nous avons donc codé un générateur G3 qui est plus performant que G1 et G2 mais ne garantit pas un ordre croissant sur le nombre de bits a \(1\). G3 est donc moins performant que G1 et G2 pour le SCP mais plus performant pour le WSCP.
 			\paragraph*{}
-				Le générateur G3 génère les permutations en considérant le bitset comme la représentation binaire d'un nombre, il suffit de commencer a 0 et d'incrémenter le nombre représenté jusqu'à retourner a 0 pour être passé par toutes les valeurs représentables sur \(n\) bits et donc toutes les permutations. L'algorithme consiste donc à appliquer successivement l'algorithme d'incrément binaire qui commence par le bit de poids le plus faible et remonte les bits en transformant les \(1\) en \(0\) jusqu’à arriver a la fin du bitset ou a un \(0\) qu'il transforme en \(1\).
+				Le générateur G3 génère les permutations en considérant le bitset comme la représentation binaire d'un nombre, il suffit de commencer a 0 et d'incrémenter le nombre représenté jusqu'à retourner a 0 pour être passé par toutes les valeurs représentables sur \(n\) bits et donc toutes les permutations. L'algorithme consiste donc à appliquer successivement l'algorithme d'incrément binaire qui commence par le bit de poids le plus faible et remonte les bits en transformant les \(1\) en \(0\) jusqu’à arriver à la fin du bitset ou à un \(0\) qu'il transforme en \(1\).
 			\paragraph*{}
 				Les 3 générateurs réalisent (en pire cas pour G3) \(\mathcal{O}(n)\) opérations pour générer chaque permutation, la complexité des 3 générateurs pour générer les \(2^n\) permutations est donc en \(\mathcal{O}(n2^n)\). Pour les comparer, on réalise donc une étude empirique dont les résultats sont visibles sur les graphiques de la figure \ref{figure:plots/permutations_generators_time}. Comme prévu, le générateur G3 est le plus performant, cependant il n'est pas adapté pour le SCP simple.
 			\begin{figure}[H]
@@ -327,13 +327,13 @@
 			\paragraph*{}
 				La borne utilisée pour couper des branches de l'arbre est une borne maximum sur le coût de la solution. Cette borne est initialisée avec le coût de la solution trouvée par l'algorithme vorace pondéré (weighted greedy) qui sera présenté dans la section \ref{sec:approx-greedy}. Cette solution initiale est aussi utilisée comme solution optimale potentielle initiale.
 			\paragraph*{}
-				A chaque noeud de l'arbre la solution est évaluée, si cette dernière a une évaluation plus grande que la borne, la branche est coupé, ajouter des sous-ensembles à la solution ne pouvant qu'augmenter son coût qui dépasse déjà celui de la borne. Si elle a une évaluation plus faible que la borne, si la solution n'est pas valide, l'algorithme continue, peut-être en ajoutant plus de sous-ensemble cela arrivera à une solution valide avec un coût toujours inférieur a la borne, si la solution est valide, son coût devient la nouvelle borne et la solution devient la nouvelle solution optimale potentielle.
+				A chaque noeud de l'arbre la solution est évaluée, si cette dernière a une évaluation plus grande que la borne, la branche est coupée, ajouter des sous-ensembles à la solution ne pouvant qu'augmenter son coût qui dépasse déjà celui de la borne. Si elle a une évaluation plus faible que la borne, si la solution n'est pas valide, l'algorithme continue, peut-être en ajoutant plus de sous-ensemble cela arrivera à une solution valide avec un coût toujours inférieur a la borne, si la solution est valide, son coût devient la nouvelle borne et la solution devient la nouvelle solution optimale potentielle.
 			\paragraph*{}
-				La complexité moyenne d'un Branch-and-Bound est très dure a évaluer mais on peut au moins être sur que dans le pire cas la complexité est égale a celle de la recherche exhaustive et est donc en \(\mathcal{O}(n2^n)\). Nous avons donc réalisé une étude empirique afin d'avoir une idée de l'amélioration apportée par le Branch-and-Bound par rapport à la recherche exhaustive. Nous avons donc mesuré le temps de résolution de la recherche exhaustive avec le générateur G3 (le plus rapide) ainsi que avec le Branch-and-Bound, les résultats sont visibles sur les graphiques de la figure \ref{figure:plots/exhaustive_bnb_time}.
+				La complexité moyenne d'un Branch-and-Bound est très dure à évaluer mais on peut au moins être sûr que dans le pire cas la complexité est égale à celle de la recherche exhaustive et est donc en \(\mathcal{O}(n2^n)\). Nous avons donc réalisé une étude empirique afin d'avoir une idée de l'amélioration apportée par le Branch-and-Bound par rapport à la recherche exhaustive. Nous avons donc mesuré le temps de résolution de la recherche exhaustive avec le générateur G3 (le plus rapide) ainsi que avec le Branch-and-Bound, les résultats sont visibles sur les graphiques de la figure \ref{figure:plots/exhaustive_bnb_time}.
 			\paragraph*{}
-				Les résolutions on été réalisées sur les instances de problèmes que nous avons généré (voir section \ref{sec:generated-instances}) de la plus petite à la plus grande en arrêtant la résolution au bout d'une heure si cette dernière n'était pas terminée (donnant des points de discontinuité dans les graphiques de la figure \ref{figure:plots/exhaustive_bnb_time}). C'est aussi lors de cette étude que le Branch-and-Bound nous a donné les résultats exacts présentés dans la section \ref{sec:generated-instances}, les résultats manquant étant ceux des instances pour lequel 1 heure n'a pas suffit à les résoudre.
+				Les résolutions ont été réalisées sur les instances de problèmes que nous avons généré (voir section \ref{sec:generated-instances}) de la plus petite à la plus grande en arrêtant la résolution au bout d'une heure si cette dernière n'était pas terminée (donnant des points de discontinuité dans les graphiques de la figure \ref{figure:plots/exhaustive_bnb_time}). C'est aussi lors de cette étude que le Branch-and-Bound nous a donné les résultats exacts présentés dans la section \ref{sec:generated-instances}, les résultats manquant étant ceux des instances pour lequel 1 heure n'a pas suffit à les résoudre.
 			\paragraph*{}
-				Les temps de résolution du Branch-and-Bound sont bien meilleurs que ceux de le recherche exhaustive, cependant sa performance dépend des instances et sans une configuration avantageuse, il ne nous sera toujours pas possible de résoudre les instances de OR-Library qui contiennent uniquement des problèmes de taille \(\ge 1000\). Les méthodes exactes atteignant leur limites, ils nous faut donc nous tourner du coté des méthodes approchées.
+				Les temps de résolution du Branch-and-Bound sont bien meilleurs que ceux de le recherche exhaustive, cependant sa performance dépend des instances et sans une configuration avantageuse, il ne nous sera toujours pas possible de résoudre les instances de OR-Library qui contiennent uniquement des problèmes de taille \(\ge 1000\). Les méthodes exactes atteignant leur limites, ils nous faut donc nous tourner du côté des méthodes approchées.
 			\paragraph*{}
 				\hfill{}
 			\begin{figure}[H]
