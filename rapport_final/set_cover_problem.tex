@@ -482,7 +482,7 @@
 				Pour l'algorithme génétique, nous avons configuré NOMAD pour effectuer 60 évaluations de boîte noire maximum.
 				L'algorithme génétique est réglé pour s'arrêter au bout d'une minute d'exécution (il effectue autant de générations
 				que possible en une minute).
-				Le recuit simulé à été réglé pour effectuer 50 millions d'itérations (environ 3 minutes d'exécution) lors de 20 évaluations de boîte noire (toujours au maximum).
+				Le recuit simulé à été réglé pour effectuer 50 millions d'itérations (environ 3 minutes d'exécution) lors de 20 évaluations de boîte noire (toujours au maximum). La solution de départ du recuit est générée aléatoirement.
 
 			\paragraph*{}
 				La Table~\ref{table:approached-solutions} montre les résultats obtenus.
@@ -501,6 +501,8 @@
 			\paragraph*{}
 				La Table~\ref{table:genetic-parameters} contient les paramètres ayant permis d'obtenir la ou les solutions de meilleur coût avec l'algorithme génétique.
 				La Table~\ref{table:annealing-parameters} contient ceux du recuit simulé.
+				Il ne semble pas y avoir d'ensemble de paramètres excellents dans tous les cas et il nous semble difficile
+				de trouver une corrélation entre la structure du problème et les meilleurs paramètres trouvés.
 
 			\begin{table}[H]
 				\centering
