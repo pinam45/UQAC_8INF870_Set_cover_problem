@@ -18,9 +18,9 @@
 		% 	anchor=south east,
 		% 	gray,
 		% ] at (74,0.00000011) {échelle logarithmique en \(y\)};
-		\addplot[smooth,color=blue,mark=square*] table{exhaustive_time.data};
+		\addplot[smooth,color=blue,mark=square*] table{data/exhaustive_time.data};
 		\addlegendentry{Recherche exhaustive (G3)}
-		\addplot[unbounded coords=jump,smooth,color=red,mark=*] table{bnb_time.data};
+		\addplot[unbounded coords=jump,smooth,color=red,mark=*] table{data/bnb_time.data};
 		\addlegendentry{Branch and bound}
 	\end{semilogyaxis}
 \end{tikzpicture}%

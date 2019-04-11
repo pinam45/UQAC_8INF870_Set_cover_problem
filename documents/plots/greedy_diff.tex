@@ -13,9 +13,9 @@
 			legend pos=north west,
 		},
 	]
-		\addplot[unbounded coords=jump,smooth,color=blue,mark=square*] table{ugreedy_diff.data};
+		\addplot[unbounded coords=jump,smooth,color=blue,mark=square*] table{data/ugreedy_diff.data};
 		\addlegendentry{Unweighted Greedy}
-		\addplot[unbounded coords=jump,smooth,color=red,mark=*] table{wgreedy_diff.data};
+		\addplot[unbounded coords=jump,smooth,color=red,mark=*] table{data/wgreedy_diff.data};
 		\addlegendentry{Weighted Greedy}
 	\end{axis}
 \end{tikzpicture}%

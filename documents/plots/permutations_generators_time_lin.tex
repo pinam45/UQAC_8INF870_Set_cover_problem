@@ -13,9 +13,9 @@
 			legend pos=north west,
 		},
 	]
-		\addplot[smooth,color=blue,mark=square*] table{g1_time.data};
+		\addplot[smooth,color=blue,mark=square*] table{data/g1_time.data};
 		\addlegendentry{G1: ram expensive generator}
-		\addplot[smooth,color=red,mark=*] table{g2_time.data};
+		\addplot[smooth,color=red,mark=*] table{data/g2_time.data};
 		\addlegendentry{G2: cpu expensive generator}
 		% \addplot[
 		% 	green,
@@ -23,7 +23,7 @@
 		% 	samples=330,
 		% ]{1.556624216*10^(-7) * e^(7.298880681*10^(-1)*x)};
 		% \addlegendentry{\(1.556624216.10^{-7}e^{7.298880681.10^{-1}x}\)}
-		\addplot[smooth,color=cyan,mark=triangle*] table{g3_time.data};
+		\addplot[smooth,color=cyan,mark=triangle*] table{data/g3_time.data};
 		\addlegendentry{G3: counter generator}
 		\addplot[
 			green,
