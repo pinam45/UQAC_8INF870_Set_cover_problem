@@ -56,7 +56,7 @@
 			La solution optimale à cette instance est la sous famille \(S'=\{s_3, s_4, s_5\}\) (colorée en gris sur la figure \ref{fig:example}).
 		\begin{figure}[H]
 			\centering%
-			\includegraphics[width=0.65\linewidth]{figures/example}%
+			\includegraphics[width=0.65\linewidth]{scp_example}%
 			\caption{Exemple d'instance du Set Cover Problem et solution optimale\cite{Mount2017}}%
 			\label{fig:example}%
 		\end{figure}
@@ -202,7 +202,7 @@
 				La matrice d'incidence \(A\) devient donc un vecteur de \(n\) bitsets de taille \(m\), un par sous-ensemble et le vecteur solution \(x\) devient un bitset de taille \(n\). La figure \ref{fig:representation_to_bitsets} illustre ce passage pour une instance a 5 points et 7 sous-ensembles.
 			\begin{figure}[H]
 				\centering%
-				\resizebox{0.8\textwidth}{!}{\includestandalone{./figures/representation_to_bitsets}}%
+				\resizebox{0.8\textwidth}{!}{\includestandalone{../figures/representation_to_bitsets}}%
 				\caption{Passage de la représentation mathématique aux bitsets (instance a 5 points et 7 sous-ensembles)}%
 				\label{fig:representation_to_bitsets}%
 			\end{figure}
@@ -210,7 +210,7 @@
 				Avec une telle représentation, la vérification de la validité d'une solution peut se faire efficacement en réalisant une opération booléenne \textit{OR} sur tous les bitsets \(S_i\) pour lesquels \(x_1\) est à \(1\) et en vérifiant que le bitset résultat de cette opération a tous ses bits à \(1\). La figure \ref{fig:solution_validity_check_function} représente cette opération.
 			\begin{figure}[H]
 				\centering%
-				\resizebox{\textwidth}{!}{\includestandalone{./figures/solution_validity_check_function}}%
+				\resizebox{\textwidth}{!}{\includestandalone{../figures/solution_validity_check_function}}%
 				\caption{Vérification de la validité d'une solution avec la représentation à base de bitsets (instance a 5 points et 7 sous-ensembles)}%
 				\label{fig:solution_validity_check_function}%
 			\end{figure}
@@ -284,7 +284,7 @@
 				Le générateur G1 génère donc les \(P_i^n\) pour \(i \in \llbracket 0, n \rrbracket\) en générant successivement les \(P_i^t\) pour \(t\in \llbracket 1, n \rrbracket\) en utilisant les \(P_i^t\) de la génération précédente comme représenté sur la figure \ref{fig:g1_permutations}.
 			\begin{figure}[H]
 				\centering%
-				\resizebox{0.4\textwidth}{!}{\includestandalone{./figures/g1_permutations}}%
+				\resizebox{0.4\textwidth}{!}{\includestandalone{../figures/g1_permutations}}%
 				\caption{Méthode de génération des \(\forall i \in \llbracket 0, n \rrbracket,\ P_i^n\) du générateur G1}%
 				\label{fig:g1_permutations}%
 			\end{figure}
@@ -326,7 +326,7 @@
 			\paragraph*{}
 			\begin{figure}[H]
 				\centering%
-				\resizebox{0.75\textwidth}{!}{\includestandalone{./figures/bnb}}%
+				\resizebox{0.75\textwidth}{!}{\includestandalone{../figures/bnb}}%
 				\caption{Arbre parcourut par la Branch-and-Bound (ici sans coupures) pour un bitset de taille 3}%
 				\label{fig:bnb}%
 			\end{figure}
