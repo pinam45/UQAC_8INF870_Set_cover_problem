@@ -1,4 +1,3 @@
-%!TEX root = ../set_cover_problem.tex
 \begin{tikzpicture}
 	\begin{axis}[
 		width=\linewidth,
@@ -14,9 +13,9 @@
 			legend pos=north east,
 		},
 	]
-		\addplot[smooth,color=blue,mark=square*] table{plots/exhaustive_time.data};
+		\addplot[smooth,color=blue,mark=square*] table{exhaustive_time.data};
 		\addlegendentry{Recherche exhaustive (G3)}
-		\addplot[unbounded coords=jump,smooth,color=red,mark=*] table{plots/bnb_time.data};
+		\addplot[unbounded coords=jump,smooth,color=red,mark=*] table{bnb_time.data};
 		\addlegendentry{Branch and bound}
 	\end{axis}
 \end{tikzpicture}%

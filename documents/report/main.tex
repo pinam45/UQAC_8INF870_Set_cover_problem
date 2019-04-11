@@ -292,7 +292,7 @@
 				Le problème avec générateur G1 est qu'il a besoin de stocker toutes les permutations de la génération précédente pour générer la suivante or le nombre de permutations augmente en \(2^n\) et son utilisation de RAM pour stocker les permutations dépasse les 8Go pour générer les permutations sur un bitset de taille 27 (voir figure \ref{figure:permutations_generators_ram}).
 			\begin{figure}[H]
 				\centering
-				\input{plots/permutations_generators_ram}%
+				\input{../plots/permutations_generators_ram}%
 				\caption{Utilisation de la RAM par les générateurs de permutations}
 				\label{figure:permutations_generators_ram}
 			\end{figure}
@@ -306,8 +306,8 @@
 				Les 3 générateurs réalisent (en pire cas pour G3) \(\mathcal{O}(n)\) opérations pour générer chaque permutation, la complexité des 3 générateurs pour générer les \(2^n\) permutations est donc en \(\mathcal{O}(n2^n)\). Pour les comparer, on réalise donc une étude empirique dont les résultats sont visibles sur les graphiques de la figure \ref{figure:plots/permutations_generators_time}. Comme prévu, le générateur G3 est le plus performant, cependant il n'est pas adapté pour le SCP simple.
 			\begin{figure}[H]
 				\centering
-				\input{plots/permutations_generators_time_lin}\\
-				\input{plots/permutations_generators_time_log}%
+				\input{../plots/permutations_generators_time_lin}\\
+				\input{../plots/permutations_generators_time_log}%
 				\caption{Temps nécessaire pour générer toutes les permutations d'un bitset}
 				\label{figure:plots/permutations_generators_time}
 			\end{figure}
@@ -344,8 +344,8 @@
 				\hfill{}
 			\begin{figure}[H]
 				\centering
-				\input{plots/exhaustive_bnb_time_lin}\\
-				\input{plots/exhaustive_bnb_time_log}%
+				\input{../plots/exhaustive_bnb_time_lin}\\
+				\input{../plots/exhaustive_bnb_time_log}%
 				\caption{Temps nécéssaire pour résoudre un problème pour la recherche exhaustive et le Branch and bound (les résolutions trop longues ont été arrêtées après 1h d'éxécution et leurs valeurs ne sont pas représentées)}
 				\label{figure:plots/exhaustive_bnb_time}
 			\end{figure}
@@ -385,7 +385,7 @@
 
 			\begin{figure}[H]
 				\centering
-				\input{plots/greedy_diff.tex}\\
+				\input{../plots/greedy_diff.tex}\\
 				\caption{}
 				\label{fig:plots/greedy-diff}
 			\end{figure}
