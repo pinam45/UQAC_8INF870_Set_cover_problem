@@ -1,0 +1,146 @@
+%!TEX program = lualatex
+
+\PassOptionsToPackage{french}{babel}
+\PassOptionsToPackage{french}{translator}
+\PassOptionsToPackage{table,svgnames}{xcolor}
+\documentclass[aspectratio=169,11pt]{beamer}
+
+%----------------------------------------
+% Packages
+%----------------------------------------
+\usepackage{etoolbox}
+\usepackage{ifxetex}
+\usepackage{ifluatex}
+\usepackage[T1]{fontenc}
+\ifboolexpr{bool{xetex} or bool{luatex}}{%
+	\usepackage{fontspec}
+}{%
+	\usepackage[utf8]{inputenc}
+}
+\usepackage{babel}
+\usepackage{translator}
+\usepackage{lmodern}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{dsfont}
+\usepackage{braket}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage[justification=centering]{caption}
+\usepackage{float}
+\usepackage[mode=tex]{standalone}
+\usepackage{pgf}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usepackage{tikz}
+\usepackage{tikzpeople}
+\usepackage[backend=bibtex,bibstyle=ieee,citestyle=numeric-comp]{biblatex}
+
+%----------------------------------------
+% Theme
+%----------------------------------------
+
+\usetheme[nofirafonts,numbering=progressbar]{focus}
+% \usetheme[numbering=fullbar]{focus}
+% \usetheme[numbering=none]{focus}
+% \definecolor{main}{RGB}{92, 138, 168}
+% \definecolor{background}{RGB}{240, 247, 255}
+
+% remove navigation symbols.
+\beamertemplatenavigationsymbolsempty{}
+
+%\setbeamercovered{transparent}
+
+%----------------------------------------
+% Informations
+%----------------------------------------
+
+\title{Set Cover Problem}
+\subtitle{}
+\author{Benoît Cortier\\Maxime Pinard}
+\institute[UQAC]{Université du Québec à Chicoutimi\\555 Boulevard de l'Université, Chicoutimi, QC G7H 2B1}
+\date[18/04/2019]{18 Avril 2019}
+
+%\keywords{}
+\subject{Set Cover Problem}
+%\logo{\includegraphics[width=0.12\textwidth]{logos/UQAC}}
+
+%----------------------------------------
+% Bibliography
+%----------------------------------------
+
+\bibliography{../references}
+\nocite{*}
+
+%----------------------------------------
+% Figures
+%----------------------------------------
+
+% Common file
+\input{../figures/figures_common}
+
+% Figures folder
+\graphicspath{{../figures/}}
+
+%----------------------------------------
+% Tables
+%----------------------------------------
+
+% Common file
+\input{../tables/tables_common}
+
+%----------------------------------------
+% Plots
+%----------------------------------------
+
+\pgfplotsset{
+	table/search path={../plots},
+}
+
+%----------------------------------------
+% Document
+%----------------------------------------
+\begin{document}
+	\begin{frame}
+		\titlepage
+	\end{frame}
+	% \begin{frame}{Sommaire}
+	% 	\tableofcontents
+	% \end{frame}
+	\begin{frame}
+		\centering TODO
+	\end{frame}
+	\begin{frame}
+		\frametitle{Exemple: figure}
+		\centering
+		\includegraphics[width=0.75\linewidth]{scp_example}%
+	\end{frame}
+	\begin{frame}
+		\frametitle{Exemple: table}
+		{
+			\centering
+			\footnotesize
+			\input{../tables/orlibrary_scp_problem_sets}
+		}
+	\end{frame}
+	\begin{frame}
+		\frametitle{Exemple: plot}
+		\centering
+		\input{../plots/permutations_generators_ram}%
+	\end{frame}
+	\section*{Questions?}
+		\begin{frame}[focus]
+			Questions?
+		\end{frame}
+	\appendix
+		\begin{frame}[t,allowframebreaks]
+			\frametitle{Références}
+			\printbibliography[heading=bibintoc]{}
+		\end{frame}
+\end{document}
