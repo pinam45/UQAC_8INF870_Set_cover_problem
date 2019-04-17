@@ -26,6 +26,10 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{mathrsfs}
+\usepackage{amsthm}
+\usepackage{dsfont}
+\usepackage{braket}
+\usepackage{stmaryrd}
 \usepackage{blkarray}
 \usepackage{dsfont}
 \usepackage{braket}
@@ -319,12 +323,6 @@
 		\end{block}
 	\end{frame}
 
-	%% représentation du problème
-
-	\begin{frame}
-		\centering TODO
-	\end{frame}
-
 	%% Instances de problèmes
 
 	\begin{frame}
@@ -342,6 +340,16 @@
 			\resizebox{\linewidth}{!}{\input{../tables/orlibrary_scp_problems_optimal_solutions_2}}%
 		\end{minipage}
 		\hfill\hspace{0pt}
+	\end{frame}
+	\begin{frame}
+		\frametitle{Règles de génération des problèmes}
+		\begin{block}{Shémas de \citeauthor{Balas1980}}
+			\begin{itemize}
+				\item Le coût \(c_i\) de chaque colonne \(i\) est pris aléatoirement dans l'intervalle \(\llbracket0,100\rrbracket\)
+				\item Chaque colonne couvre au moins une ligne et chaque ligne
+				\item Chaque ligne est couverte par au moins deux colonnes
+			\end{itemize}
+		\end{block}
 	\end{frame}
 	\begin{frame}
 		\frametitle{Problèmes générés}
