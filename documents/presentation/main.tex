@@ -142,43 +142,49 @@
 	\begin{frame}
 		\frametitle{Réductions de Karp}
 		\centering
-		\includegraphics[width=\linewidth]{karp_reduction_tree}%
+		\includegraphics[width=0.85\linewidth]{karp_reduction_tree}%
 	\end{frame}
 
 	%% état de l'art
 
 	\begin{frame}
 		\frametitle{État de l'art}
-		Méthodes exactes~:
-		\begin{itemize}
-			\item le plus efficace~: méthodes branch-and-bound en calculant les bornes inférieures à l'aide d'une relaxation du problème en programmation linéaire.~\cite{caprara2000algorithms}
-			\item Algorithme de \citeauthor{Beasley1987}: le nœud racine utilise la solution du programme linéaire relaxé, puis les bornes inférieures sont calculées à l'aide de la relaxation lagrangienne.~\cite{Beasley1987}
-		\end{itemize}
-		Méthodes approchées voraces~:
-		\begin{itemize}
-			\item L'algorithme vorace standard de \citeauthor{Johnson:1973:AAC:800125.804034} pour le problème de couverture d'ensemble non pondéré. L'algorithme prend simplement le sous-ensemble qui couvre le plus d'éléments à chaque étape jusqu'à obtenir une solution valide. Complexité en \(O(mn)\).~\cite{Johnson:1973:AAC:800125.804034}
-			\item \citeauthor{Goldschmidt:1993:MGH:177276.177287}: méthode où l'on applique des
-				algorithmes approchés et exacts.
-				On utilise l'algorithme vorace de Johnson jusqu'à obtenir une taille maximale de 2.
-				On peut trouver la solution optimale pour une taille maximale de 2 en un temps linéaire.~\cite{Goldschmidt:1993:MGH:177276.177287}
-		\end{itemize}
+		\begin{block}{Méthodes exactes}
+			\begin{itemize}
+				\item le plus efficace: méthodes branch-and-bound en calculant les bornes inférieures à l'aide d'une relaxation du problème en programmation linéaire.~\cite{caprara2000algorithms}
+				\item Algorithme de \citeauthor{Beasley1987}: le nœud racine utilise la solution du programme linéaire relaxé, puis les bornes inférieures sont calculées à l'aide de la relaxation lagrangienne.~\cite{Beasley1987}
+			\end{itemize}
+		\end{block}
+	\end{frame}
+	\begin{frame}
+		\frametitle{État de l'art}
+		\begin{block}{Méthodes approchées voraces}
+			\begin{itemize}
+				\item L'algorithme vorace standard de \citeauthor{Johnson:1973:AAC:800125.804034} pour le problème de couverture d'ensemble non pondéré. L'algorithme prend simplement le sous-ensemble qui couvre le plus d'éléments à chaque étape jusqu'à obtenir une solution valide. Complexité en \(O(mn)\).~\cite{Johnson:1973:AAC:800125.804034}
+				\item \citeauthor{Goldschmidt:1993:MGH:177276.177287}: méthode où l'on applique des
+					algorithmes approchés et exacts.
+					On utilise l'algorithme vorace de Johnson jusqu'à obtenir une taille maximale de 2.
+					On peut trouver la solution optimale pour une taille maximale de 2 en un temps linéaire.~\cite{Goldschmidt:1993:MGH:177276.177287}
+			\end{itemize}
+		\end{block}
 	\end{frame}
 
 	\begin{frame}
 		\frametitle{État de l'art}
-		Méthodes approchées métaheuristiques~:
-		\begin{itemize}
-			\item \citeauthor{Beasley1990}: à chaque itération d'un gradient~: un ensemble \(S\) est initialisé avec les sous-ensembles sélectionnés par la solution de la relaxation lagrangienne. Puis, pour chaque point non couvert par \(S\), le sous ensemble avec le coût original le plus faible est ajouté à \(S\). Pour finir, les différents sous-ensembles de \(S\) sont considérés par ordre de coût original décroissant et on enlève le sous-ensemble \(j\) si \(S \backslash \{j\}\) est toujours une solution valide.~\cite{Beasley1990}	
-			\item \citeauthor{jacobs1995lsh}: approche basée sur le recuit simulé.~\cite{jacobs1995lsh}
-				\begin{itemize}
-					\item Solution initiale \(S\) est générée par un algorithme vorace.
-					\item On execute un certain nombre d'itérations de recuit simulé~:
-					on choisi un sous-ensemble dans \(S\) aléatoirement
-					et on l'enlève, puis on complète de manière vorace de manière à obtenir une autre solution valide \(S'\).
-					\item On décide si on garde ou non \(S'\).
-				\end{itemize}
-			\item \citeauthor{Afif1995}: méthode basée sur l'algorithme du flot de Ford-Fulkerson \(\rightarrow\) temps polynomial. Il s'agit d'effectuer une transformation du problème en un graphe de flot à résoudre par une variante de l'algorithme.~\cite{Afif1995}
-		\end{itemize}
+		\begin{block}{Méthodes approchées métaheuristiques}
+			\begin{itemize}
+				\item \citeauthor{Beasley1990}: à chaque itération d'un gradient: un ensemble \(S\) est initialisé avec les sous-ensembles sélectionnés par la solution de la relaxation lagrangienne. Puis, pour chaque point non couvert par \(S\), le sous ensemble avec le coût original le plus faible est ajouté à \(S\). Pour finir, les différents sous-ensembles de \(S\) sont considérés par ordre de coût original décroissant et on enlève le sous-ensemble \(j\) si \(S \backslash \{j\}\) est toujours une solution valide.~\cite{Beasley1990}	
+				\item \citeauthor{jacobs1995lsh}: approche basée sur le recuit simulé.~\cite{jacobs1995lsh}
+					\begin{itemize}
+						\item Solution initiale \(S\) est générée par un algorithme vorace.
+						\item On execute un certain nombre d'itérations de recuit simulé:
+						on choisi un sous-ensemble dans \(S\) aléatoirement
+						et on l'enlève, puis on complète de manière vorace de manière à obtenir une autre solution valide \(S'\).
+						\item On décide si on garde ou non \(S'\).
+					\end{itemize}
+				\item \citeauthor{Afif1995}: méthode basée sur l'algorithme du flot de Ford-Fulkerson \(\rightarrow\) temps polynomial. Il s'agit d'effectuer une transformation du problème en un graphe de flot à résoudre par une variante de l'algorithme.~\cite{Afif1995}
+			\end{itemize}
+		\end{block}
 	\end{frame}
 
 	%% représentation du problème
@@ -203,7 +209,9 @@
 	\section{Méthodes exactes}
 
 	\begin{frame}
-		\centering TODO
+		\frametitle{Exemple: plot}
+		\centering
+		\input{../plots/permutations_generators_ram}%
 	\end{frame}
 
 	%% méthodes approchées
@@ -211,21 +219,26 @@
 
 	\begin{frame}
 		\frametitle{Méthodes voraces implémentées (non optimales)}
-		\begin{itemize}
-			\item<1-> Méthode vorace non pondérée~: greedy classique de \citeauthor{Johnson:1973:AAC:800125.804034}: sélection de l'ensemble qui couvre le plus de nouveaux points successivement.
-			\item<1->[\(\Rightarrow\)] Problème \emph{A.1} (optimal: \(253\)), on obtient la solution de coût \(1444\).
-			\vfill
-			\item<2-> Méthode vorace pondérée~: greedy basé sur celui de \citeauthor{Johnson:1973:AAC:800125.804034}: on utilise le rapport \(\frac{n}{c}\) avec
-				\begin{itemize}
-					\item \(n\) le nombre de nouveaux points couverts,
-					\item et \(c\) le coût du sous-ensemble.
-				\end{itemize}
-			\item<2->[\(\Rightarrow\)] Problème \emph{A.1} (optimal: \(253\)), on obtient cette fois une solution de coût \(288\).
-		\end{itemize}
+		\begin{block}{Méthode vorace non pondérée}
+			\begin{itemize}
+				\item Greedy classique de \citeauthor{Johnson:1973:AAC:800125.804034}: sélection de l'ensemble qui couvre le plus de nouveaux points successivement.
+				\item[\alert{\(\blacktriangleright\)}]<2-> Problème \emph{A.1} (optimal: \(253\)), on obtient la solution de coût \alert{\(1444\)}.
+			\end{itemize}
+		\end{block}
+		\begin{block}<3->{Méthode vorace pondérée}
+			\begin{itemize}
+				\item Greedy basé sur celui de \citeauthor{Johnson:1973:AAC:800125.804034}: on utilise le rapport \(\frac{n}{c}\) avec
+					\begin{itemize}
+						\item \(n\) le nombre de nouveaux points couverts,
+						\item et \(c\) le coût du sous-ensemble.
+					\end{itemize}
+				\item[\alert{\(\blacktriangleright\)}]<4-> Problème \emph{A.1} (optimal: \(253\)), on obtient cette fois une solution de coût \alert{\(288\)}.
+			\end{itemize}
+		\end{block}
 	\end{frame}
 
 	\begin{frame}
-		\frametitle{Comparaison des méthodes voraces}
+		%\frametitle{Comparaison des méthodes voraces}
 		\centering
 		\input{../plots/greedy_diff.tex}
 	\end{frame}
@@ -277,23 +290,36 @@
 
 	\begin{frame}
 		\frametitle{Évaluation des méthodes présentées}
-		\begin{itemize}
-			\item Instances d'OR-Library utilisées~:
-				(avec solution optimale) A.1, B.1, C.1., D.1, 4.1, 5.1
-				+ (sans solution optimale) 6.1.
-			\vfill
-			\item<2-> Ajustement des paramètres par optimisation de boîte noire~:
-				\begin{itemize}
-					\item Algorithme de Mesh Adaptive Directed Search avec le logiciel NOMAD\footnote{{https://sourceforge.net/projects/nomad-bb-opt/}}
-					\item Fonctionne autant avec des boîtes noires déterministes qu'avec des boite non-déterministes.
-				\end{itemize}
-			\vfill
-			\item<3-> Configuration~:
-				\begin{itemize}
-					\item Algorithme génétique~: 60 évaluations de boîte noire maximum. L'évaluation dure une minute: on effectue autant de générations que possible durant le temps imparti.
-					\item Recuit simulé~: 20 évaluations de boîte noire maximum. \(50 000 000\) d'itérations (~ 3 minutes). Solution de départ générée aléatoirement.
-				\end{itemize}
-		\end{itemize}
+		\begin{block}{Instances d'OR-Library utilisées}
+			\begin{itemize}
+				\item avec solution optimale: A.1, B.1, C.1., D.1, 4.1, 5.1
+				\item sans solution optimale: 6.1.
+			\end{itemize}
+		\end{block}
+		\begin{block}<2->{Ajustement des paramètres par optimisation de boîte noire}
+			\begin{itemize}
+				\item Algorithme de Mesh Adaptive Directed Search avec le logiciel NOMAD\footnote{{https://sourceforge.net/projects/nomad-bb-opt/}}
+				\item Fonctionne autant avec des boîtes noires déterministes qu'avec des boite non-déterministes.
+			\end{itemize}
+		\end{block}
+	\end{frame}
+	\begin{frame}
+		\frametitle{Évaluation des méthodes présentées}
+		\begin{block}{Configuration}
+			\begin{itemize}
+				\item Algorithme génétique:
+					\begin{itemize}
+						\item 60 évaluations de boîte noire maximum
+						\item l'évaluation dure une minute: on effectue autant de générations que possible durant le temps imparti
+					\end{itemize}
+				\item Recuit simulé:
+					\begin{itemize}
+						\item 20 évaluations de boîte noire maximum
+						\item \(50\,000\,000\) d'itérations (3 minutes)
+						\item solution de départ générée aléatoirement
+					\end{itemize}
+			\end{itemize}
+		\end{block}
 	\end{frame}
 
 	\begin{frame}
@@ -302,13 +328,6 @@
 		\input{../tables/orlibrary_scp_approached}
 	\end{frame}
 
-	%%%%%%%%%%%%%%%%%%%%
-
-	\begin{frame}
-		\frametitle{Exemple: plot}
-		\centering
-		\input{../plots/permutations_generators_ram}%
-	\end{frame}
 	\section*{Questions?}
 		\begin{frame}[focus]
 			Questions?
