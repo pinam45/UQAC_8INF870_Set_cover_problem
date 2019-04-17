@@ -293,19 +293,29 @@
 
 	\begin{frame}
 		\frametitle{État de l'art}
-		\begin{block}{Méthodes approchées métaheuristiques}
+		\begin{block}{Méthode approchée métaheuristique: \citeauthor{Beasley1990}}
+			À chaque itération d'un gradient: un ensemble \(S\) est initialisé avec les sous-ensembles sélectionnés par la solution de la relaxation lagrangienne. Puis, pour chaque point non couvert par \(S\), le sous ensemble avec le coût original le plus faible est ajouté à \(S\). Pour finir, les différents sous-ensembles de \(S\) sont considérés par ordre de coût original décroissant et on enlève le sous-ensemble \(j\) si \(S \backslash \{j\}\) est toujours une solution valide.~\cite{Beasley1990}
+		\end{block}
+	\end{frame}
+
+	\begin{frame}
+		\frametitle{État de l'art}
+		\begin{block}{Méthode approchée métaheuristique: \citeauthor{jacobs1995lsh}}
+			Approche basée sur le recuit simulé.~\cite{jacobs1995lsh}
 			\begin{itemize}
-				\item \citeauthor{Beasley1990}: à chaque itération d'un gradient: un ensemble \(S\) est initialisé avec les sous-ensembles sélectionnés par la solution de la relaxation lagrangienne. Puis, pour chaque point non couvert par \(S\), le sous ensemble avec le coût original le plus faible est ajouté à \(S\). Pour finir, les différents sous-ensembles de \(S\) sont considérés par ordre de coût original décroissant et on enlève le sous-ensemble \(j\) si \(S \backslash \{j\}\) est toujours une solution valide.~\cite{Beasley1990}	
-				\item \citeauthor{jacobs1995lsh}: approche basée sur le recuit simulé.~\cite{jacobs1995lsh}
-					\begin{itemize}
-						\item Solution initiale \(S\) est générée par un algorithme vorace.
-						\item On execute un certain nombre d'itérations de recuit simulé:
-						on choisi un sous-ensemble dans \(S\) aléatoirement
-						et on l'enlève, puis on complète de manière vorace de manière à obtenir une autre solution valide \(S'\).
-						\item On décide si on garde ou non \(S'\).
-					\end{itemize}
-				\item \citeauthor{Afif1995}: méthode basée sur l'algorithme du flot de Ford-Fulkerson \(\rightarrow\) temps polynomial. Il s'agit d'effectuer une transformation du problème en un graphe de flot à résoudre par une variante de l'algorithme.~\cite{Afif1995}
+				\item Solution initiale \(S\) est générée par un algorithme vorace.
+				\item On execute un certain nombre d'itérations de recuit simulé:
+				on choisi un sous-ensemble dans \(S\) aléatoirement
+				et on l'enlève, puis on complète de manière vorace de manière à obtenir une autre solution valide \(S'\).
+				\item On décide si on garde ou non \(S'\).
 			\end{itemize}
+		\end{block}
+	\end{frame}
+
+	\begin{frame}
+		\frametitle{État de l'art}
+		\begin{block}{Méthode approchée métaheuristique: \citeauthor{Afif1995}}
+			Méthode basée sur l'algorithme du flot de Ford-Fulkerson \(\rightarrow\) temps polynomial. Il s'agit d'effectuer une transformation du problème en un graphe de flot à résoudre par une variante de l'algorithme.~\cite{Afif1995}
 		\end{block}
 	\end{frame}
 
