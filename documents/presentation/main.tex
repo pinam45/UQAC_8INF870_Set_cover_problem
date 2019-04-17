@@ -187,43 +187,123 @@
 		\centering TODO
 	\end{frame}
 
+	%% Instances de problèmes
+
+	\begin{frame}
+		\frametitle{OR-Library}
+		\centering TODO
+	\end{frame}
+
+	\begin{frame}
+		\frametitle{Problèmes générés}
+		\centering TODO
+	\end{frame}
+
 	%% méthodes exactes
+	\section{Méthodes exactes}
 
 	\begin{frame}
 		\centering TODO
 	\end{frame}
 
 	%% méthodes approchées
+	\section{Méthodes approchées}
 
 	\begin{frame}
-		\centering TODO
+		\frametitle{Méthodes voraces implémentées (non optimales)}
+		\begin{itemize}
+			\item<1-> Méthode vorace non pondérée~: greedy classique de \citeauthor{Johnson:1973:AAC:800125.804034}: sélection de l'ensemble qui couvre le plus de nouveaux points successivement.
+			\item<1->[\(\Rightarrow\)] Problème \emph{A.1} (optimal: \(253\)), on obtient la solution de coût \(1444\).
+			\vfill
+			\item<2-> Méthode vorace pondérée~: greedy basé sur celui de \citeauthor{Johnson:1973:AAC:800125.804034}: on utilise le rapport \(\frac{n}{c}\) avec
+				\begin{itemize}
+					\item \(n\) le nombre de nouveaux points couverts,
+					\item et \(c\) le coût du sous-ensemble.
+				\end{itemize}
+			\item<2->[\(\Rightarrow\)] Problème \emph{A.1} (optimal: \(253\)), on obtient cette fois une solution de coût \(288\).
+		\end{itemize}
 	\end{frame}
 
-	%% OR-library
+	\begin{frame}
+		\frametitle{Comparaison des méthodes voraces}
+		\centering
+		\input{../plots/greedy_diff.tex}
+	\end{frame}
 
 	\begin{frame}
-		\centering TODO
+		\frametitle{Recuit simulé}
+		\begin{itemize}
+			\item Recuit simulé standard (vu en cours)
+			\item On applique un opérateur de voisinage à chaque itération
+			\item Si cela améliore la solution, on conserve la solution, sinon on on accepte avec une
+				probalité \(e^{\frac{-\Delta}{T}}\) avec \(\Delta\) la différence de coût
+				entre la solution courante et la nouvelle solution et \(T\) la température courante.
+			\item Nous faisons varier la température uniformément entre deux bornes au fil des itérations.
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}
+		\frametitle{Algorithme génétique}
+		\begin{itemize}
+			\item Sélection par rang
+			\item Recherche locale à l'aide du recuit simulé
+			\item Opérateur de croisement: résoudre le problème de façon vorace à l'aide de la méthode vorace pondérée
+				sur les sous-ensembles choisis par les deux solutions à croiser uniquement.
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}
+		\frametitle{Algorithme génétique: procédure}
+		\begin{itemize}
+			\item On commence par générer une population \(P\) de \(n\) individus aléatoirement.
+			\item À chaque itération (ou génération):
+				\begin{itemize}
+					\item On trie les individus par coût décroissant. L'indice d'un individu correspond alors à son rang.
+					\item On supprime les individus on doublon pour favoriser l'exploration. On note \(D\) le nombre de doublons supprimés.
+					\item On créer \(n' = n \times t_r\) nouveaux individus à partir de deux parents à chaque fois.
+						Les deux parents sont sélectionnés selon leur rang. On applique un opérateur de croisement
+						pour obtenir une troisième solution. Cette solution a une probabilité \(t_l\) de subir une
+						recherche locale par recuit simulé avec les paramètres \(r_{tmp}\) et \(r_{fin}\) et une probabilité
+						\(t_m\) de subir une mutation par opérateur de voisinage.
+					\item Les \(n'\) nouveaux individus remplacement les \(n' - D\) pire individus de la génération précédente.
+				\end{itemize}
+			\item On élémine des sous-ensembles de la meilleure solution trouvée en lançant la procédure vorace pondérée limitée
+				aux sous-ensembles choisis par la solution.
+			\item On retourne cette solution.
+		\end{itemize}
 	\end{frame}
 
 	%% comparaison avec les méthodes approchées
 
 	\begin{frame}
-		\centering TODO
+		\frametitle{Évaluation des méthodes présentées}
+		\begin{itemize}
+			\item Instances d'OR-Library utilisées~:
+				(avec solution optimale) A.1, B.1, C.1., D.1, 4.1, 5.1
+				+ (sans solution optimale) 6.1.
+			\vfill
+			\item<2-> Ajustement des paramètres par optimisation de boîte noire~:
+				\begin{itemize}
+					\item Algorithme de Mesh Adaptive Directed Search avec le logiciel NOMAD\footnote{{https://sourceforge.net/projects/nomad-bb-opt/}}
+					\item Fonctionne autant avec des boîtes noires déterministes qu'avec des boite non-déterministes.
+				\end{itemize}
+			\vfill
+			\item<3-> Configuration~:
+				\begin{itemize}
+					\item Algorithme génétique~: 60 évaluations de boîte noire maximum. L'évaluation dure une minute: on effectue autant de générations que possible durant le temps imparti.
+					\item Recuit simulé~: 20 évaluations de boîte noire maximum. \(50 000 000\) d'itérations (~ 3 minutes). Solution de départ générée aléatoirement.
+				\end{itemize}
+		\end{itemize}
 	\end{frame}
 
 	\begin{frame}
-		\frametitle{Exemple: figure}
+		\frametitle{Coût des solutions obtenues}
 		\centering
-		\includegraphics[width=0.75\linewidth]{scp_example}%
+		\input{../tables/orlibrary_scp_approached}
 	\end{frame}
-	\begin{frame}
-		\frametitle{Exemple: table}
-		{
-			\centering
-			\footnotesize
-			\input{../tables/orlibrary_scp_problem_sets}
-		}
-	\end{frame}
+
+	%%%%%%%%%%%%%%%%%%%%
+
 	\begin{frame}
 		\frametitle{Exemple: plot}
 		\centering
