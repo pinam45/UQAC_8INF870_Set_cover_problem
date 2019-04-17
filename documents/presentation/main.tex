@@ -389,12 +389,47 @@
 	%% méthodes exactes
 	\section{Méthodes exactes}
 
+	\begin{frame}[t]
+		\frametitle{Recherche exhaustive}
+		\hfill%
+		\begin{minipage}[t]{0.45\linewidth}
+			\begin{block}{Générateurs G1 et G2: dynamique}
+				\centering\resizebox{0.98\textwidth}{!}{\includestandalone{../figures/g1_permutations}}%
+			\end{block}
+		\end{minipage}
+		\hfill%
+		\begin{minipage}[t]{0.45\linewidth}
+			\begin{block}{Générateur G3: compteur}
+				\begin{itemize}
+					\item 0: 000
+					\item 1: 001
+					\item 2: 010
+					\item 3: 011
+					\item 4: 100
+					\item 5: 101
+					\item 6: 110
+					\item 7: ...
+				\end{itemize}
+			\end{block}
+		\end{minipage}
+		\hfill\hspace{0pt}
+	\end{frame}
+
 	\begin{frame}
-		\frametitle{Exemple: plot}
-		\centering
+		\frametitle{Recherche exhaustive}
+		\centering\footnotesize
 		\input{../plots/permutations_generators_ram}%
 	\end{frame}
 
+	\begin{frame}
+		\centering\footnotesize
+		\input{../plots/permutations_generators_time_lin}
+	\end{frame}
+
+	\begin{frame}
+		\centering\footnotesize
+		\input{../plots/permutations_generators_time_log}%
+	\end{frame}
 	%% méthodes approchées
 	\section{Méthodes approchées}
 
