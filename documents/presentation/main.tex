@@ -117,19 +117,32 @@
 	%% définition du problème
 
 	\begin{frame}
-		\centering TODO
+		\frametitle{Définition du « Set Cover Problem » (SCP)}
+		\begin{itemize}
+			\item l'un des 21 problèmes NP-complets de \citeauthor{Karp1972}~\cite{Karp1972}.
+			\item NP-complet au sens fort~\cite{garey2002computers}.
+			\item Soit l'ensemble univers \(U = \{u_1, u_2, u_3, \dots, u_m\}\) et une famille \(S = \{s_1, s_2, \dots, s_n\}\) de sous-ensembles de \(U\).
+			\item[\(\rightarrow\)] Trouver une sous-famille de \(S\) la plus petite possible permettant de couvrir chaque élément de \(U\) au moins une fois.
+			\item \(e\) est couvert par un sous-ensemble \(A\) si \(e \in A\).
+			\vfill
+			\item En associant un coût positif \(c_i\) à chaque sous-ensemble, on obtient le problème de couverture d'ensemble pondéré ou \emph{Weighted Set Covering Problem} (WSCP)~\cite{Vazirani2003}
+		\end{itemize}
 	\end{frame}
 
 	%% exemple minimal
 
 	\begin{frame}
-		\centering TODO
+		\frametitle{Exemple minimal}
+		\centering
+		\includegraphics[width=0.75\linewidth]{scp_example}%
 	\end{frame}
 
 	%% complexité NP-complétude
 
 	\begin{frame}
-		\centering TODO
+		\frametitle{Réductions de Karp}
+		\centering
+		\includegraphics[width=\linewidth]{karp_reduction_tree}%
 	\end{frame}
 
 	%% état de l'art
