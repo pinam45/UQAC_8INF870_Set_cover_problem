@@ -272,6 +272,7 @@
 	\end{frame}
 
 	%% état de l'art
+	\section{État de l'art}
 
 	\begin{frame}
 		\frametitle{État de l'art}
@@ -286,7 +287,7 @@
 		\frametitle{État de l'art}
 		\begin{block}{Méthodes approchées voraces}
 			\begin{itemize}
-				\item L'algorithme vorace standard de \citeauthor{Johnson:1973:AAC:800125.804034} pour le problème de couverture d'ensemble non pondéré. L'algorithme prend simplement le sous-ensemble qui couvre le plus d'éléments à chaque étape jusqu'à obtenir une solution valide. Complexité en \(O(mn)\).~\cite{Johnson:1973:AAC:800125.804034}
+				\item L'algorithme vorace standard de \citeauthor{Johnson:1973:AAC:800125.804034} pour le problème de couverture d'ensemble non pondéré. L'algorithme prend simplement le sous-ensemble qui couvre le plus d'éléments à chaque étape jusqu'à obtenir une solution valide. Complexité en \(\mathcal{O}(mn)\).~\cite{Johnson:1973:AAC:800125.804034}
 				\item \citeauthor{Goldschmidt:1993:MGH:177276.177287}: méthode où l'on applique des
 					algorithmes approchés et exacts.
 					On utilise l'algorithme vorace de Johnson jusqu'à obtenir une taille maximale de 2.
@@ -298,7 +299,12 @@
 	\begin{frame}
 		\frametitle{État de l'art}
 		\begin{block}{Méthode approchée métaheuristique: \citeauthor{Beasley1990}}
-			À chaque itération d'un gradient: un ensemble \(S\) est initialisé avec les sous-ensembles sélectionnés par la solution de la relaxation lagrangienne. Puis, pour chaque point non couvert par \(S\), le sous ensemble avec le coût original le plus faible est ajouté à \(S\). Pour finir, les différents sous-ensembles de \(S\) sont considérés par ordre de coût original décroissant et on enlève le sous-ensemble \(j\) si \(S \backslash \{j\}\) est toujours une solution valide.~\cite{Beasley1990}
+			À chaque itération:
+			\begin{itemize}
+				\item un ensemble \(S\) est initialisé avec les sous-ensembles sélectionnés par la solution de la relaxation lagrangienne.
+				\item Puis, pour chaque point non couvert par \(S\), le sous ensemble avec le coût original le plus faible est ajouté à \(S\).
+				\item Pour finir, les différents sous-ensembles de \(S\) sont considérés par ordre de coût original décroissant et on enlève le sous-ensemble \(j\) si \(S \backslash \{j\}\) est toujours une solution valide.~\cite{Beasley1990}
+			\end{itemize}
 		\end{block}
 	\end{frame}
 
@@ -324,6 +330,7 @@
 	\end{frame}
 
 	%% Instances de problèmes
+	\section{Instances de problèmes}
 
 	\begin{frame}
 		\frametitle{OR-Library}
@@ -343,10 +350,10 @@
 	\end{frame}
 	\begin{frame}
 		\frametitle{Règles de génération des problèmes}
-		\begin{block}{Shémas de \citeauthor{Balas1980}}
+		\begin{block}{Schémas de \citeauthor{Balas1980}}
 			\begin{itemize}
-				\item Le coût \(c_i\) de chaque colonne \(i\) est pris aléatoirement dans l'intervalle \(\llbracket0,100\rrbracket\)
-				\item Chaque colonne couvre au moins une ligne et chaque ligne
+				\item Le coût \(c_i\) de chaque colonne \(i\) est pris aléatoirement dans l'intervalle \(\llbracket1,100\rrbracket\)
+				\item Chaque colonne couvre au moins une ligne
 				\item Chaque ligne est couverte par au moins deux colonnes
 			\end{itemize}
 		\end{block}
@@ -373,6 +380,7 @@
 	\end{frame}
 
 	%% représentation du problème
+	\section{Représentation du problème}
 
 	\begin{frame}
 		\frametitle{Représentation du problème}
