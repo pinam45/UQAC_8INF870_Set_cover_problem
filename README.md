@@ -4,12 +4,11 @@
 
 This repository contains everything produced for our project of algorithm (lecture 8INF870, UQAC) on the Set Cover Problem (SCP).
 
-There are four folders:
+There are three folders:
 
 - `solver`: contains all the code of our SCP solver.
 - `nomad`: [NOMAD](https://www.gerad.ca/nomad/) configurations and scripts to optimize parameters of our approached methods.
-- `rapport_intermediaire`: midterm report latex sources (french).
-- `rapport_final`: final report latex sources (french).
+- `documents`: report and presentation LaTeX sources (french).
 
 ## Build the solver
 
